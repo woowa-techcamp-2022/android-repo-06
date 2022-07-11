@@ -36,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
         intent?.data?.getQueryParameter("code")?.let {
             viewModel.code.value = it
+            viewModel.getToken()
         }
         binding.loginLoginButton.setOnClickListener {
             login()
