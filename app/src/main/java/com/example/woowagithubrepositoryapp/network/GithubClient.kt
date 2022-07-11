@@ -26,7 +26,6 @@ class GithubClient {
         OkHttpClient.Builder().apply {
             addInterceptor(httpLoggingInterceptor())
             addInterceptor(TokenInterceptor())
-            authenticator(TokenAuthenticator())
         }.build()
 
     private fun refreshClient() =
