@@ -2,6 +2,7 @@ package com.example.woowagithubrepositoryapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.woowagithubrepositoryapp.R
@@ -36,5 +37,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initToolbar(toolbar: MaterialToolbar) {
         setSupportActionBar(toolbar)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
     }
 }
