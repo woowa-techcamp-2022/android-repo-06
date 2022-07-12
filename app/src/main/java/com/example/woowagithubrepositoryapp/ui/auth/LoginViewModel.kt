@@ -20,7 +20,6 @@ class LoginViewModel : ViewModel() {
             val body = response.body()
             if (response.isSuccessful && body != null){
                 Prefs.accessToken = body.accessToken
-                Prefs.code = code.value.toString()
                 clearTasksAndStartActivity<MainActivity>()
             }
         }catch (e : Exception){
