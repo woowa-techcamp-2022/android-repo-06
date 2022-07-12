@@ -10,6 +10,11 @@
     <string name="search">Search</string>
     <string name="profile">Profile</string>
 
+    <string-array name="main_tab">
+        <item>Issue</item>
+        <item>Notifications</item>
+    </string-array>
+
     <string name="main_title">What\'s In My GitHub</string>
     <string name="login_btn_text">GitHub 로그인</string>
 
