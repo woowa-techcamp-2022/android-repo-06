@@ -3,6 +3,7 @@ package com.example.woowagithubrepositoryapp.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.woowagithubrepositoryapp.R
@@ -31,12 +32,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initTabLayout(tabLayout: TabLayout){
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.issue))
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.notifications))
+        val customTabLayout = R.layout.tab_main
+
+        tabLayout.addTab( tabLayout.newTab().setCustomView(customTabLayout).apply {
+            this.view.findViewById<AppCompatTextView>(R.id.textview_title_tab)?.text = getString(R.string.issue)
+        })
+        tabLayout.addTab(tabLayout.newTab().setCustomView(customTabLayout).apply {
+           this.view.findViewById<AppCompatTextView>(R.id.textview_title_tab)?.text = getString(R.string.notifications)
+        })
+
     }
 
     private fun initToolbar(toolbar: MaterialToolbar) {
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        toolbar.title = getString(R.string.appbar_title)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -4,10 +4,12 @@
     <item
         android:id="@+id/nav_search"
         android:title="@string/search"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_search_bold"/>
 
     <item
         android:id="@+id/nav_profile"
         android:title="@string/profile"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_user"/>
 </menu>

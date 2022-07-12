@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">What\'s In My GitHub</string>
+    <string name="app_name">repo-app</string>
 
     <string name="GITHUB_CLIENT_ID">4097a43c89ab465dd417</string>
     <string name="GITHUB_CLIENT_SECRET">eceeaf6935303c9bc066277008a53ff579f510d0</string>
@@ -9,4 +9,10 @@
 
     <string name="search">Search</string>
     <string name="profile">Profile</string>
+
+    <string name="main_title">What\'s In My GitHub</string>
+    <string name="login_btn_text">GitHub 로그인</string>
+
+    <string name="appbar_title">What\'s In My GitHub</string>
+
 </resources>
