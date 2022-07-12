@@ -3,4 +3,8 @@
 
     <string name="GITHUB_CLIENT_ID">4097a43c89ab465dd417</string>
     <string name="GITHUB_CLIENT_SECRET">eceeaf6935303c9bc066277008a53ff579f510d0</string>
+
+    <string name="issue">Issue</string>
+    <string name="notifications">Notifications</string>
+
 </resources>
