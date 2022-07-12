@@ -1,4 +1,7 @@
 package com.example.woowagithubrepositoryapp.repository
 
-interface GithubRepository {
+import com.example.woowagithubrepositoryapp.network.GithubService
+
+class GithubRepository {
+    suspend fun getUserData() = GithubService.instance.getUserData()
 }

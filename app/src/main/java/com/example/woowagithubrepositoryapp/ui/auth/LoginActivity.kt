@@ -1,20 +1,16 @@
 package com.example.woowagithubrepositoryapp.ui.auth
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ActivityLoginBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.net.HttpURLConnection
-import java.net.URL
+import com.example.woowagithubrepositoryapp.ui.MainActivity
+import com.example.woowagithubrepositoryapp.utils.Prefs
+import com.example.woowagithubrepositoryapp.utils.clearTasksAndStartActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -34,11 +30,24 @@ class LoginActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        intent?.data?.getQueryParameter("code")?.let {
-            viewModel.code.value = it
-        }
+        checkToken()
+        checkIntent()
+
         binding.loginLoginButton.setOnClickListener {
             login()
+        }
+    }
+
+    private fun checkToken(){
+        if (Prefs.accessToken.isNotEmpty()){
+            clearTasksAndStartActivity<MainActivity>()
+        }
+    }
+
+    private fun checkIntent(){
+        intent?.data?.getQueryParameter("code")?.let {
+            viewModel.code.value = it
+            viewModel.getToken()
         }
     }
 
