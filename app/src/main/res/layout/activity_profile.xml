@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.woowagithubrepositoryapp.ui.profile.ProfileViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
@@ -32,17 +38,16 @@
             android:layout_height="80dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:background="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profile_appbar" />
 
         <TextView
-            android:id="@+id/profile_displayName_textView"
+            android:id="@+id/profile_login_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="26dp"
-            android:text="멋진 삼"
+            android:text="@{viewModel.userData.login}"
             android:textColor="@color/white"
             android:textSize="18dp"
             app:layout_constraintStart_toEndOf="@id/profile_imageView"
@@ -53,11 +58,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="sam"
+            android:text="@{viewModel.userData.name}"
             android:textColor="@color/gray"
             android:textSize="16dp"
             app:layout_constraintStart_toEndOf="@id/profile_imageView"
-            app:layout_constraintTop_toBottomOf="@id/profile_displayName_textView" />
+            app:layout_constraintTop_toBottomOf="@id/profile_login_textView" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,7 +75,7 @@
             android:paddingTop="4dp"
             android:paddingEnd="8dp"
             android:paddingBottom="4dp"
-            android:text="Android developer"
+            android:text="@{viewModel.userData.bio]"
             android:textColor="@color/gray"
             app:layout_constraintStart_toEndOf="@id/profile_imageView"
             app:layout_constraintTop_toBottomOf="@id/profile_userName_textView" />
@@ -92,7 +97,7 @@
             android:layout_marginTop="16dp"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:text="Seoul, Korea"
+            android:text="@{viewModel.userData.location.toString()}"
             android:textColor="@color/white"
             android:textSize="14dp"
             app:drawableStartCompat="@drawable/ic_location"
@@ -108,7 +113,7 @@
             android:layout_marginTop="18dp"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:text="http://medium.com/@sam"
+            android:text="@{viewModel.userData.blog}"
             android:textColor="@color/white"
             android:textSize="14dp"
             app:drawableStartCompat="@drawable/ic_link"
@@ -124,7 +129,7 @@
             android:layout_marginTop="18dp"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:text="sam@gmail.com"
+            android:text="@{viewModel.userData.email.toString()}"
             android:textColor="@color/white"
             android:textSize="14dp"
             app:drawableStartCompat="@drawable/ic_mail"
@@ -132,23 +137,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profile_link_textView" />
 
+        <!--repos, starred-->
         <TextView
             android:id="@+id/profile_follow_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:text="59 Followers • 6 Following"
+            android:text="@{@string/follow_text(String.valueOf(viewModel.userData.followers), String.valueOf(viewModel.userData.following))}"
             android:textColor="@color/white"
             android:textSize="14dp"
             app:drawableStartCompat="@drawable/ic_user"
             app:drawableTint="@color/gray"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profile_email_textView" />
-        <!--repos, starred-->
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profile_repo_star_constraintLayout"
             android:layout_width="312dp"
             android:layout_height="128dp"
             android:layout_marginTop="25dp"
@@ -207,7 +214,7 @@
                 android:layout_height="40dp"
                 android:layout_marginEnd="16dp"
                 android:gravity="center_vertical"
-                android:text="30"
+                android:text="@{String.valueOf(viewModel.userData.publicRepos)}"
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -218,7 +225,7 @@
                 android:layout_height="40dp"
                 android:layout_marginEnd="16dp"
                 android:gravity="center_vertical"
-                android:text="30"
+                android:text="@{String.valueOf(viewModel.userData.publicGists)}"
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="parent"
