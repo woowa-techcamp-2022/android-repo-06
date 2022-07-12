@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login() {
-        val loginUrl = "https://github.com/login/oauth/authorize?client_id="+this.getString(R.string.GITHUB_CLIENT_ID)
+        val loginUrl = "https://github.com/login/oauth/authorize?client_id="+Constants.GITHUB_CLIENT_ID
         val intent = Intent(Intent.ACTION_VIEW,loginUrl.toUri())
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         startActivity(intent)
