@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ActivityMainBinding
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
@@ -25,10 +26,15 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         initTabLayout(binding.tablayoutMain)
+        initToolbar(binding.toolbarMain)
     }
 
     private fun initTabLayout(tabLayout: TabLayout){
         tabLayout.addTab(tabLayout.newTab().setText(R.string.issue))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.notifications))
+    }
+
+    private fun initToolbar(toolbar: MaterialToolbar) {
+        setSupportActionBar(toolbar)
     }
 }
