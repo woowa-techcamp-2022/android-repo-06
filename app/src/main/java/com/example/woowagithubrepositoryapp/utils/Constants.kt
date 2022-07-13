@@ -1,3 +1,5 @@
+package com.example.woowagithubrepositoryapp.utils
+
 import com.example.woowagithubrepositoryapp.BuildConfig
 
 object Constants {

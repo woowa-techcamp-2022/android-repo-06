@@ -20,7 +20,6 @@ android {
 
         buildConfigField "String", "githubClientId", properties['GITHUB_CLIENT_ID']
         buildConfigField "String", "githubClientSecret", properties['GITHUB_CLIENT_SECRET']
-
     }
 
     buildTypes {

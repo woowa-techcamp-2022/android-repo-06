@@ -1,9 +1,13 @@
 package com.example.woowagithubrepositoryapp.repository
 
-import com.example.woowagithubrepositoryapp.network.TokenApi
+import com.example.woowagithubrepositoryapp.network.TokenService
 
 class TokenRepository {
     suspend fun getAccessToken(
         code : String
-    ) = TokenApi.instance.getAccessToken(code = code)
+    ) = TokenService.instance.getAccessToken(code = code)
+
+    companion object{
+        val instance = TokenRepository()
+    }
 }
