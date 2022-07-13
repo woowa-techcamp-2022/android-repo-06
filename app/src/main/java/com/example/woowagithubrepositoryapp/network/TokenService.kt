@@ -1,6 +1,6 @@
 package com.example.woowagithubrepositoryapp.network
 
-import Constants
+import com.example.woowagithubrepositoryapp.utils.Constants
 import com.example.woowagithubrepositoryapp.model.AccessTokenResponse
 import retrofit2.Response
 import retrofit2.http.Field
@@ -8,7 +8,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-interface TokenApi {
+interface TokenService {
 
     @FormUrlEncoded
     @POST("/login/oauth/access_token")
@@ -20,6 +20,6 @@ interface TokenApi {
     ) : Response<AccessTokenResponse>
 
     companion object{
-        val instance = GithubClient().generateRefreshClient(TokenApi::class.java)
+        val instance = GithubClient().generateRefreshClient(TokenService::class.java)
     }
 }
