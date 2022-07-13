@@ -18,6 +18,8 @@
     <string name="main_title">What\'s In My GitHub</string>
     <string name="login_btn_text">GitHub 로그인</string>
 
+    <string name="follow_text">%1$s Followers • %2$s Following</string>
     <string name="appbar_title">What\'s In My GitHub</string>
+
 
 </resources>
