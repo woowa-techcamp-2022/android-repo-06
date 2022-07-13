@@ -1,5 +1,6 @@
 package com.example.woowagithubrepositoryapp.network
 
+import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.model.Issue
 import com.example.woowagithubrepositoryapp.model.RepoResponse
 import com.example.woowagithubrepositoryapp.model.User
@@ -11,6 +12,9 @@ interface GithubService {
     @GET("/user")
     suspend fun getUserData() : Response<User>
 
+    @GET("/notifications")
+    suspend fun getNotifications() : Response<List<Notification>>
+    
     @GET("/issues")
     suspend fun getIssues(
         @Query("filter") filter : String,
