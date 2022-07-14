@@ -14,19 +14,24 @@ class SearchViewModel : ViewModel() {
 
     val searchText = MutableLiveData("")
     val recyclerViewOn = MutableLiveData(false)
+    val repoList = mutableListOf<Repo>()
+    var pageNumber = 1
 
     fun searchRepos(complete : (List<Repo>) -> Unit) {
         viewModelScope.launch {
             val q = searchText.value.toString()
             try {
-                val response = GithubRepository.instance.searchRepos(q)
+                val response = GithubRepository.instance.searchRepos(q,pageNumber)
                 val body = response.body()
                 if (response.isSuccessful && body != null){
                     if (body.totalCount == 0){
                         recyclerViewOn.value = false
                     }else{
-                        complete(body.items)
-                        recyclerViewOn.postValue(true)
+                        repoList.addAll(body.items)
+                        withContext(Dispatchers.Main){
+                            complete(repoList)
+                            recyclerViewOn.value = true
+                        }
                     }
                 }
             }catch (e : Exception){

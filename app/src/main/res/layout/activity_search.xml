@@ -43,6 +43,7 @@
             android:drawablePadding="20dp"
             android:singleLine="true"
             android:hint="Serch GitHub"
+            android:textColor="@color/white"
             android:text="@={viewModel.searchText}"
             android:imeOptions="actionSearch"
             android:padding="12dp"

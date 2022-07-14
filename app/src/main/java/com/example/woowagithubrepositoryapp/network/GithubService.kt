@@ -31,7 +31,7 @@ interface GithubService {
         @Query("sort") sort : String = "start",
         @Query("order") order : String = "desc",
         @Query("per_page") perPage: Int = 10,
-        @Query("page") page: Int = 1
+        @Query("page") page: Int
     ) : Response<RepoResponse>
 
     companion object{
