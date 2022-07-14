@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.woowagithubrepositoryapp.databinding.FragmentNotificationBinding
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
+import com.example.woowagithubrepositoryapp.utils.NotificationItemHelper
 
 class NotificationFragment : Fragment() {
     private var _binding: FragmentNotificationBinding? = null
@@ -19,6 +21,16 @@ class NotificationFragment : Fragment() {
 
     private val notificationAdapter by lazy {
         NotificationAdapter()
+    }
+
+    private fun initRecyclerView(){
+        ItemTouchHelper(
+            NotificationItemHelper(
+                requireContext(),
+                {
+
+                }))
+            .attachToRecyclerView(binding.recyclerviewNotification)
     }
 
     override fun onCreateView(
@@ -32,7 +44,7 @@ class NotificationFragment : Fragment() {
         viewModel.notifications.observe(viewLifecycleOwner){
             notificationAdapter.submitList(it)
         }
-
+        initRecyclerView()
         return binding.root
     }
 
