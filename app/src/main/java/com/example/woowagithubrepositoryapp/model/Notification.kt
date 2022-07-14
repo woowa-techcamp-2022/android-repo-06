@@ -8,6 +8,5 @@ data class Notification(
     @SerializedName("updated_at") val updatedAt : String,
     @SerializedName("unread") val unread : Boolean,
     @SerializedName("subject") val subject: NotificationSubject,
-
-
+    var comments : String? = null
 )

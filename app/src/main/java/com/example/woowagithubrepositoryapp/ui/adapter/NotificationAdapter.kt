@@ -30,6 +30,7 @@ class NotificationAdapter : ListAdapter<Notification,NotificationAdapter.Notific
             binding.apply {
                 this.notification = item
                 executePendingBindings()
+
             }
         }
     }
