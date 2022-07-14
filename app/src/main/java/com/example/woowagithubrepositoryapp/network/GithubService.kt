@@ -1,9 +1,6 @@
 package com.example.woowagithubrepositoryapp.network
 
-import com.example.woowagithubrepositoryapp.model.Notification
-import com.example.woowagithubrepositoryapp.model.Issue
-import com.example.woowagithubrepositoryapp.model.RepoResponse
-import com.example.woowagithubrepositoryapp.model.User
+import com.example.woowagithubrepositoryapp.model.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -31,6 +28,11 @@ interface GithubService {
         @Query("sort") sort : String = "start",
         @Query("order") order : String = "desc"
     ) : Response<RepoResponse>
+
+    @PATCH("/notifications/threads/{thread_id}")
+    suspend fun patchNotificationThread(
+        @Path("thread_id") threadId : String
+    ) : Response<SuccessResponse>
 
     companion object{
         val instance = GithubClient().generate(GithubService::class.java)

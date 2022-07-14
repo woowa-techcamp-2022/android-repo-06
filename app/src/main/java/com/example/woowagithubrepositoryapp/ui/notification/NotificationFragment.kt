@@ -28,11 +28,13 @@ class NotificationFragment : Fragment() {
             NotificationItemHelper(
                 requireContext(),
                 {
-
+                    markNotification(it)
                 }))
             .attachToRecyclerView(binding.recyclerviewNotification)
     }
-
+    fun markNotification(threadId:String){
+        viewModel.markNotificationAsRead(threadId= threadId)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
