@@ -5,10 +5,14 @@ import android.graphics.Canvas
 import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
 
-class NotificationItemHelper(val context: Context,
-                             val swiped : (threadId : String) -> Unit) : ItemTouchHelper.Callback() {
+class NotificationItemHelper(
+    val context: Context,
+    val mark : (notification : Notification?,position:Int) -> Unit)
+        : ItemTouchHelper.Callback() {
+
     override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
@@ -28,7 +32,7 @@ class NotificationItemHelper(val context: Context,
         val notificationViewHolder = viewHolder as NotificationAdapter.NotificationViewHolder
         Log.d("onSwiped",notificationViewHolder.binding.notification?.subject?.title
                 + "was swiped")
-        swiped(notificationViewHolder.binding.notification?.threadId.toString())
+        mark(notificationViewHolder.binding.notification,notificationViewHolder.adapterPosition)
     }
 
     override fun onChildDraw(

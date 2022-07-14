@@ -32,16 +32,19 @@ class NotificationViewModel : ViewModel() {
             Log.e("NotificationViewModel","getNotification error : ${e.cause.toString()}")
         }
     }
-    fun markNotificationAsRead(threadId: String) = viewModelScope.launch {
+    suspend fun markNotificationAsRead(threadId: String) : Boolean {
         try {
             val response = GithubRepository.instance.patchNotificationThread(threadId)
-            val body = response.body()
-            if (response.isSuccessful && body != null){
-                Log.d("markNotification",body?.message.toString())
+            if (response.isSuccessful){
+                return true
             }
         } catch (e: Exception){
             Log.e("NotificationViewModel","markNotification error : ${e.cause.toString()}")
-
         }
+        return false
+    }
+    fun removeNotificationAtPosition(position : Int){
+        _notifications.value?.removeAt(position)
+        _notifications.value = _notifications.value
     }
 }
