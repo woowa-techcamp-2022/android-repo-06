@@ -27,35 +27,35 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_filter"
                 android:drawablePadding="14dp"
+                android:gravity="center_vertical"
                 android:padding="12dp"
                 android:text="Filter"
-                android:gravity="center_vertical"
                 android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Spinner
-                android:gravity="center_vertical"
                 android:id="@+id/issue_spinner"
                 android:layout_width="150dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:dropDownVerticalOffset="70dp"
+                android:gravity="center_vertical"
                 android:popupBackground="@drawable/spinner_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/filter_textView" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/issue_recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/issue_filter_layout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/item_issue"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/issue_filter_layout"
+            tools:listitem="@layout/item_issue" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
