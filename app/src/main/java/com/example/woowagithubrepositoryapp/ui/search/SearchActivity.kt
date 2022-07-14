@@ -3,6 +3,7 @@ package com.example.woowagithubrepositoryapp.ui.search
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -36,6 +37,7 @@ class SearchActivity : AppCompatActivity() {
         initToolbar()
         initRecyclerView()
         initEditText()
+        setObserver()
     }
 
     private fun initToolbar(){
@@ -70,6 +72,29 @@ class SearchActivity : AppCompatActivity() {
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
+        }
+        binding.searchBarEditText.setOnFocusChangeListener { view, b ->
+            if (b)
+                binding.searchBarLayout.setBackgroundResource(R.drawable.spinner_background)
+            else
+                binding.searchBarLayout.setBackgroundResource(R.drawable.color_chip_rectangle_20)
+        }
+    }
+
+    private fun setObserver(){
+        viewModel.searchText.observe(this){
+            if (it.isNotEmpty()){
+                binding.searchIconImageView.visibility = View.GONE
+                binding.searchCloseImageView.visibility = View.VISIBLE
+                binding.searchBarLayout.setBackgroundResource(R.drawable.spinner_background)
+            }else{
+                binding.searchIconImageView.visibility = View.VISIBLE
+                binding.searchCloseImageView.visibility = View.GONE
+                binding.searchBarLayout.setBackgroundResource(R.drawable.color_chip_rectangle_20)
+                viewModel.recyclerViewOn.value = false
+                viewModel.repoList.clear()
+                repoAdapter.submitList(viewModel.repoList)
+            }
         }
     }
 

@@ -40,4 +40,8 @@ class SearchViewModel : ViewModel() {
             }
         }
     }
+
+    fun removeSearchText(){
+        searchText.value = ""
+    }
 }
