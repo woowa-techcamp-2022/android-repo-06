@@ -18,11 +18,15 @@ class SpinnerAdapter(context: Context, var resource: Int, var items: List<IssueO
     override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = inflater.inflate(resource, parent, false)
+        val view = convertView ?: inflater.inflate(resource, parent, false)
         val binding = ItemSpinnerBinding.bind(view!!)
         binding.text.text = items[position].text
         binding.check.setImageResource(R.drawable.ic_arrow_drop_down)
-        return view
+        binding.root.viewTreeObserver.addOnWindowFocusChangeListener {
+            if (it) binding.check.rotation = 0f
+            else binding.check.rotation = 180f
+        }
+        return binding.root
     }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
