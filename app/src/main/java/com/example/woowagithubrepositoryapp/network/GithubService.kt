@@ -19,8 +19,9 @@ interface GithubService {
     suspend fun getIssues(
         @Query("filter") filter : String,
         @Query("state") state : String,
-        @Query("per_page") perPage : Int = 10,
-        @Query("page") page : Int
+        @Query("per_page") perPage : Int = 10, //default = 30
+        @Query("page") page : Int,
+        @Query("sort") sort: String = "updated" //default = "created"
     ) : Response<List<Issue>>
 
 
