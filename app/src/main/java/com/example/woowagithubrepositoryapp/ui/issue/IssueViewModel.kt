@@ -12,6 +12,7 @@ import kotlinx.coroutines.withContext
 class IssueViewModel : ViewModel() {
     var pageNumber = 1
     var selectState = "open"
+    val issueList = mutableListOf<Issue>()
 
     fun getIssues(filter: String, state: String, page: Int, complete: (List<Issue>) -> Unit) =
         viewModelScope.launch {
@@ -22,7 +23,8 @@ class IssueViewModel : ViewModel() {
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
                     withContext(Dispatchers.Main){
-                        complete(body)
+                        issueList.addAll(body)
+                        complete(issueList)
                     }
                 }
             } catch (e: Exception) {

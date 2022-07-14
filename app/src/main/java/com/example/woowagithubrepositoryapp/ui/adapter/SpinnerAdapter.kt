@@ -20,6 +20,7 @@ class SpinnerAdapter(context: Context, var resource: Int, var items: List<IssueO
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = inflater.inflate(resource, parent, false)
         val binding = ItemSpinnerBinding.bind(view!!)
+        binding.text.text = items[position].text
         binding.check.setImageResource(R.drawable.ic_arrow_drop_down)
         return view
     }

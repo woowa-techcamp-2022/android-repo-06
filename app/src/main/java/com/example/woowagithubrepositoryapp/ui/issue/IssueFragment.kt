@@ -56,12 +56,14 @@ class IssueFragment : Fragment() {
                         viewModel.selectState = "open"
                     }
                     1 -> {
-                        viewModel.selectState = "close"
+                        viewModel.selectState = "closed"
                     }
                     2 -> {
                         viewModel.selectState = "all"
                     }
                 }
+                viewModel.pageNumber = 1
+                viewModel.issueList.clear()
                 loadIssueData()
                 for (idx in list.indices) {
                     list[idx].check = (idx == p2)
@@ -70,7 +72,7 @@ class IssueFragment : Fragment() {
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
+
             }
         }
     }
@@ -87,16 +89,17 @@ class IssueFragment : Fragment() {
 
         loadIssueData()
 
-        /*binding.issueRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.issueRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val lastVisibleItemPosition =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount
                 if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    loadIssueData(viewModel.selectState,++viewModel.pageNumber)
+                    viewModel.pageNumber++
+                    loadIssueData()
                 }
             }
-        })*/
+        })
     }
 }
