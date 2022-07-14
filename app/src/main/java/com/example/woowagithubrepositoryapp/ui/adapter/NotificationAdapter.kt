@@ -74,7 +74,8 @@ class NotificationAdapter : ListAdapter<Notification,NotificationAdapter.Notific
         }.start()
     }
 
-    inner class NotificationViewHolder(private val binding : ItemNotificationBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class NotificationViewHolder(val binding : ItemNotificationBinding) : RecyclerView.ViewHolder(binding.root){
+
         fun bind(item : Notification){
             binding.apply {
                 this.notification = item

@@ -7,6 +7,12 @@ class GithubRepository {
     
     suspend fun getNotifications() = GithubService.instance.getNotifications()
 
+    suspend fun patchNotificationThread(
+        threadId : String
+    ) = GithubService.instance.patchNotificationThread(
+        threadId = threadId
+    )
+
     suspend fun getUserIssues(
         filter: String,
         state: String,

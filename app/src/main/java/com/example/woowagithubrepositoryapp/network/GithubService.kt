@@ -35,6 +35,11 @@ interface GithubService {
         @Query("order") order : String = "desc"
     ) : Response<RepoResponse>
 
+    @PATCH("/notifications/threads/{thread_id}")
+    suspend fun patchNotificationThread(
+        @Path("thread_id") threadId : String
+    ) : Response<SuccessResponse>
+
     companion object{
         val instance = GithubClient().generate(GithubService::class.java)
     }
