@@ -73,12 +73,6 @@ class SearchActivity : AppCompatActivity() {
             }
             return@setOnEditorActionListener false
         }
-        binding.searchBarEditText.setOnFocusChangeListener { view, b ->
-            if (b)
-                binding.searchBarLayout.setBackgroundResource(R.drawable.spinner_background)
-            else
-                binding.searchBarLayout.setBackgroundResource(R.drawable.color_chip_rectangle_20)
-        }
     }
 
     private fun setObserver(){
