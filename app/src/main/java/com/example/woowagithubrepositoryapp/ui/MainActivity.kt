@@ -4,16 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.widget.Toast
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ActivityMainBinding
 import com.example.woowagithubrepositoryapp.ui.issue.IssueFragment
 import com.example.woowagithubrepositoryapp.ui.notification.NotificationFragment
 import com.example.woowagithubrepositoryapp.ui.profile.ProfileActivity
+import com.example.woowagithubrepositoryapp.ui.search.SearchActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayout
 
@@ -59,7 +57,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.nav_profile -> startProfileActivity()
-                R.id.nav_search -> {}
+                R.id.nav_search -> startSearchActivity()
             }
             return@setOnMenuItemClickListener true
         }
@@ -70,6 +68,10 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         startActivity(intent)
     }
 
+    private fun startSearchActivity() {
+        val intent = Intent(this, SearchActivity::class.java)
+        startActivity(intent)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)

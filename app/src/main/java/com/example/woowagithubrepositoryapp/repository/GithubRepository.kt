@@ -24,9 +24,11 @@ class GithubRepository {
     )
 
     suspend fun searchRepos(
-        searchText: String
+        searchText: String,
+        page : Int
     ) = GithubService.instance.searchRepositories(
-        searchText = searchText
+        searchText = searchText,
+        page = page
     )
 
     companion object {

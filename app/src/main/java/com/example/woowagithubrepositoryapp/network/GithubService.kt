@@ -32,7 +32,9 @@ interface GithubService {
     suspend fun searchRepositories(
         @Query("q") searchText : String,
         @Query("sort") sort : String = "start",
-        @Query("order") order : String = "desc"
+        @Query("order") order : String = "desc",
+        @Query("per_page") perPage: Int = 10,
+        @Query("page") page: Int
     ) : Response<RepoResponse>
 
     @PATCH("/notifications/threads/{thread_id}")
