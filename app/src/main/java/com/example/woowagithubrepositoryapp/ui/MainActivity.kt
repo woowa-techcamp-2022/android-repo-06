@@ -33,13 +33,13 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         super.onCreate(savedInstanceState)
         binding.lifecycleOwner = this
 
-        initTabLayout(binding.tablayoutMain)
-        initToolbar(binding.toolbarMain)
+        initTabLayout(binding.mainTabLayout)
+        initToolbar(binding.mainToolbar)
 
         viewModel.getUserData()
 
         supportFragmentManager.beginTransaction().replace(
-            binding.containerMain.id, IssueFragment()
+            binding.mainContainer.id, IssueFragment()
         ).commit()
     }
 
@@ -81,12 +81,12 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             when (it.text) {
                 "Issue" -> {
                     supportFragmentManager.beginTransaction().replace(
-                        binding.containerMain.id, IssueFragment()
+                        binding.mainContainer.id, IssueFragment()
                     ).commit()
                 }
                 else -> {
                     supportFragmentManager.beginTransaction().replace(
-                        binding.containerMain.id, NotificationFragment()
+                        binding.mainContainer.id, NotificationFragment()
                     ).commit()
                 }
             }

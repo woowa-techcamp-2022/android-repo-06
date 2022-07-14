@@ -34,7 +34,7 @@ class NotificationFragment : Fragment() {
         ItemTouchHelper(NotificationItemHelper(requireContext()
         ) { notification, position ->
             markNotification(notification, position)
-        }).attachToRecyclerView(binding.recyclerviewNotification)
+        }).attachToRecyclerView(binding.notificationRecyclerView)
     }
     private fun markNotification(notification:Notification?,position: Int){
         lifecycleScope.launch {
@@ -58,13 +58,19 @@ class NotificationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentNotificationBinding.inflate(inflater, container,false)
-        binding.recyclerviewNotification.adapter = notificationAdapter
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.notificationRecyclerView.adapter = notificationAdapter
 
         viewModel.notifications.observe(viewLifecycleOwner){
             notificationAdapter.submitList(it)
         }
         initRecyclerView()
-        return binding.root
     }
 
     override fun onDestroyView() {
