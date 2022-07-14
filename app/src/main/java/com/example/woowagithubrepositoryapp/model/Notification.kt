@@ -10,6 +10,8 @@ data class Notification(
     @SerializedName("subject") val subject: NotificationSubject,
     @SerializedName("last_read_at") val lastReadAt : String,
     @SerializedName("url") val url : String,
+    var comments : String? = null,
+    var issueNum : String? = null    
 ){
     val threadId : String
         get() = url.split("/").last()

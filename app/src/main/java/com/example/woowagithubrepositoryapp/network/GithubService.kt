@@ -1,6 +1,7 @@
 package com.example.woowagithubrepositoryapp.network
 
 import com.example.woowagithubrepositoryapp.model.*
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -21,6 +22,11 @@ interface GithubService {
         @Query("sort") sort: String = "updated" //default = "created"
     ) : Response<List<Issue>>
 
+
+    @GET("{fullUrl}")
+    fun getNotificationInfo(
+        @Path("fullUrl", encoded = true) fullUrl : String
+    ) : Call<NotificationSubjectURLResponse>
 
     @GET("/search/repositories")
     suspend fun searchRepositories(
