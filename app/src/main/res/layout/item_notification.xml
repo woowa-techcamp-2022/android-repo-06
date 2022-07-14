@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:textColor="@color/gray"
-                android:text=""
+                android:text="@{notification.issueNum}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/repo_textView"
                 app:layout_constraintTop_toTopOf="parent"
@@ -103,10 +103,11 @@
             app:layout_constraintTop_toBottomOf="@id/date_notification_textView">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/comment_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="0"
+                android:text="@{notification.comments}"
                 android:textColor="@color/primary"
                 tools:text="1" />
 
