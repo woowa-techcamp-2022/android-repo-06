@@ -18,7 +18,7 @@ class SearchViewModel(private val repository: GithubRepository) : ViewModel() {
     var pageNumber = 1
 
     fun searchRepos(complete: (List<Repo>) -> Unit) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val q = searchText.value.toString()
             try {
                 val response = repository.searchRepos(q, pageNumber)

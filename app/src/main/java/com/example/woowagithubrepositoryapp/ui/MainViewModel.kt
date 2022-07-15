@@ -20,7 +20,7 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
                         complete()
                     }
                 }else{
-
+                
                 }
             } catch (e: Exception) {
                 Log.e("MainViewModel", "getUserData error")

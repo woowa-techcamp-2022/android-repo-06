@@ -24,6 +24,8 @@ class IssueViewModel(private val repository: GithubRepository) : ViewModel() {
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
                     withContext(Dispatchers.Main){
+                        if(pageNumber.value == 1)
+                            issueList.clear()
                         issueList.addAll(body)
                         complete(issueList)
                     }
