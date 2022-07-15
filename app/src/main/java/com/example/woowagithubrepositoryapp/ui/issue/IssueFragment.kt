@@ -75,6 +75,11 @@ class IssueFragment : Fragment() {
 
             }
         }
+
+        binding.issueSpinner.viewTreeObserver.addOnWindowFocusChangeListener {
+            if(it) binding.issueFilterLayout.setBackgroundResource(R.drawable.color_chip_rectangle_20)
+            else binding.issueFilterLayout.setBackgroundResource(R.drawable.spinner_background)
+        }
     }
 
     private fun loadIssueData(){
