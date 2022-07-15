@@ -17,6 +17,9 @@ import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
+    private var issueFragment : IssueFragment? = null
+    private var notificationFragment : NotificationFragment? = null
+
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(
             this,
@@ -36,9 +39,6 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
         viewModel.getUserData()
 
-        supportFragmentManager.beginTransaction().replace(
-            binding.containerMain.id, IssueFragment()
-        ).commit()
     }
 
     private fun initTabLayout(tabLayout: TabLayout) {
@@ -82,14 +82,14 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         tab?.let {
             when (it.text) {
                 "Issue" -> {
-                    supportFragmentManager.beginTransaction().replace(
-                        binding.containerMain.id, IssueFragment()
-                    ).commit()
+                    if(issueFragment == null)
+                        issueFragment = IssueFragment()
+                    changeFragmentToIssueFragment()
                 }
                 else -> {
-                    supportFragmentManager.beginTransaction().replace(
-                        binding.containerMain.id, NotificationFragment()
-                    ).commit()
+                    if(notificationFragment == null)
+                        notificationFragment = NotificationFragment()
+                    changeFragmentToNotificationFragment()
                 }
             }
         }
@@ -100,7 +100,35 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
-
+        tab?.let {
+            when (it.text) {
+                "Issue" -> {
+                    issueFragment = IssueFragment()
+                    changeFragmentToIssueFragment()
+                }
+                else -> {
+                    notificationFragment = NotificationFragment()
+                    changeFragmentToNotificationFragment()
+                }
+            }
+        }
     }
-
+    private fun changeFragmentToIssueFragment(){
+        issueFragment.let {
+            if (it != null) {
+                supportFragmentManager.beginTransaction().replace(
+                    binding.containerMain.id, it
+                ).commit()
+            }
+        }
+    }
+    private fun changeFragmentToNotificationFragment(){
+        notificationFragment.let {
+            if (it != null) {
+                supportFragmentManager.beginTransaction().replace(
+                    binding.containerMain.id, it
+                ).commit()
+            }
+        }
+    }
 }
