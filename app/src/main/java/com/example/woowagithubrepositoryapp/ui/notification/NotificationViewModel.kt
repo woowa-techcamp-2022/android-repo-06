@@ -22,39 +22,33 @@ class NotificationViewModel(private val repository: GithubRepository) : ViewMode
         getNotifications()
     }
 
-    fun getNotifications() = viewModelScope.launch {
-        try{
-            val response = repository.getNotifications()
+    fun getNotifications() {
+        viewModelScope.launch {
+            val notifications = GithubRepository.instance.getNotifications(page)
+            if(notifications.size != 0){
+                _notifications.value?.addAll(notifications)
+                _notifications.value = _notifications.value
+                page++
+            }else {
+                //더 이상 받아올 알림이 없기 때문에 페이지를 증가시키지 않는다.
+                //무한 스크롤을 막는 코드가 필요
+            }
+        }
+    }
 
-            val body = response.body()
-            if (response.isSuccessful && body != null){
-                if(response.body()?.size != 0){
-                    _notifications.value?.addAll(body.toMutableList())
-                    _notifications.value = _notifications.value
-                    page++
-                }else {
-                    //더 이상 받아올 알림이 없기 때문에 페이지를 증가시키지 않는다.
-                    //무한 스크롤을 막는 코드가 필요
-                }
+    fun markNotificationAsRead(notification : Notification) {
+        viewModelScope.launch {
+            val marked = GithubRepository.instance.patchNotificationThread(notification.threadId)
+            if (marked) {
+                removeNotificationAtPosition(notification)
+            } else {
+                //서버에서 읽음 처리가 되지 않은 경우 어떻게 처리할 것인가?
             }
         }
-        catch (e:Exception){
-            Log.e("NotificationViewModel","getNotification error : ${e.cause.toString()}")
-        }
     }
-    suspend fun markNotificationAsRead(threadId: String) : Boolean {
-        try {
-            val response = repository.patchNotificationThread(threadId)
-            if (response.isSuccessful){
-                return true
-            }
-        } catch (e: Exception){
-            Log.e("NotificationViewModel","markNotification error : ${e.cause.toString()}")
-        }
-        return false
-    }
-    fun removeNotificationAtPosition(position : Int){
-        _notifications.value?.removeAt(position)
+
+    private fun removeNotificationAtPosition(notification : Notification){
+        _notifications.value?.remove(notification)
         _notifications.value = _notifications.value
     }
 }
