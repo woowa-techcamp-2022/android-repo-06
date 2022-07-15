@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.woowagithubrepositoryapp.databinding.FragmentNotificationBinding
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
@@ -34,6 +36,22 @@ class NotificationFragment : Fragment() {
         ) { notification, position ->
             markNotification(notification, position)
         }).attachToRecyclerView(binding.recyclerviewNotification)
+
+        binding.recyclerviewNotification.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter?.itemCount
+                if (lastVisibleItemPosition + 1 == itemTotalCount) {
+                    viewModel.getNotifications()
+                    Log.d("notificationPaging","notificationPaging")
+                }
+            }
+        })
+
+
+
     }
 
     private fun markNotification(notification: Notification?, position: Int) {
@@ -67,6 +85,7 @@ class NotificationFragment : Fragment() {
 
         viewModel.notifications.observe(viewLifecycleOwner) {
             notificationAdapter.submitList(it)
+            notificationAdapter.notifyDataSetChanged() // 수정 필요
         }
         initRecyclerView()
         return binding.root
