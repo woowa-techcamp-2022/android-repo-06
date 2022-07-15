@@ -21,17 +21,15 @@ class SearchViewModel : ViewModel() {
         viewModelScope.launch {
             val q = searchText.value.toString()
             try {
-                val response = GithubRepository.instance.searchRepos(q, pageNumber)
+                val response = withContext(Dispatchers.IO){ GithubRepository.instance.searchRepos(q, pageNumber) }
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
-                    withContext(Dispatchers.Main) {
-                        if (body.totalCount == 0) {
-                            recyclerViewOn.value = false
-                        } else {
-                            repoList.addAll(body.items)
-                            complete(repoList)
-                            recyclerViewOn.value = true
-                        }
+                    if (body.totalCount == 0) {
+                        recyclerViewOn.value = false
+                    } else {
+                        repoList.addAll(body.items)
+                        complete(repoList)
+                        recyclerViewOn.value = true
                     }
                 }
             } catch (e: Exception) {

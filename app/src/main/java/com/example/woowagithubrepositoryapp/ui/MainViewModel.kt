@@ -14,13 +14,11 @@ class MainViewModel : ViewModel() {
     fun getUserData(complete : () -> Unit) {
         viewModelScope.launch {
             try {
-                val response = GithubRepository.instance.getUserData()
+                val response = withContext(Dispatchers.IO){ GithubRepository.instance.getUserData() }
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
-                    withContext(Dispatchers.Main){
-                        App.user = body
-                        complete()
-                    }
+                    App.user = body
+                    complete()
                 } else {
                     //error action
                 }
