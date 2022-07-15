@@ -15,17 +15,26 @@ import kotlinx.coroutines.launch
 class NotificationViewModel : ViewModel() {
     private val _notifications = MutableLiveData<MutableList<Notification>>()
     val notifications : LiveData<MutableList<Notification>> = _notifications
+    private var page = 1
 
     init {
+        _notifications.value = mutableListOf()
         getNotifications()
     }
 
     fun getNotifications() = viewModelScope.launch {
         try{
-            val response = GithubRepository.instance.getNotifications()
+            val response = GithubRepository.instance.getNotifications(page)
             val body = response.body()
             if (response.isSuccessful && body != null){
-                _notifications.postValue(body.toMutableList())
+                if(response.body()?.size != 0){
+                    _notifications.value?.addAll(body.toMutableList())
+                    _notifications.value = _notifications.value
+                    page++
+                }else {
+                    //더 이상 받아올 알림이 없기 때문에 페이지를 증가시키지 않는다.
+                    //무한 스크롤을 막는 코드가 필요
+                }
             }
         }
         catch (e:Exception){
