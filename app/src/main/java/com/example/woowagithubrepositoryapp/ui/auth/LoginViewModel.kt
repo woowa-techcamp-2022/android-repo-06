@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel(private val repository: TokenRepository) : ViewModel() {
 
     val code = MutableLiveData("")
-    var login : (() -> Unit)? = null
+    var login : () -> Unit = { }
 
     fun getToken() = viewModelScope.launch(Dispatchers.IO) {
         try {
@@ -31,6 +31,6 @@ class LoginViewModel(private val repository: TokenRepository) : ViewModel() {
     }
 
     fun startLogin(){
-        login?.let { it() }
+        login()
     }
 }
