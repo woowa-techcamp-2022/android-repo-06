@@ -57,7 +57,6 @@ class LoginActivity : AppCompatActivity() {
     private fun login() {
         val loginUrl = "https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&scope=user%20repo"
         val intent = Intent(Intent.ACTION_VIEW,loginUrl.toUri())
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         startActivity(intent)
     }
 }

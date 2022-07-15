@@ -53,16 +53,16 @@ class IssueFragment : Fragment() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 when(p2){
                     0 -> {
-                        viewModel.selectState = "open"
+                        viewModel.selectState.value = "open"
                     }
                     1 -> {
-                        viewModel.selectState = "closed"
+                        viewModel.selectState.value = "closed"
                     }
                     2 -> {
-                        viewModel.selectState = "all"
+                        viewModel.selectState.value = "all"
                     }
                 }
-                viewModel.pageNumber = 1
+                viewModel.pageNumber.value = 1
                 viewModel.issueList.clear()
                 loadIssueData()
                 for (idx in list.indices) {
@@ -78,7 +78,7 @@ class IssueFragment : Fragment() {
     }
 
     private fun loadIssueData(){
-        viewModel.getIssues("all",viewModel.selectState,viewModel.pageNumber){
+        viewModel.getIssues(){
             issueAdapter.submitList(it.toMutableList())
         }
     }
@@ -96,7 +96,7 @@ class IssueFragment : Fragment() {
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount
                 if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    viewModel.pageNumber++
+                    viewModel.pageNumber.value  = viewModel.pageNumber.value!! + 1
                     loadIssueData()
                 }
             }

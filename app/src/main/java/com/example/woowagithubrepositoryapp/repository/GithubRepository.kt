@@ -14,11 +14,9 @@ class GithubRepository {
     )
 
     suspend fun getUserIssues(
-        filter: String,
         state: String,
         page: Int
     ) = GithubService.instance.getIssues(
-        filter = filter,
         state = state,
         page = page
     )
