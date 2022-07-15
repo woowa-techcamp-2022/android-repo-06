@@ -5,7 +5,8 @@ import com.example.woowagithubrepositoryapp.network.GithubService
 class GithubRepository {
     suspend fun getUserData() = GithubService.instance.getUserData()
     
-    suspend fun getNotifications() = GithubService.instance.getNotifications()
+    suspend fun getNotifications(page: Int)
+    = GithubService.instance.getNotifications(page = page)
 
     suspend fun patchNotificationThread(
         threadId : String
