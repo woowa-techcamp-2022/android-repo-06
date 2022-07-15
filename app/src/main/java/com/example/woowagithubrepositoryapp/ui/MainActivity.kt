@@ -1,11 +1,19 @@
 package com.example.woowagithubrepositoryapp.ui
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.example.woowagithubrepositoryapp.App
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ActivityMainBinding
 import com.example.woowagithubrepositoryapp.ui.issue.IssueFragment
@@ -103,4 +111,18 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val url = App.user?.avatarUrl
+        Glide.with(this).asDrawable().load(url).transform(CircleCrop())
+            .into(object : CustomTarget<Drawable>(){
+                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                    menu?.findItem(R.id.nav_profile)?.let {
+                        it.icon = resource
+                    }
+                }
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+        })
+        return super.onPrepareOptionsMenu(menu)
+    }
 }
