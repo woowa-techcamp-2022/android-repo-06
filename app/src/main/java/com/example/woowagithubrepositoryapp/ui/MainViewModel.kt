@@ -7,16 +7,20 @@ import com.example.woowagithubrepositoryapp.App
 import com.example.woowagithubrepositoryapp.repository.GithubRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+
 
 class MainViewModel : ViewModel() {
-    fun getUserData() {
-        runBlocking(Dispatchers.IO) {
+    fun getUserData(complete : () -> Unit) {
+        viewModelScope.launch {
             try {
                 val response = GithubRepository.instance.getUserData()
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
-                    App.user = body
+                    withContext(Dispatchers.Main){
+                        App.user = body
+                        complete()
+                    }
                 } else {
                     //error action
                 }

@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         initTabLayout(binding.tablayoutMain)
         initToolbar(binding.toolbarMain)
 
-        viewModel.getUserData()
+        viewModel.getUserData(){invalidateOptionsMenu()}
 
     }
 
@@ -142,6 +142,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         val url = App.user?.avatarUrl
+        println("${App.user?.name}")
         Glide.with(this).asDrawable().load(url).transform(CircleCrop())
             .into(object : CustomTarget<Drawable>(){
                 override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
