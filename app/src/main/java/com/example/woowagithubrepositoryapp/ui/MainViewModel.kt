@@ -9,20 +9,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
-class MainViewModel : ViewModel() {
+class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     fun getUserData(complete : () -> Unit) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = GithubRepository.instance.getUserData()
-                val body = response.body()
-                if (response.isSuccessful && body != null) {
+                val userData = repository.getUserData()
+                if (userData != null){
                     withContext(Dispatchers.Main){
-                        App.user = body
+                        App.user = userData
                         complete()
                     }
-                } else {
-                    //error action
+                }else{
+
                 }
             } catch (e: Exception) {
                 Log.e("MainViewModel", "getUserData error")
@@ -30,3 +28,4 @@ class MainViewModel : ViewModel() {
         }
     }
 }
+

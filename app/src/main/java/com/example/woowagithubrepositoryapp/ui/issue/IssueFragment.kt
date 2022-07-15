@@ -14,13 +14,14 @@ import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.FragmentIssueBinding
 import com.example.woowagithubrepositoryapp.ui.adapter.IssueAdapter
 import com.example.woowagithubrepositoryapp.ui.adapter.SpinnerAdapter
+import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 
 class IssueFragment : Fragment() {
 
     private lateinit var binding : FragmentIssueBinding
 
     private val viewModel by lazy {
-        ViewModelProvider(this)[IssueViewModel::class.java]
+        ViewModelProvider(this, ViewModelFactory())[IssueViewModel::class.java]
     }
 
     private val issueAdapter = IssueAdapter()

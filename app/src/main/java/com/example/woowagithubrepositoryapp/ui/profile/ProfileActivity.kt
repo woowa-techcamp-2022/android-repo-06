@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.woowagithubrepositoryapp.App
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ActivityProfileBinding
+import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -21,7 +22,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private val viewModel by lazy {
-        ViewModelProvider(this)[ProfileViewModel::class.java]
+        ViewModelProvider(this, ViewModelFactory())[ProfileViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

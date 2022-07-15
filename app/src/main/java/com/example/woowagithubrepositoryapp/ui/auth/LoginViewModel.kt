@@ -34,12 +34,3 @@ class LoginViewModel(private val repository: TokenRepository) : ViewModel() {
         login?.let { it() }
     }
 }
-
-class LoginViewModelFactory(private val repository: TokenRepository) : ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)){
-            return LoginViewModel(repository) as T
-        }
-        throw IllegalAccessException("Unknown ViewModel Class")
-    }
-}

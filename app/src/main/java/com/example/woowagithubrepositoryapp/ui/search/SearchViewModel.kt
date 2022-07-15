@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel(private val repository: GithubRepository) : ViewModel() {
 
     val searchText = MutableLiveData("")
     val recyclerViewOn = MutableLiveData(false)
@@ -21,7 +21,7 @@ class SearchViewModel : ViewModel() {
         viewModelScope.launch {
             val q = searchText.value.toString()
             try {
-                val response = GithubRepository.instance.searchRepos(q, pageNumber)
+                val response = repository.searchRepos(q, pageNumber)
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
                     withContext(Dispatchers.Main) {

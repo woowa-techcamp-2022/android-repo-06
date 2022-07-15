@@ -13,6 +13,7 @@ import com.example.woowagithubrepositoryapp.repository.TokenRepository
 import com.example.woowagithubrepositoryapp.ui.MainActivity
 import com.example.woowagithubrepositoryapp.utils.Constants.GITHUB_CLIENT_ID
 import com.example.woowagithubrepositoryapp.utils.Prefs
+import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 import com.example.woowagithubrepositoryapp.utils.clearTasksAndStartActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -26,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
     private val viewModel by lazy {
         ViewModelProvider(
             this,
-            LoginViewModelFactory(TokenRepository.getInstance())
+            ViewModelFactory()
         )[LoginViewModel::class.java].also {
             it.login = { login() }
         }

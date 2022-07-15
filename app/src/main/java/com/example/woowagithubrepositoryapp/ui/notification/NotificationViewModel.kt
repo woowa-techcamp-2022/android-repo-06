@@ -12,7 +12,7 @@ import com.example.woowagithubrepositoryapp.repository.GithubRepository
 import com.example.woowagithubrepositoryapp.utils.Prefs
 import kotlinx.coroutines.launch
 
-class NotificationViewModel : ViewModel() {
+class NotificationViewModel(private val repository: GithubRepository) : ViewModel() {
     private val _notifications = MutableLiveData<MutableList<Notification>>()
     val notifications : LiveData<MutableList<Notification>> = _notifications
 
@@ -22,7 +22,7 @@ class NotificationViewModel : ViewModel() {
 
     fun getNotifications() = viewModelScope.launch {
         try{
-            val response = GithubRepository.instance.getNotifications()
+            val response = repository.getNotifications()
             val body = response.body()
             if (response.isSuccessful && body != null){
                 _notifications.postValue(body.toMutableList())
@@ -34,7 +34,7 @@ class NotificationViewModel : ViewModel() {
     }
     suspend fun markNotificationAsRead(threadId: String) : Boolean {
         try {
-            val response = GithubRepository.instance.patchNotificationThread(threadId)
+            val response = repository.patchNotificationThread(threadId)
             if (response.isSuccessful){
                 return true
             }

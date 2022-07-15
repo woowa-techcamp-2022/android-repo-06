@@ -20,6 +20,7 @@ import com.example.woowagithubrepositoryapp.ui.issue.IssueFragment
 import com.example.woowagithubrepositoryapp.ui.notification.NotificationFragment
 import com.example.woowagithubrepositoryapp.ui.profile.ProfileActivity
 import com.example.woowagithubrepositoryapp.ui.search.SearchActivity
+import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayout
 
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         )
     }
     private val viewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
+        ViewModelProvider(this, ViewModelFactory())[MainViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,8 +46,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         initTabLayout(binding.tablayoutMain)
         initToolbar(binding.toolbarMain)
 
-        viewModel.getUserData(){invalidateOptionsMenu()}
-
+        viewModel.getUserData{invalidateOptionsMenu()}
     }
 
     private fun initTabLayout(tabLayout: TabLayout) {
@@ -142,7 +142,6 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         val url = App.user?.avatarUrl
-        println("${App.user?.name}")
         Glide.with(this).asDrawable().load(url).transform(CircleCrop())
             .into(object : CustomTarget<Drawable>(){
                 override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {

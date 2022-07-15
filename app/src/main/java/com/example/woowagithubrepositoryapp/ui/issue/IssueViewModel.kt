@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class IssueViewModel : ViewModel() {
+class IssueViewModel(private val repository: GithubRepository) : ViewModel() {
     val pageNumber = MutableLiveData(1)
     val selectState = MutableLiveData("open")
     val issueList = mutableListOf<Issue>()
@@ -18,7 +18,7 @@ class IssueViewModel : ViewModel() {
     fun getIssues(complete: (List<Issue>) -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = GithubRepository.instance.getUserIssues(
+                val response = repository.getUserIssues(
                     selectState.value!!, pageNumber.value!!
                 )
                 val body = response.body()

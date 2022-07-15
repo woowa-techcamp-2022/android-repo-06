@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ActivitySearchBinding
 import com.example.woowagithubrepositoryapp.ui.adapter.RepositoryAdapter
+import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 
 class SearchActivity : AppCompatActivity() {
 
@@ -23,7 +24,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private val viewModel by lazy {
-        ViewModelProvider(this)[SearchViewModel::class.java]
+        ViewModelProvider(this,ViewModelFactory())[SearchViewModel::class.java]
     }
 
     private val repoAdapter = RepositoryAdapter(this)
