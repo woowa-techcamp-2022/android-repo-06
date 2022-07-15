@@ -47,5 +47,7 @@ class IssueAdapter : ListAdapter<Issue, IssueAdapter.IssueViewHolder>(IssueDiffC
         holder.bind(currentList[position])
     }
 
-
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 }
