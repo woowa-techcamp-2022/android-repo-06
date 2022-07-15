@@ -1,11 +1,12 @@
 package com.example.woowagithubrepositoryapp.repository
 
+import android.util.Log
+import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.model.User
 import com.example.woowagithubrepositoryapp.network.GithubClient
 import com.example.woowagithubrepositoryapp.network.GithubService
 
 class GithubRepository {
-
     private val service = GithubClient().generate(GithubService::class.java)
 
     suspend fun getUserData(): User? {
@@ -14,13 +15,30 @@ class GithubRepository {
         return if (response.isSuccessful && body != null) body else null
     }
 
-    suspend fun getNotifications() = service.getNotifications()
+    suspend fun getNotifications(page: Int) : MutableList<Notification> {
+        return try{
+            val response = service.getNotifications(page = page)
+            if(response.isSuccessful){
+                response.body()?.toMutableList() ?: mutableListOf()
+            } else mutableListOf()
+        } catch (e : Exception) {
+            Log.d("getNotificationError",e.cause.toString())
+            mutableListOf()
+        }
+    }
 
     suspend fun patchNotificationThread(
-        threadId: String
-    ) = service.patchNotificationThread(
-        threadId = threadId
-    )
+        threadId : String
+    ) : Boolean {
+        return try {
+            val response = service.patchNotificationThread(
+                threadId = threadId
+            )
+            response.isSuccessful
+        } catch (e : Exception){
+            false
+        }
+    }
 
     suspend fun getUserIssues(
         state: String,
@@ -38,9 +56,6 @@ class GithubRepository {
         page = page
     )
 
-    suspend fun getNotificationInfo(
-        url: String
-    ) = service.getNotificationInfo(url)
 
     companion object {
         private var instance: GithubRepository? = null
