@@ -4,7 +4,11 @@ import android.util.Log
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.model.User
 import com.example.woowagithubrepositoryapp.network.GithubClient
+import com.example.woowagithubrepositoryapp.model.NotificationInfo
 import com.example.woowagithubrepositoryapp.network.GithubService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class GithubRepository {
     private val service = GithubClient().generate(GithubService::class.java)
@@ -19,7 +23,13 @@ class GithubRepository {
         return try{
             val response = service.getNotifications(page = page)
             if(response.isSuccessful){
-                response.body()?.toMutableList() ?: mutableListOf()
+                val notifications = response.body()?.toMutableList() ?: mutableListOf()
+                notifications.forEach {
+                    val info = getNotificationInfo(it.subject.url)
+                    it.comments = info?.comments.toString()
+                    it.issueNum = "#${info?.number.toString()}"
+                }
+                return notifications
             } else mutableListOf()
         } catch (e : Exception) {
             Log.d("getNotificationError",e.cause.toString())
@@ -31,12 +41,19 @@ class GithubRepository {
         threadId : String
     ) : Boolean {
         return try {
-            val response = service.patchNotificationThread(
-                threadId = threadId
-            )
+            val response = service.patchNotificationThread(threadId)
             response.isSuccessful
         } catch (e : Exception){
             false
+        }
+    }
+
+    private suspend fun getNotificationInfo(fullUrl : String) : NotificationInfo? {
+        return try {
+            service.getNotificationInfo(fullUrl).body()
+        } catch (e : Exception){
+            Log.d("asdasdasd",e.cause.toString())
+            null
         }
     }
 
@@ -55,7 +72,6 @@ class GithubRepository {
         searchText = searchText,
         page = page
     )
-
 
     companion object {
         private var instance: GithubRepository? = null
