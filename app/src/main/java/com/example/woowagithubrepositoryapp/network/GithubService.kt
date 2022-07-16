@@ -25,10 +25,11 @@ interface GithubService {
         @Query("sort") sort: String = "updated" //default = "created"
     ): Response<List<Issue>>
 
-    @GET("{fullUrl}")
+
+    @GET("{notificationInfoUrl}")
     suspend fun getNotificationInfo(
-        @Path("fullUrl", encoded = true) fullUrl: String,
-    ): Call<NotificationSubjectURLResponse>
+        @Path("notificationInfoUrl", encoded = true) notificationInfoUrl : String
+    ) : Response<NotificationInfo>
 
     @GET("/search/repositories")
     suspend fun searchRepositories(
