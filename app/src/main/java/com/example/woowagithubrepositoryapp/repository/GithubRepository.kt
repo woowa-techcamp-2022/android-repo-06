@@ -16,7 +16,12 @@ class GithubRepository {
     suspend fun getUserData(): User? {
         val response = service.getUserData()
         val body = response.body()
-        return if (response.isSuccessful && body != null) body else null
+        return if (response.isSuccessful && body != null) {
+            val starredReposCnt = getStarredRepos()
+            body.apply {
+                starredCnt = starredReposCnt
+            }
+        }else null
     }
 
     suspend fun getNotifications(page: Int) : MutableList<Notification> {
@@ -72,6 +77,14 @@ class GithubRepository {
         searchText = searchText,
         page = page
     )
+
+    private suspend fun getStarredRepos(): Int {
+        val response = service.getStarredRepos()
+        val body = response.body()
+        return if (response.isSuccessful && body != null) {
+            body.size
+        } else 0
+    }
 
     companion object {
         private var instance: GithubRepository? = null

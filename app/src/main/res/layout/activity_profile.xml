@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.woowagithubrepositoryapp.ui.profile.ProfileViewModel" />
@@ -182,7 +183,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/color_chip_rectangle_22"
-                android:src="@drawable/ic_star"
+                android:src="@drawable/ic_star_outline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profile_repository_imageButton" />
 
@@ -225,7 +226,7 @@
                 android:layout_height="40dp"
                 android:layout_marginEnd="16dp"
                 android:gravity="center_vertical"
-                android:text="@{String.valueOf(viewModel.starredRepos)}"
+                android:text="@{String.valueOf(viewModel.userData.starredCnt)}"
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="parent"
