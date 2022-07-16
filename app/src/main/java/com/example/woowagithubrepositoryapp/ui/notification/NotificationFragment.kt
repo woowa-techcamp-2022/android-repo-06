@@ -16,6 +16,7 @@ import com.example.woowagithubrepositoryapp.databinding.FragmentNotificationBind
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
 import com.example.woowagithubrepositoryapp.utils.NotificationItemHelper
+import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch

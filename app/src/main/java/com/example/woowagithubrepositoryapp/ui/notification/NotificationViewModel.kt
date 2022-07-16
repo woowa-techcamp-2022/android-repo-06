@@ -24,7 +24,7 @@ class NotificationViewModel(private val repository: GithubRepository) : ViewMode
 
     fun getNotifications() {
         viewModelScope.launch {
-            val notifications = GithubRepository.instance.getNotifications(page)
+            val notifications = repository.getNotifications(page)
             if(notifications.size != 0){
                 _notifications.value?.addAll(notifications)
                 _notifications.value = _notifications.value
@@ -38,7 +38,7 @@ class NotificationViewModel(private val repository: GithubRepository) : ViewMode
 
     fun markNotificationAsRead(notification : Notification) {
         viewModelScope.launch {
-            val marked = GithubRepository.instance.patchNotificationThread(notification.threadId)
+            val marked = repository.patchNotificationThread(notification.threadId)
             if (marked) {
                 removeNotificationAtPosition(notification)
             } else {
