@@ -34,10 +34,10 @@ class GithubRepository {
                     it.comments = info?.comments.toString()
                     it.issueNum = "#${info?.number.toString()}"
                 }
-                return notifications
+                notifications
             } else mutableListOf()
         } catch (e : Exception) {
-            Log.d("getNotificationError",e.cause.toString())
+            Log.d("getNotiError",e.cause.toString())
             mutableListOf()
         }
     }
@@ -49,6 +49,7 @@ class GithubRepository {
             val response = service.patchNotificationThread(threadId)
             response.isSuccessful
         } catch (e : Exception){
+            Log.d("patchNotiThreadError",e.cause.toString())
             false
         }
     }
@@ -57,7 +58,7 @@ class GithubRepository {
         return try {
             service.getNotificationInfo(fullUrl).body()
         } catch (e : Exception){
-            Log.d("asdasdasd",e.cause.toString())
+            Log.d("getNotiInfoError",e.cause.toString())
             null
         }
     }
