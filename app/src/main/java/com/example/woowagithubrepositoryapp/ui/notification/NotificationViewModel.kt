@@ -1,18 +1,15 @@
 package com.example.woowagithubrepositoryapp.ui.notification
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.woowagithubrepositoryapp.model.Notification
-import com.example.woowagithubrepositoryapp.network.GithubService
 import com.example.woowagithubrepositoryapp.repository.GithubRepository
-import com.example.woowagithubrepositoryapp.utils.Prefs
 import kotlinx.coroutines.launch
 
 class NotificationViewModel(private val repository: GithubRepository) : ViewModel() {
+
     private val _notifications = MutableLiveData<MutableList<Notification>>()
     val notifications : LiveData<MutableList<Notification>> = _notifications
     private var page = 1

@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
 
 class NotificationFragment : Fragment() {
+
     private var _binding: FragmentNotificationBinding? = null
     private val binding get() = _binding!!
     private val viewModel by lazy {
@@ -48,16 +49,13 @@ class NotificationFragment : Fragment() {
                 }
             }
         })
-
-
-
     }
 
     private fun markNotification(notification:Notification){
         viewModel.markNotificationAsRead(notification = notification)
-            Toast.makeText(
-                context, "${notification.subject.title} 알림이 읽음 처리되었습니다", Toast.LENGTH_SHORT
-            ).show()
+        Toast.makeText(
+            context, "${notification.subject.title} 알림이 읽음 처리되었습니다", Toast.LENGTH_SHORT
+        ).show()
     }
 
     override fun onCreateView(
@@ -71,7 +69,9 @@ class NotificationFragment : Fragment() {
         viewModel.notifications.observe(viewLifecycleOwner){
             notificationAdapter.submitList(it.toMutableList())
         }
+
         initRecyclerView()
+
         return binding.root
     }
 

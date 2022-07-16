@@ -33,12 +33,10 @@ class NotificationAdapter : ListAdapter<Notification,NotificationAdapter.Notific
     }
 
     inner class NotificationViewHolder(val binding : ItemNotificationBinding) : RecyclerView.ViewHolder(binding.root){
-
         fun bind(item : Notification){
             binding.apply {
                 this.notification = item
                 executePendingBindings()
-
             }
         }
     }
@@ -51,8 +49,5 @@ class NotificationAdapter : ListAdapter<Notification,NotificationAdapter.Notific
         override fun areContentsTheSame(oldItem: Notification, newItem: Notification): Boolean {
             return oldItem.subject.title == newItem.subject.title
         }
-
     }
-
-
 }
