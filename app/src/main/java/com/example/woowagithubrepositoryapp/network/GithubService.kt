@@ -13,9 +13,9 @@ interface GithubService {
     @GET("/notifications")
     suspend fun getNotifications(
         @Query("per_page") perPage: Int = 10, // default = 30
-        @Query("page") page : Int
-    ) : Response<List<Notification>>
-    
+        @Query("page") page: Int
+    ): Response<List<Notification>>
+
     @GET("/issues")
     suspend fun getIssues(
         @Query("filter") filter: String = "all",
@@ -44,4 +44,6 @@ interface GithubService {
         @Path("thread_id") threadId: String
     ): Response<SuccessResponse>
 
+    @GET("/user/starred")
+    suspend fun getStarredRepos(): Response<List<Starred>>
 }

@@ -42,6 +42,14 @@ class GithubRepository {
         url: String
     ) = service.getNotificationInfo(url)
 
+    suspend fun getStarredRepos(): Int {
+        val response = service.getStarredRepos()
+        val body = response.body()
+        return if (response.isSuccessful && body != null) {
+            body.size
+        } else 0
+    }
+
     companion object {
         private var instance: GithubRepository? = null
         fun getInstance(): GithubRepository {

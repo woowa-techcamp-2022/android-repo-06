@@ -12,10 +12,22 @@ import kotlinx.coroutines.launch
 class ProfileViewModel(private val repository: GithubRepository) : ViewModel() {
 
     val userData = MutableLiveData<User>()
+    val starredRepos = MutableLiveData(0)
 
     init {
         App.user?.let {
             userData.value = it
+            getStarredRepository()
+        }
+    }
+
+    private fun getStarredRepository() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                starredRepos.postValue(repository.getStarredRepos())
+            } catch (e: Exception) {
+
+            }
         }
     }
 }
