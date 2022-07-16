@@ -1,11 +1,16 @@
 package com.example.woowagithubrepositoryapp.repository
 
+import android.util.Log
+import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.model.User
 import com.example.woowagithubrepositoryapp.network.GithubClient
+import com.example.woowagithubrepositoryapp.model.NotificationInfo
 import com.example.woowagithubrepositoryapp.network.GithubService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class GithubRepository {
-
     private val service = GithubClient().generate(GithubService::class.java)
 
     suspend fun getUserData(): User? {
@@ -19,13 +24,43 @@ class GithubRepository {
         }else null
     }
 
-    suspend fun getNotifications() = service.getNotifications(page = 1)
+    suspend fun getNotifications(page: Int) : MutableList<Notification> {
+        return try{
+            val response = service.getNotifications(page = page)
+            if(response.isSuccessful){
+                val notifications = response.body()?.toMutableList() ?: mutableListOf()
+                notifications.forEach {
+                    val info = getNotificationInfo(it.subject.url)
+                    it.comments = info?.comments.toString()
+                    it.issueNum = "#${info?.number.toString()}"
+                }
+                return notifications
+            } else mutableListOf()
+        } catch (e : Exception) {
+            Log.d("getNotificationError",e.cause.toString())
+            mutableListOf()
+        }
+    }
 
     suspend fun patchNotificationThread(
-        threadId: String
-    ) = service.patchNotificationThread(
-        threadId = threadId
-    )
+        threadId : String
+    ) : Boolean {
+        return try {
+            val response = service.patchNotificationThread(threadId)
+            response.isSuccessful
+        } catch (e : Exception){
+            false
+        }
+    }
+
+    private suspend fun getNotificationInfo(fullUrl : String) : NotificationInfo? {
+        return try {
+            service.getNotificationInfo(fullUrl).body()
+        } catch (e : Exception){
+            Log.d("asdasdasd",e.cause.toString())
+            null
+        }
+    }
 
     suspend fun getUserIssues(
         state: String,
@@ -43,11 +78,7 @@ class GithubRepository {
         page = page
     )
 
-    suspend fun getNotificationInfo(
-        url: String
-    ) = service.getNotificationInfo(url)
-
-    suspend fun getStarredRepos(): Int {
+    private suspend fun getStarredRepos(): Int {
         val response = service.getStarredRepos()
         val body = response.body()
         return if (response.isSuccessful && body != null) {
