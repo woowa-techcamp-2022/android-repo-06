@@ -29,6 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:visibility="visible"
             android:id="@+id/login_login_button"
             android:layout_width="312dp"
             android:layout_height="48dp"
@@ -37,9 +38,19 @@
             android:text="@string/login_btn_text"
             android:textAllCaps="false"
             android:textColor="@color/white"
+            android:onClick="@{() -> viewModel.startLogin()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/login_loading_progressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="80dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -16,24 +16,23 @@ import com.example.woowagithubrepositoryapp.databinding.FragmentNotificationBind
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
 import com.example.woowagithubrepositoryapp.utils.NotificationItemHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
+import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 import kotlinx.coroutines.launch
-import kotlin.coroutines.coroutineContext
 
 class NotificationFragment : Fragment() {
     private var _binding: FragmentNotificationBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by lazy  {
-        ViewModelProvider(this)[NotificationViewModel::class.java]
+    private val viewModel by lazy {
+        ViewModelProvider(this, ViewModelFactory())[NotificationViewModel::class.java]
     }
 
     private val notificationAdapter by lazy {
         NotificationAdapter()
     }
 
-    private fun initRecyclerView(){
-        ItemTouchHelper(NotificationItemHelper(requireContext()
+    private fun initRecyclerView() {
+        ItemTouchHelper(NotificationItemHelper(
+            requireContext()
         ) { notification, position ->
             markNotification(notification, position)
         }).attachToRecyclerView(binding.recyclerviewNotification)
@@ -54,31 +53,37 @@ class NotificationFragment : Fragment() {
 
 
     }
-    private fun markNotification(notification:Notification?,position: Int){
+
+    private fun markNotification(notification: Notification?, position: Int) {
         lifecycleScope.launch {
-            val isRead = viewModel.markNotificationAsRead(threadId= notification?.threadId.toString())
-            if(isRead){
+            val isRead =
+                viewModel.markNotificationAsRead(threadId = notification?.threadId.toString())
+            if (isRead) {
                 removeNotification(position)
-                Toast.makeText(context,
+                Toast.makeText(
+                    context,
                     "${notification?.subject?.title.toString()} 알림이 읽음 처리되었습니다",
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
-    private fun removeNotification(position : Int){
+
+    private fun removeNotification(position: Int) {
         viewModel.removeNotificationAtPosition(position)
         notificationAdapter.notifyItemRemoved(position)
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentNotificationBinding.inflate(inflater, container,false)
+    ): View {
+        _binding = FragmentNotificationBinding.inflate(inflater, container, false)
         binding.recyclerviewNotification.adapter = notificationAdapter
 
-        viewModel.notifications.observe(viewLifecycleOwner){
+        viewModel.notifications.observe(viewLifecycleOwner) {
             notificationAdapter.submitList(it)
             notificationAdapter.notifyDataSetChanged() // 수정 필요
         }

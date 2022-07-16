@@ -18,8 +18,4 @@ interface TokenService {
         @Field("client_secret") clientSecret: String = Constants.GITHUB_CLIENT_SECRET,
         @Field("code") code: String
     ) : Response<AccessTokenResponse>
-
-    companion object{
-        val instance = GithubClient().generateRefreshClient(TokenService::class.java)
-    }
 }

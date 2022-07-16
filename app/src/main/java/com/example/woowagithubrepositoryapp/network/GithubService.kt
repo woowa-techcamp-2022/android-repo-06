@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface GithubService {
 
     @GET("/user")
-    suspend fun getUserData() : Response<User>
+    suspend fun getUserData(): Response<User>
 
     @GET("/notifications")
     suspend fun getNotifications(
@@ -18,34 +18,30 @@ interface GithubService {
     
     @GET("/issues")
     suspend fun getIssues(
-        @Query("filter") filter : String = "all",
-        @Query("state") state : String,
-        @Query("per_page") perPage : Int = 10, //default = 30
-        @Query("page") page : Int,
+        @Query("filter") filter: String = "all",
+        @Query("state") state: String,
+        @Query("per_page") perPage: Int = 10, //default = 30
+        @Query("page") page: Int,
         @Query("sort") sort: String = "updated" //default = "created"
-    ) : Response<List<Issue>>
-
+    ): Response<List<Issue>>
 
     @GET("{fullUrl}")
-    fun getNotificationInfo(
-        @Path("fullUrl", encoded = true) fullUrl : String
-    ) : Call<NotificationSubjectURLResponse>
+    suspend fun getNotificationInfo(
+        @Path("fullUrl", encoded = true) fullUrl: String,
+    ): Call<NotificationSubjectURLResponse>
 
     @GET("/search/repositories")
     suspend fun searchRepositories(
-        @Query("q") searchText : String,
-        @Query("sort") sort : String = "start",
-        @Query("order") order : String = "desc",
+        @Query("q") searchText: String,
+        @Query("sort") sort: String = "start",
+        @Query("order") order: String = "desc",
         @Query("per_page") perPage: Int = 10,
         @Query("page") page: Int
-    ) : Response<RepoResponse>
+    ): Response<RepoResponse>
 
     @PATCH("/notifications/threads/{thread_id}")
     suspend fun patchNotificationThread(
-        @Path("thread_id") threadId : String
-    ) : Response<SuccessResponse>
+        @Path("thread_id") threadId: String
+    ): Response<SuccessResponse>
 
-    companion object{
-        val instance = GithubClient().generate(GithubService::class.java)
-    }
 }
