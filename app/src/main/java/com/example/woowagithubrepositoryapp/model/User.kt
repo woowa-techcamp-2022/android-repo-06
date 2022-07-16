@@ -17,20 +17,22 @@ data class User(
     @SerializedName("subscriptions_url") val subscriptionsUrl : String,
     @SerializedName("organizations_url") val organizationsUrl : String,
     @SerializedName("repos_url") val reposUrl : String,
-    @SerializedName("events_url") val eventsUrl : String,
-    @SerializedName("received_events_url") val receivedEventsUrl : String,
-    @SerializedName("type") val type : String,
-    @SerializedName("site_admin") val siteAdmin : String,
+    @SerializedName("events_url") val eventsUrl : String,//안씀
+    @SerializedName("received_events_url") val receivedEventsUrl : String,//안씀
+    @SerializedName("type") val type : String,//안씀
+    @SerializedName("site_admin") val siteAdmin : String,//안씀
     @SerializedName("name") val name : String?,
     @SerializedName("company") val company : String?,
     @SerializedName("blog") val blog : String,
     @SerializedName("location") val location : String?,
     @SerializedName("email") val email : String?,
-    @SerializedName("hireable") val hireable : String?,
+    @SerializedName("hireable") val hireable : String?, //안씀
     @SerializedName("bio") val bio : String?,
-    @SerializedName("twitter_username") val twitterUsername : String?,
+    @SerializedName("twitter_username") val twitterUsername : String?,//안씀
     @SerializedName("public_repos") val publicRepos : Int,
     @SerializedName("public_gists") val publicGists : Int,
     @SerializedName("followers") val followers : Int,
     @SerializedName("following") val following : Int
-)
+){
+    var starredCnt : Int = 0
+}
