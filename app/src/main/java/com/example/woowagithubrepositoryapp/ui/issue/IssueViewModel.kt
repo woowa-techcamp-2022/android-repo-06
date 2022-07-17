@@ -18,17 +18,12 @@ class IssueViewModel(private val repository: GithubRepository) : ViewModel() {
     fun getIssues(complete: (List<Issue>) -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = repository.getUserIssues(
-                    selectState.value!!, pageNumber.value!!
-                )
-                val body = response.body()
-                if (response.isSuccessful && body != null) {
-                    withContext(Dispatchers.Main){
-                        if(pageNumber.value == 1)
-                            issueList.clear()
-                        issueList.addAll(body)
-                        complete(issueList)
-                    }
+                val issues = repository.getUserIssues(selectState.value!!,pageNumber.value!!)
+                withContext(Dispatchers.Main){
+                    if(pageNumber.value == 1)
+                        issueList.clear()
+                    issueList.addAll(issues)
+                    complete(issueList)
                 }
             } catch (e: Exception) {
                 Log.e("IssueViewModel", "getIssues error")

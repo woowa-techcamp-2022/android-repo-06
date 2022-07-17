@@ -1,6 +1,7 @@
 package com.example.woowagithubrepositoryapp.repository
 
 import android.util.Log
+import com.example.woowagithubrepositoryapp.model.Issue
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.model.User
 import com.example.woowagithubrepositoryapp.network.GithubClient
@@ -66,10 +67,19 @@ class GithubRepository {
     suspend fun getUserIssues(
         state: String,
         page: Int
-    ) = service.getIssues(
-        state = state,
-        page = page
-    )
+    ) : List<Issue>{
+        val response = service.getIssues(
+            state = state,
+            page = page
+        )
+        val body = response.body()
+        if(response.isSuccessful && body != null){
+            return body
+        }
+        return listOf()
+    }
+
+
 
     suspend fun searchRepos(
         searchText: String,
