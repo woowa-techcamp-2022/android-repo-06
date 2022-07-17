@@ -1,11 +1,8 @@
 package com.example.woowagithubrepositoryapp.repository
 
 import android.util.Log
-import com.example.woowagithubrepositoryapp.model.Issue
-import com.example.woowagithubrepositoryapp.model.Notification
-import com.example.woowagithubrepositoryapp.model.User
+import com.example.woowagithubrepositoryapp.model.*
 import com.example.woowagithubrepositoryapp.network.GithubClient
-import com.example.woowagithubrepositoryapp.model.NotificationInfo
 import com.example.woowagithubrepositoryapp.network.GithubService
 import retrofit2.Call
 import retrofit2.Callback
@@ -84,10 +81,16 @@ class GithubRepository {
     suspend fun searchRepos(
         searchText: String,
         page: Int
-    ) = service.searchRepositories(
-        searchText = searchText,
-        page = page
-    )
+    ) : RepoResponse?{
+        val response = service.searchRepositories(
+            searchText = searchText,
+            page = page
+        )
+        val body = response.body()
+        return if (response.isSuccessful && body != null){
+            body
+        } else null
+    }
 
     private suspend fun getStarredRepos(): Int {
         val response = service.getStarredRepos()
