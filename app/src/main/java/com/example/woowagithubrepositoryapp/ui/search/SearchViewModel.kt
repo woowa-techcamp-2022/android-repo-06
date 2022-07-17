@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.woowagithubrepositoryapp.model.Repo
 import com.example.woowagithubrepositoryapp.repository.GithubRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -25,7 +24,7 @@ class SearchViewModel(private val repository: GithubRepository) : ViewModel() {
                 val repoResponse = repository.searchRepos(q, pageNumber)
                 withContext(Dispatchers.Main) {
                     repoResponse?.let {
-                        if (it.totalCount > 0){
+                        if (it.totalCount > 0) {
                             repoList.addAll(it.items)
                             complete(repoList)
                             recyclerViewOn.value = true

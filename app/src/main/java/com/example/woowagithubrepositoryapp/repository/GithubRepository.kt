@@ -19,13 +19,13 @@ class GithubRepository {
             body.apply {
                 starredCnt = starredReposCnt
             }
-        }else null
+        } else null
     }
 
-    suspend fun getNotifications(page: Int) : MutableList<Notification> {
-        return try{
+    suspend fun getNotifications(page: Int): MutableList<Notification> {
+        return try {
             val response = service.getNotifications(page = page)
-            if(response.isSuccessful){
+            if (response.isSuccessful) {
                 val notifications = response.body()?.toMutableList() ?: mutableListOf()
                 notifications.forEach {
                     val info = getNotificationInfo(it.subject.url)
@@ -34,29 +34,29 @@ class GithubRepository {
                 }
                 notifications
             } else mutableListOf()
-        } catch (e : Exception) {
-            Log.d("getNotiError",e.cause.toString())
+        } catch (e: Exception) {
+            Log.d("getNotiError", e.cause.toString())
             mutableListOf()
         }
     }
 
     suspend fun patchNotificationThread(
-        threadId : String
-    ) : Boolean {
+        threadId: String
+    ): Boolean {
         return try {
             val response = service.patchNotificationThread(threadId)
             response.isSuccessful
-        } catch (e : Exception){
-            Log.d("patchNotiThreadError",e.cause.toString())
+        } catch (e: Exception) {
+            Log.d("patchNotiThreadError", e.cause.toString())
             false
         }
     }
 
-    private suspend fun getNotificationInfo(fullUrl : String) : NotificationInfo? {
+    private suspend fun getNotificationInfo(fullUrl: String): NotificationInfo? {
         return try {
             service.getNotificationInfo(fullUrl).body()
-        } catch (e : Exception){
-            Log.d("getNotiInfoError",e.cause.toString())
+        } catch (e: Exception) {
+            Log.d("getNotiInfoError", e.cause.toString())
             null
         }
     }
@@ -64,30 +64,28 @@ class GithubRepository {
     suspend fun getUserIssues(
         state: String,
         page: Int
-    ) : List<Issue>{
+    ): List<Issue> {
         val response = service.getIssues(
             state = state,
             page = page
         )
         val body = response.body()
-        if(response.isSuccessful && body != null){
+        if (response.isSuccessful && body != null) {
             return body
         }
         return listOf()
     }
 
-
-
     suspend fun searchRepos(
         searchText: String,
         page: Int
-    ) : RepoResponse?{
+    ): RepoResponse? {
         val response = service.searchRepositories(
             searchText = searchText,
             page = page
         )
         val body = response.body()
-        return if (response.isSuccessful && body != null){
+        return if (response.isSuccessful && body != null) {
             body
         } else null
     }

@@ -15,12 +15,12 @@ class IssueViewModel(private val repository: GithubRepository) : ViewModel() {
     val selectState = MutableLiveData("open")
     val issueList = mutableListOf<Issue>()
 
-    fun getIssues(complete: (List<Issue>) -> Unit){
+    fun getIssues(complete: (List<Issue>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val issues = repository.getUserIssues(selectState.value!!,pageNumber.value!!)
-                withContext(Dispatchers.Main){
-                    if(pageNumber.value == 1)
+                val issues = repository.getUserIssues(selectState.value!!, pageNumber.value!!)
+                withContext(Dispatchers.Main) {
+                    if (pageNumber.value == 1)
                         issueList.clear()
                     issueList.addAll(issues)
                     complete(issueList)
