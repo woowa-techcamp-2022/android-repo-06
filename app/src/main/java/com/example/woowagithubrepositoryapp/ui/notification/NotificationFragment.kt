@@ -7,20 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.woowagithubrepositoryapp.utils.Constants.DataLoading
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.woowagithubrepositoryapp.databinding.FragmentNotificationBinding
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
+import com.example.woowagithubrepositoryapp.utils.Constants
 import com.example.woowagithubrepositoryapp.utils.NotificationItemHelper
 import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlin.coroutines.coroutineContext
 
 class NotificationFragment : Fragment() {
 
@@ -44,8 +41,11 @@ class NotificationFragment : Fragment() {
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount
                 if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    viewModel.getNotifications()
-                    Log.d("notificationPaging","notificationPaging")
+                    if(viewModel.isDataLoading != DataLoading.NOW) {
+                        viewModel.isDataLoading = DataLoading.NOW
+                        viewModel.getNotifications()
+                        Log.d("notificationPaging", "notificationPaging")
+                    }
                 }
             }
         })
