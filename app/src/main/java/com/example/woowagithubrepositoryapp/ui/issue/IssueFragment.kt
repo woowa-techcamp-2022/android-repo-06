@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.FragmentIssueBinding
+import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.adapter.IssueAdapter
 import com.example.woowagithubrepositoryapp.ui.adapter.SpinnerAdapter
 import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
@@ -21,7 +22,7 @@ class IssueFragment : Fragment() {
     private lateinit var binding : FragmentIssueBinding
 
     private val viewModel by lazy {
-        ViewModelProvider(this, ViewModelFactory())[IssueViewModel::class.java]
+        ViewModelProvider(requireActivity(), ViewModelFactory())[MainViewModel::class.java]
     }
 
     private val issueAdapter = IssueAdapter()
@@ -54,16 +55,16 @@ class IssueFragment : Fragment() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 when(p2){
                     0 -> {
-                        viewModel.selectState.value = "open"
+                        viewModel.issueSelectState.value = "open"
                     }
                     1 -> {
-                        viewModel.selectState.value = "closed"
+                        viewModel.issueSelectState.value = "closed"
                     }
                     2 -> {
-                        viewModel.selectState.value = "all"
+                        viewModel.issueSelectState.value = "all"
                     }
                 }
-                viewModel.pageNumber.value = 1
+                viewModel.issuePage.value = 1
                 viewModel.issueList.clear()
                 loadIssueData()
                 for (idx in list.indices) {
@@ -102,7 +103,7 @@ class IssueFragment : Fragment() {
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount
                 if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    viewModel.pageNumber.value  = viewModel.pageNumber.value!! + 1
+                    viewModel.issuePage.value  = viewModel.issuePage.value!! + 1
                     loadIssueData()
                 }
             }
