@@ -4,22 +4,23 @@ import android.util.Log
 import com.example.woowagithubrepositoryapp.model.*
 import com.example.woowagithubrepositoryapp.network.GithubClient
 import com.example.woowagithubrepositoryapp.network.GithubService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class GithubRepository {
     private val service = GithubClient().generate(GithubService::class.java)
 
-    suspend fun getUserData(): User? {
+    suspend fun getUserData(): Result<User> = try {
         val response = service.getUserData()
         val body = response.body()
-        return if (response.isSuccessful && body != null) {
+        if (response.isSuccessful && body != null) {
             val starredReposCnt = getStarredRepos()
             body.apply {
                 starredCnt = starredReposCnt
             }
-        } else null
+            Result.success(body)
+        } else Result.failure(Exception("Get User Data Error"))
+    } catch (e: Exception) {
+        Result.failure(e)
     }
 
     suspend fun getNotifications(page: Int): MutableList<Notification> {
@@ -64,16 +65,18 @@ class GithubRepository {
     suspend fun getUserIssues(
         state: String,
         page: Int
-    ): List<Issue> {
+    ): Result<List<Issue>> = try {
         val response = service.getIssues(
             state = state,
             page = page
         )
         val body = response.body()
-        if (response.isSuccessful && body != null) {
-            return body
-        }
-        return listOf()
+        if (response.isSuccessful && body != null)
+            Result.success(body)
+        else
+            Result.failure(Exception("Get User Issues Error"))
+    } catch (e: Exception) {
+        Result.failure(e)
     }
 
     suspend fun searchRepos(
