@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_arrow_drop_down"
+        android:state_window_focused="true"/>
+    <item android:state_window_focused="false">
+        <rotate
+            android:fromDegrees="180"
+            android:toDegrees="180"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:drawable="@drawable/ic_arrow_drop_down"
+            />
+    </item>
+</selector>
