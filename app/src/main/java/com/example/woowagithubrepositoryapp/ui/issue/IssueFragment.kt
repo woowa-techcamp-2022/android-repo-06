@@ -19,7 +19,7 @@ import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 
 class IssueFragment : Fragment() {
 
-    private lateinit var binding : FragmentIssueBinding
+    private lateinit var binding: FragmentIssueBinding
 
     private val viewModel by lazy {
         ViewModelProvider(requireActivity(), ViewModelFactory())[MainViewModel::class.java]
@@ -31,7 +31,7 @@ class IssueFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_issue,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_issue, container, false)
         return binding.root
     }
 
@@ -43,7 +43,7 @@ class IssueFragment : Fragment() {
         initRecyclerView()
     }
 
-    private fun initSpinner(){
+    private fun initSpinner() {
         val list = listOf(
             SpinnerAdapter.IssueOption("Open", true),
             SpinnerAdapter.IssueOption("Close", false),
@@ -53,7 +53,7 @@ class IssueFragment : Fragment() {
         binding.issueSpinner.adapter = adapter
         binding.issueSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                when(p2){
+                when (p2) {
                     0 -> {
                         viewModel.issueSelectState.value = "open"
                     }
@@ -77,33 +77,29 @@ class IssueFragment : Fragment() {
 
             }
         }
-
-        binding.issueSpinner.viewTreeObserver.addOnWindowFocusChangeListener {
-            if(it) binding.issueFilterLayout.setBackgroundResource(R.drawable.color_chip_rectangle_20)
-            else binding.issueFilterLayout.setBackgroundResource(R.drawable.spinner_background)
-        }
     }
 
-    private fun loadIssueData(){
-        viewModel.getIssues(){
+    private fun loadIssueData() {
+        viewModel.getIssues {
             issueAdapter.submitList(it.toMutableList())
         }
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         binding.issueRecyclerView.adapter = issueAdapter
         binding.issueRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.issueRecyclerView.itemAnimator = null
 
         loadIssueData()
 
-        binding.issueRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.issueRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val lastVisibleItemPosition =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount
                 if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    viewModel.issuePage.value  = viewModel.issuePage.value!! + 1
+                    viewModel.issuePage.value = viewModel.issuePage.value!! + 1
                     loadIssueData()
                 }
             }

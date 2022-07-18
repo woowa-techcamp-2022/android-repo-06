@@ -16,7 +16,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="24dp"
-            android:background="@drawable/color_chip_rectangle_20"
+            android:background="@drawable/spinner_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -42,7 +42,7 @@
                 android:background="@android:color/transparent"
                 android:dropDownVerticalOffset="70dp"
                 android:gravity="center_vertical"
-                android:popupBackground="@drawable/spinner_background"
+                android:popupBackground="@drawable/spinner_selected_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
