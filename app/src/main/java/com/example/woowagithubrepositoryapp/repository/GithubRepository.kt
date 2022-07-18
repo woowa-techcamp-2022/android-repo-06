@@ -82,15 +82,17 @@ class GithubRepository {
     suspend fun searchRepos(
         searchText: String,
         page: Int
-    ): RepoResponse? {
+    ): Result<RepoResponse> = try {
         val response = service.searchRepositories(
             searchText = searchText,
             page = page
         )
         val body = response.body()
-        return if (response.isSuccessful && body != null) {
-            body
-        } else null
+        if (response.isSuccessful && body != null)
+            Result.success(body)
+        else Result.failure(Exception("Search Repos Error"))
+    } catch (e: Exception) {
+        Result.failure(e)
     }
 
     private suspend fun getStarredRepos(): Int {
