@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.woowagithubrepositoryapp.databinding.FragmentNotificationBinding
 import com.example.woowagithubrepositoryapp.model.Notification
+import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
 import com.example.woowagithubrepositoryapp.utils.Constants
 import com.example.woowagithubrepositoryapp.utils.NotificationItemHelper
@@ -22,9 +23,10 @@ import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 class NotificationFragment : Fragment() {
 
     private var _binding: FragmentNotificationBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
+
     private val viewModel by lazy {
-        ViewModelProvider(this, ViewModelFactory())[NotificationViewModel::class.java]
+        ViewModelProvider(requireActivity(), ViewModelFactory())[MainViewModel::class.java]
     }
 
     private val notificationAdapter = NotificationAdapter()
@@ -32,17 +34,17 @@ class NotificationFragment : Fragment() {
     private fun initRecyclerView(){
         ItemTouchHelper(NotificationItemHelper(requireContext()) { notification ->
             markNotification(notification)
-        }).attachToRecyclerView(binding.recyclerviewNotification)
+        }).attachToRecyclerView(binding?.recyclerviewNotification)
 
-        binding.recyclerviewNotification.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding?.recyclerviewNotification?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val lastVisibleItemPosition =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount
                 if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    if(viewModel.isDataLoading != DataLoading.NOW) {
-                        viewModel.isDataLoading = DataLoading.NOW
+                    if(viewModel.isNotificationDataLoading != DataLoading.NOW) {
+                        viewModel.isNotificationDataLoading = DataLoading.NOW
                         viewModel.getNotifications()
                         Log.d("notificationPaging", "notificationPaging")
                     }
@@ -62,9 +64,17 @@ class NotificationFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentNotificationBinding.inflate(inflater, container, false)
-        binding.recyclerviewNotification.adapter = notificationAdapter
+
+
+
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.recyclerviewNotification?.adapter = notificationAdapter
 
         viewModel.notifications.observe(viewLifecycleOwner){
             notificationAdapter.submitList(it.toMutableList())
@@ -72,7 +82,7 @@ class NotificationFragment : Fragment() {
 
         initRecyclerView()
 
-        return binding.root
+        viewModel.getNotifications()
     }
 
     override fun onDestroyView() {
