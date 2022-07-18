@@ -1,7 +1,5 @@
 package com.example.woowagithubrepositoryapp.ui.search
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,12 +13,14 @@ class SearchViewModel(private val repository: GithubRepository) : ViewModel() {
     val searchText = MutableLiveData("")
     val isRecyclerViewOn = MutableLiveData(false)
     val isSearchBarActive = MutableLiveData(false)
+    val isProgressOn = MutableLiveData(false)
 
     val repoList = mutableListOf<Repo>()
     var pageNumber = 1
 
     fun searchRepos(complete: (List<Repo>) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
+            isProgressOn.postValue(true)
             val q = searchText.value.toString()
             val result = repository.searchRepos(q, pageNumber)
             withContext(Dispatchers.Main) {
@@ -35,12 +35,13 @@ class SearchViewModel(private val repository: GithubRepository) : ViewModel() {
                             }
                         }
                     }
-                    result.isFailure -> {
+                    else -> {
                         toastMsg("검색에 실패하였습니다.")
                         isRecyclerViewOn.value = false
                     }
                 }
             }
+            isProgressOn.postValue(false)
         }
     }
 
