@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.woowagithubrepositoryapp.model.Repo
 import com.example.woowagithubrepositoryapp.repository.GithubRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class SearchViewModel(private val repository: GithubRepository) : ViewModel() {
 
     val searchText = MutableLiveData("")
-    val recyclerViewOn = MutableLiveData(false)
+    val isRecyclerViewOn = MutableLiveData(false)
+    val isSearchBarActive = MutableLiveData(false)
+
     val repoList = mutableListOf<Repo>()
     var pageNumber = 1
 
@@ -27,14 +27,21 @@ class SearchViewModel(private val repository: GithubRepository) : ViewModel() {
                         if (it.totalCount > 0) {
                             repoList.addAll(it.items)
                             complete(repoList)
-                            recyclerViewOn.value = true
+                            isRecyclerViewOn.value = true
                         }
                     }
                 }
             } catch (e: Exception) {
                 Log.e("SearchViewModel", "Repository searching error")
-                recyclerViewOn.value = false
+                isRecyclerViewOn.value = false
             }
+        }
+    }
+
+    fun checkText(t: String, search: () -> Unit) = viewModelScope.launch {
+        delay(1000L)
+        if (t == searchText.value) {
+            search()
         }
     }
 
