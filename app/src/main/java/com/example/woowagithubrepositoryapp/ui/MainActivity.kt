@@ -26,8 +26,8 @@ import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
-    private var issueFragment : IssueFragment? = null
-    private var notificationFragment : NotificationFragment? = null
+    private var issueFragment: IssueFragment? = null
+    private var notificationFragment: NotificationFragment? = null
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(
@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             R.layout.activity_main
         )
     }
+
     private val viewModel by lazy {
         ViewModelProvider(this, ViewModelFactory())[MainViewModel::class.java]
     }
@@ -42,11 +43,12 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         initTabLayout(binding.tablayoutMain)
         initToolbar(binding.toolbarMain)
 
-        viewModel.getUserData{invalidateOptionsMenu()}
+        viewModel.getUserData { invalidateOptionsMenu() }
     }
 
     private fun initTabLayout(tabLayout: TabLayout) {
@@ -90,12 +92,12 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         tab?.let {
             when (it.text) {
                 "Issue" -> {
-                    if(issueFragment == null)
+                    if (issueFragment == null)
                         issueFragment = IssueFragment()
                     changeFragmentToIssueFragment()
                 }
                 else -> {
-                    if(notificationFragment == null)
+                    if (notificationFragment == null)
                         notificationFragment = NotificationFragment()
                     changeFragmentToNotificationFragment()
                 }
@@ -121,37 +123,39 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             }
         }
     }
-    private fun changeFragmentToIssueFragment(){
-        issueFragment.let {
-            if (it != null) {
-                supportFragmentManager.beginTransaction().replace(
-                    binding.containerMain.id, it
-                ).commit()
-            }
+
+    private fun changeFragmentToIssueFragment() {
+        issueFragment?.let {
+            supportFragmentManager.beginTransaction().replace(
+                binding.containerMain.id, it
+            ).commit()
         }
     }
-    private fun changeFragmentToNotificationFragment(){
-        notificationFragment.let {
-            if (it != null) {
-                supportFragmentManager.beginTransaction().replace(
-                    binding.containerMain.id, it
-                ).commit()
-            }
+
+    private fun changeFragmentToNotificationFragment() {
+        notificationFragment?.let {
+            supportFragmentManager.beginTransaction().replace(
+                binding.containerMain.id, it
+            ).commit()
         }
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         val url = App.user?.avatarUrl
         Glide.with(this).asDrawable().load(url).transform(CircleCrop())
-            .into(object : CustomTarget<Drawable>(){
-                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+            .into(object : CustomTarget<Drawable>() {
+                override fun onResourceReady(
+                    resource: Drawable,
+                    transition: Transition<in Drawable>?
+                ) {
                     menu?.findItem(R.id.nav_profile)?.let {
                         it.icon = resource
                     }
                 }
+
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
-        })
+            })
         return super.onPrepareOptionsMenu(menu)
     }
 }
