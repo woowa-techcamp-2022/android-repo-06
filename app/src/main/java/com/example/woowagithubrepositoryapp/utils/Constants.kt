@@ -9,4 +9,7 @@ object Constants {
     enum class DataLoading {
         BEFORE, NOW, AFTER
     }
+    enum class MainTab {
+        ISSUE, NOTIFICATION
+    }
 }
