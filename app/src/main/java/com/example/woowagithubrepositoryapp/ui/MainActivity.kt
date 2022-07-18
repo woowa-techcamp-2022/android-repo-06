@@ -20,13 +20,14 @@ import com.example.woowagithubrepositoryapp.ui.issue.IssueFragment
 import com.example.woowagithubrepositoryapp.ui.notification.NotificationFragment
 import com.example.woowagithubrepositoryapp.ui.profile.ProfileActivity
 import com.example.woowagithubrepositoryapp.ui.search.SearchActivity
+import com.example.woowagithubrepositoryapp.utils.Constants
 import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
-    private var issueFragment: IssueFragment? = null
+    private var issueFragment: IssueFragment? = IssueFragment()
     private var notificationFragment: NotificationFragment? = null
 
     private val binding by lazy {
@@ -49,6 +50,17 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         initToolbar(binding.toolbarMain)
 
         viewModel.getUserData { invalidateOptionsMenu() }
+
+        viewModel.currentTabState.apply {
+            when(this){
+                Constants.MainTab.ISSUE -> {
+                    changeFragmentToIssueFragment()
+                }
+                Constants.MainTab.NOTIFICATION -> {
+                    binding.tablayoutMain.getTabAt(1)?.select()
+                }
+            }
+        }
     }
 
     private fun initTabLayout(tabLayout: TabLayout) {
@@ -57,7 +69,6 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         }
 
         tabLayout.addOnTabSelectedListener(this)
-        tabLayout.selectTab(tabLayout.getTabAt(0))
     }
 
     private fun initToolbar(toolbar: MaterialToolbar) {
@@ -92,13 +103,9 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         tab?.let {
             when (it.text) {
                 "Issue" -> {
-                    if (issueFragment == null)
-                        issueFragment = IssueFragment()
                     changeFragmentToIssueFragment()
                 }
                 else -> {
-                    if (notificationFragment == null)
-                        notificationFragment = NotificationFragment()
                     changeFragmentToNotificationFragment()
                 }
             }
@@ -110,34 +117,41 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
-        tab?.let {
-            when (it.text) {
-                "Issue" -> {
-                    issueFragment = IssueFragment()
-                    changeFragmentToIssueFragment()
-                }
-                else -> {
-                    notificationFragment = NotificationFragment()
-                    changeFragmentToNotificationFragment()
-                }
-            }
-        }
+        //탭 리셀렉트 시 새로고침 방식 새로 고민 필요해보임
+//        tab?.let {
+//            when (it.text) {
+//                "Issue" -> {
+//                    issueFragment = IssueFragment()
+//                    changeFragmentToIssueFragment()
+//                }
+//                else -> {
+//                    notificationFragment = NotificationFragment()
+//                    changeFragmentToNotificationFragment()
+//                }
+//            }
+//        }
     }
 
     private fun changeFragmentToIssueFragment() {
+        if (issueFragment == null)
+            issueFragment = IssueFragment()
         issueFragment?.let {
             supportFragmentManager.beginTransaction().replace(
-                binding.containerMain.id, it
+                binding.containerMain.id, it, "issue"
             ).commit()
         }
+        viewModel.currentTabState = Constants.MainTab.ISSUE
     }
 
     private fun changeFragmentToNotificationFragment() {
+        if (notificationFragment == null)
+            notificationFragment = NotificationFragment()
         notificationFragment?.let {
             supportFragmentManager.beginTransaction().replace(
-                binding.containerMain.id, it
+                binding.containerMain.id, it , "noti"
             ).commit()
         }
+        viewModel.currentTabState = Constants.MainTab.NOTIFICATION
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {

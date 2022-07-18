@@ -16,6 +16,8 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel(private val repository: GithubRepository) : ViewModel() {
 
+    var currentTabState = Constants.MainTab.ISSUE
+
     val issuePage = MutableLiveData(1)
     val issueSelectState = MutableLiveData("open")
     val issueList = mutableListOf<Issue>()
