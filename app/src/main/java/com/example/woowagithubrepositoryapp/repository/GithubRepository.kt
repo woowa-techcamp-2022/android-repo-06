@@ -5,7 +5,6 @@ import com.example.woowagithubrepositoryapp.model.*
 import com.example.woowagithubrepositoryapp.network.GithubClient
 import com.example.woowagithubrepositoryapp.network.GithubService
 
-
 class GithubRepository {
     private val service = GithubClient().generate(GithubService::class.java)
 

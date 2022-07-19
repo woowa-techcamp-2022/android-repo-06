@@ -9,7 +9,7 @@ import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ItemRepoBinding
 import com.example.woowagithubrepositoryapp.model.Repo
 
-class RepositoryAdapter() : ListAdapter<Repo,RepositoryAdapter.RepoViewHolder>(RepoDiffCallback()){
+class RepositoryAdapter : ListAdapter<Repo, RepositoryAdapter.RepoViewHolder>(RepoDiffCallback()) {
 
     class RepoViewHolder(
         private val binding: ItemRepoBinding
@@ -32,7 +32,7 @@ class RepositoryAdapter() : ListAdapter<Repo,RepositoryAdapter.RepoViewHolder>(R
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_repo,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_repo, parent, false)
         val binding = ItemRepoBinding.bind(view)
         return RepoViewHolder(binding)
     }

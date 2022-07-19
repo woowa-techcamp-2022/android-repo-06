@@ -7,16 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.woowagithubrepositoryapp.databinding.ItemNotificationBinding
 import com.example.woowagithubrepositoryapp.model.Notification
-import android.util.Log
-import androidx.appcompat.widget.AppCompatTextView
-import com.example.woowagithubrepositoryapp.R
-import com.example.woowagithubrepositoryapp.model.NotificationInfo
-import com.example.woowagithubrepositoryapp.network.GithubService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class NotificationAdapter : ListAdapter<Notification,NotificationAdapter.NotificationViewHolder>(MenuDiffCallback()) {
+class NotificationAdapter : ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(NotificationDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
         return NotificationViewHolder(
@@ -32,8 +24,9 @@ class NotificationAdapter : ListAdapter<Notification,NotificationAdapter.Notific
         holder.bind(getItem(position))
     }
 
-    inner class NotificationViewHolder(val binding : ItemNotificationBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : Notification){
+    class NotificationViewHolder(val binding: ItemNotificationBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Notification) {
             binding.apply {
                 this.notification = item
                 executePendingBindings()
@@ -41,7 +34,7 @@ class NotificationAdapter : ListAdapter<Notification,NotificationAdapter.Notific
         }
     }
 
-    private class MenuDiffCallback : DiffUtil.ItemCallback<Notification>(){
+    private class NotificationDiffCallback : DiffUtil.ItemCallback<Notification>() {
         override fun areItemsTheSame(oldItem: Notification, newItem: Notification): Boolean {
             return oldItem.id == newItem.id
         }

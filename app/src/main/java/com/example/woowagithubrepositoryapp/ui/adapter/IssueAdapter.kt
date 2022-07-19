@@ -32,7 +32,7 @@ class IssueAdapter : ListAdapter<Issue, IssueAdapter.IssueViewHolder>(IssueDiffC
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IssueViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_issue,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_issue, parent, false)
         val binding = ItemIssueBinding.bind(view)
         return IssueViewHolder(binding)
     }

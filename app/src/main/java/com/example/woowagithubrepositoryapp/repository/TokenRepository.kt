@@ -2,7 +2,6 @@ package com.example.woowagithubrepositoryapp.repository
 
 import com.example.woowagithubrepositoryapp.network.GithubClient
 import com.example.woowagithubrepositoryapp.network.TokenService
-import com.example.woowagithubrepositoryapp.utils.Prefs
 
 class TokenRepository {
 
@@ -20,7 +19,6 @@ class TokenRepository {
     } catch (e: Exception) {
         Result.failure(e)
     }
-
 
     companion object {
         private var instance: TokenRepository? = null
