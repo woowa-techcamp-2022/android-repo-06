@@ -11,6 +11,6 @@ object Prefs {
     }
 
     var accessToken
-        get() = prefs.getString(ACCESS_TOKEN, null).toString()
+        get() = prefs.getString(ACCESS_TOKEN, null)
         set(value) = prefs.edit().putString(ACCESS_TOKEN, value).apply()
 }

@@ -24,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
             R.layout.activity_login
         )
     }
+
     private val viewModel by lazy {
         ViewModelProvider(
             this,
@@ -44,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkToken() {
-        if (Prefs.accessToken.isNotEmpty()) {
+        if (!Prefs.accessToken.isNullOrEmpty()) {
             clearTasksAndStartActivity<MainActivity>()
         }
     }
