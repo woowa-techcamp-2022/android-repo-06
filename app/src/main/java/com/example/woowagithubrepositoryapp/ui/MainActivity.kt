@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        initTabLayout(binding.tablayoutMain)
-        initToolbar(binding.toolbarMain)
+        initTabLayout(binding.mainTabLayout)
+        initToolbar(binding.mainToolbar)
         setStateObserve()
 
         viewModel.getUserData { invalidateOptionsMenu() }
@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     private fun changeFragmentToIssueFragment() {
         issueFragment?.let {
             supportFragmentManager.beginTransaction().replace(
-                binding.containerMain.id, it
+                binding.mainFrameLayout.id, it
             ).commit()
         }
     }
@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     private fun changeFragmentToNotificationFragment() {
         notificationFragment?.let {
             supportFragmentManager.beginTransaction().replace(
-                binding.containerMain.id, it
+                binding.mainFrameLayout.id, it
             ).commit()
         }
     }
