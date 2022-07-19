@@ -92,12 +92,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setObserver() {
         viewModel.searchText.observe(this) {
-            if (it.length == 1) {
-                setSearchBarActive()
-            }
             if (it.isEmpty()) {
                 setSearchBarInactive()
             } else {
+                if (viewModel.isSearchBarActive.value == false)
+                    setSearchBarActive()
                 checkTextJob?.cancel()
                 checkTextJob = viewModel.checkText(it) { searchRepos() }
             }
@@ -106,11 +105,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setSearchBarActive() {
         viewModel.isSearchBarActive.value = true
-        binding.searchBarLayout.setBackgroundResource(R.drawable.spinner_background)
     }
 
     private fun setSearchBarInactive() {
-        binding.searchBarLayout.setBackgroundResource(R.drawable.color_chip_rectangle_20)
         viewModel.isSearchBarActive.value = false
         viewModel.isRecyclerViewOn.value = false
         viewModel.repoList.clear()
