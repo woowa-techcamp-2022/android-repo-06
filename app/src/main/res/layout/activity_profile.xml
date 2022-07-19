@@ -32,206 +32,217 @@
                 app:titleCentered="true"
                 app:titleTextColor="@color/white" />
         </com.google.android.material.appbar.AppBarLayout>
-        <!--profile img, name, bio-->
-        <ImageView
-            android:id="@+id/profile_imageView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile_appbar" />
 
-        <TextView
-            android:id="@+id/profile_login_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="26dp"
-            android:text="@{viewModel.userData.login}"
-            android:textColor="@color/white"
-            android:textSize="18dp"
-            app:layout_constraintStart_toEndOf="@id/profile_imageView"
-            app:layout_constraintTop_toBottomOf="@id/profile_appbar" />
-
-        <TextView
-            android:id="@+id/profile_userName_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@{viewModel.userData.name}"
-            android:textColor="@color/gray"
-            android:textSize="16dp"
-            app:layout_constraintStart_toEndOf="@id/profile_imageView"
-            app:layout_constraintTop_toBottomOf="@id/profile_login_textView" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/color_chip_rectangle_20"
-            android:gravity="center"
-            android:paddingStart="8dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="4dp"
-            android:text="@{viewModel.userData.bio}"
-            android:textColor="@color/gray"
-            app:layout_constraintStart_toEndOf="@id/profile_imageView"
-            app:layout_constraintTop_toBottomOf="@id/profile_userName_textView" />
-
-        <View
-            android:id="@+id/slice"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/navy"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile_imageView" />
-        <!--location, link, mail, followers, following-->
-        <TextView
-            android:id="@+id/profile_location_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="16dp"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:text="@{viewModel.userData.location.toString()}"
-            android:textColor="@color/white"
-            android:textSize="14dp"
-            app:drawableStartCompat="@drawable/ic_location"
-            app:drawableTint="@color/gray"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/slice" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_appbar">
 
-        <TextView
-            android:id="@+id/profile_link_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="18dp"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:text="@{viewModel.userData.blog}"
-            android:textColor="@color/white"
-            android:textSize="14dp"
-            app:drawableStartCompat="@drawable/ic_link"
-            app:drawableTint="@color/gray"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile_location_textView" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!--profile img, name, bio-->
+                <ImageView
+                    android:id="@+id/profile_imageView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/profile_email_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="18dp"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:text="@{viewModel.userData.email.toString()}"
-            android:textColor="@color/white"
-            android:textSize="14dp"
-            app:drawableStartCompat="@drawable/ic_mail"
-            app:drawableTint="@color/gray"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile_link_textView" />
+                <TextView
+                    android:id="@+id/profile_login_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="26dp"
+                    android:text="@{viewModel.userData.login}"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    app:layout_constraintStart_toEndOf="@id/profile_imageView"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <!--repos, starred-->
-        <TextView
-            android:id="@+id/profile_follow_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:text="@{@string/follow_text(String.valueOf(viewModel.userData.followers), String.valueOf(viewModel.userData.following))}"
-            android:textColor="@color/white"
-            android:textSize="14dp"
-            app:drawableStartCompat="@drawable/ic_user"
-            app:drawableTint="@color/gray"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile_email_textView" />
+                <TextView
+                    android:id="@+id/profile_userName_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@{viewModel.userData.name}"
+                    android:textColor="@color/gray"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@id/profile_imageView"
+                    app:layout_constraintTop_toBottomOf="@id/profile_login_textView" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/profile_repo_star_constraintLayout"
-            android:layout_width="312dp"
-            android:layout_height="128dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/color_chip_rectangle_20"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile_follow_textView">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/color_chip_rectangle_20"
+                    android:gravity="center"
+                    android:paddingStart="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="4dp"
+                    android:text="@{viewModel.userData.bio}"
+                    android:textColor="@color/gray"
+                    app:layout_constraintStart_toEndOf="@id/profile_imageView"
+                    app:layout_constraintTop_toBottomOf="@id/profile_userName_textView" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/profile_repository_imageButton"
-                android:layout_width="40dp"
-                android:layout_height="40sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/color_chip_rectangle_22"
-                android:src="@drawable/ic_bookmark"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <View
+                    android:id="@+id/slice"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/navy"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_imageView" />
+                <!--location, link, mail, followers, following-->
+                <TextView
+                    android:id="@+id/profile_location_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="16dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@{viewModel.userData.location.toString()}"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    app:drawableStartCompat="@drawable/ic_location"
+                    app:drawableTint="@color/gray"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/slice" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/profile_starred_imageButton"
-                android:layout_width="40dp"
-                android:layout_height="40sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/color_chip_rectangle_22"
-                android:src="@drawable/ic_star_outline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profile_repository_imageButton" />
+                <TextView
+                    android:id="@+id/profile_link_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="18dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@{viewModel.userData.blog}"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    app:drawableStartCompat="@drawable/ic_link"
+                    app:drawableTint="@color/gray"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_location_textView" />
 
-            <TextView
-                android:id="@+id/profile_repository_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:gravity="center_vertical"
-                android:text="Repositories"
-                android:textColor="@color/white"
-                android:textSize="14dp"
-                app:layout_constraintStart_toEndOf="@id/profile_repository_imageButton"
-                app:layout_constraintTop_toTopOf="@id/profile_repository_imageButton" />
+                <TextView
+                    android:id="@+id/profile_email_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="18dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@{viewModel.userData.email.toString()}"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    app:drawableStartCompat="@drawable/ic_mail"
+                    app:drawableTint="@color/gray"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_link_textView" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:gravity="center_vertical"
-                android:text="Starred"
-                android:textColor="@color/white"
-                android:textSize="14dp"
-                app:layout_constraintStart_toEndOf="@id/profile_starred_imageButton"
-                app:layout_constraintTop_toTopOf="@id/profile_starred_imageButton" />
+                <!--repos, starred-->
+                <TextView
+                    android:id="@+id/profile_follow_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@{@string/follow_text(String.valueOf(viewModel.userData.followers), String.valueOf(viewModel.userData.following))}"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    app:drawableStartCompat="@drawable/ic_user"
+                    app:drawableTint="@color/gray"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_email_textView" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginEnd="16dp"
-                android:gravity="center_vertical"
-                android:text="@{String.valueOf(viewModel.userData.publicRepos)}"
-                android:textColor="@color/white"
-                android:textSize="14dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/profile_repository_imageButton" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/profile_repo_star_constraintLayout"
+                    android:layout_width="312dp"
+                    android:layout_height="128dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/color_chip_rectangle_20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_follow_textView">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginEnd="16dp"
-                android:gravity="center_vertical"
-                android:text="@{String.valueOf(viewModel.userData.starredCnt)}"
-                android:textColor="@color/white"
-                android:textSize="14dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/profile_starred_imageButton" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/profile_repository_imageButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40sp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/color_chip_rectangle_22"
+                        android:src="@drawable/ic_bookmark"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/profile_starred_imageButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40sp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/color_chip_rectangle_22"
+                        android:src="@drawable/ic_star_outline"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/profile_repository_imageButton" />
+
+                    <TextView
+                        android:id="@+id/profile_repository_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:gravity="center_vertical"
+                        android:text="Repositories"
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toEndOf="@id/profile_repository_imageButton"
+                        app:layout_constraintTop_toTopOf="@id/profile_repository_imageButton" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:gravity="center_vertical"
+                        android:text="Starred"
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toEndOf="@id/profile_starred_imageButton"
+                        app:layout_constraintTop_toTopOf="@id/profile_starred_imageButton" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical"
+                        android:text="@{String.valueOf(viewModel.userData.publicRepos)}"
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/profile_repository_imageButton" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical"
+                        android:text="@{String.valueOf(viewModel.userData.starredCnt)}"
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/profile_starred_imageButton" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
