@@ -94,8 +94,6 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
                 result.isFailure -> {
                     isNotificationDataLoading = Constants.DataLoading.AFTER
                     toastMsg("Notification 정보를 가져오지 못하였습니다.")
-                    //더 이상 받아올 알림이 없기 때문에 페이지를 증가시키지 않는다.
-                    //무한 스크롤을 막는 코드가 필요
                 }
             }
             isProgressOn.postValue(false)
