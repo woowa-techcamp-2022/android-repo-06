@@ -167,10 +167,11 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/profile_repo_star_constraintLayout"
-                    android:layout_width="312dp"
+                    android:layout_width="match_parent"
                     android:layout_height="128dp"
                     android:layout_marginTop="25dp"
                     android:background="@drawable/color_chip_rectangle_20"
+                    android:layout_marginHorizontal="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profile_follow_textView">
