@@ -8,20 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ItemIssueBinding
 import com.example.woowagithubrepositoryapp.model.Issue
-import com.example.woowagithubrepositoryapp.utils.TimeUtil
 
 class IssueAdapter : ListAdapter<Issue, IssueAdapter.IssueViewHolder>(IssueDiffCallback()) {
+
     class IssueViewHolder(
         private val binding: ItemIssueBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Issue) {
             binding.issue = item
-            val resource = when(item.state){
-                "open" -> R.drawable.ic_issue_open
-                 else-> R.drawable.ic_issue_closed
-            }
-            binding.stateIconImageView.setImageResource(resource)
-            binding.dateTextView.text = TimeUtil.getTimeData(item.updatedAt)
         }
     }
 

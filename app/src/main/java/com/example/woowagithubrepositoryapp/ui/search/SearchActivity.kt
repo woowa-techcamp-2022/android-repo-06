@@ -27,7 +27,7 @@ class SearchActivity : AppCompatActivity() {
         ViewModelProvider(this, ViewModelFactory())[SearchViewModel::class.java]
     }
 
-    private val repoAdapter = RepositoryAdapter(this)
+    private val repoAdapter = RepositoryAdapter()
 
     private var checkTextJob: Job? = null
 
