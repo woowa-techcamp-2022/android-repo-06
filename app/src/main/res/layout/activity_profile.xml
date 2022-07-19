@@ -86,7 +86,7 @@
                     android:paddingTop="4dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="4dp"
-                    android:text="@{viewModel.userData.bio}"
+                    android:text="@{viewModel.userData.bio.toString()}"
                     android:textColor="@color/gray"
                     app:layout_constraintStart_toEndOf="@id/profile_imageView"
                     app:layout_constraintTop_toBottomOf="@id/profile_userName_textView" />
@@ -124,7 +124,7 @@
                     android:layout_marginTop="18dp"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="@{viewModel.userData.blog}"
+                    android:text="@{viewModel.userData.blog.toString()}"
                     android:textColor="@color/white"
                     android:textSize="14dp"
                     app:drawableStartCompat="@drawable/ic_link"
