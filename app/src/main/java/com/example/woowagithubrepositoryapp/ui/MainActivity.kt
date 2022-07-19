@@ -54,16 +54,22 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     private fun setStateObserve() {
         viewModel.tabSelectState.observe(this) {
-            when (it) {
-                "Issue" -> {
+            when (setOf(it.text,it.isReselected)) {
+                setOf("Issue",false) -> {
                     if (issueFragment == null)
                         issueFragment = IssueFragment()
                     changeFragmentToIssueFragment()
                 }
-                else -> {
+                setOf("Notifications",false)  -> {
                     if (notificationFragment == null)
                         notificationFragment = NotificationFragment()
                     changeFragmentToNotificationFragment()
+                }
+                setOf("Issue",true) -> {
+                    viewModel.refreshIssues()
+                }
+                setOf("Notifications",true)  -> {
+                    viewModel.refreshNotifications()
                 }
             }
         }
@@ -75,7 +81,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         }
 
         tabLayout.addOnTabSelectedListener(this)
-        when (viewModel.tabSelectState.value) {
+        when (viewModel.tabSelectState.value?.text) {
             "Issue" -> tabLayout.selectTab(tabLayout.getTabAt(0))
             else -> tabLayout.selectTab(tabLayout.getTabAt(1))
         }
@@ -112,7 +118,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
         tab?.let {
-            viewModel.tabSelectState.value = it.text.toString()
+            viewModel.tabSelectState.value = TabSelectState(it.text.toString(),false)
         }
     }
 
@@ -122,16 +128,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
         tab?.let {
-            when (it.text) {
-                "Issue" -> {
-                    issueFragment = IssueFragment()
-                    changeFragmentToIssueFragment()
-                }
-                else -> {
-                    notificationFragment = NotificationFragment()
-                    changeFragmentToNotificationFragment()
-                }
-            }
+            viewModel.tabSelectState.value = TabSelectState(it.text.toString(),true)
         }
     }
 
