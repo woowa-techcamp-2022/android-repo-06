@@ -16,7 +16,7 @@
         android:background="@color/background"
         tools:context=".ui.auth.LoginActivity">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="@dimen/size_200"
             android:layout_height="@dimen/size_200"
             android:layout_marginStart="@dimen/margin_24"

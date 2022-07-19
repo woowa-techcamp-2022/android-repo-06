@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/background">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/repo_ownerAvatar_imageView"
             android:layout_width="@dimen/size_24"
             android:layout_height="@dimen/size_24"
@@ -20,7 +20,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repo_ownerLogin_textView"
             android:layout_width="@dimen/size_0"
             android:layout_height="@dimen/size_24"
@@ -35,7 +35,7 @@
             app:layout_constraintStart_toEndOf="@id/repo_ownerAvatar_imageView"
             app:layout_constraintTop_toTopOf="@id/repo_ownerAvatar_imageView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repo_name_textView"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             app:layout_constraintStart_toStartOf="@id/repo_ownerLogin_textView"
             app:layout_constraintTop_toBottomOf="@id/repo_ownerLogin_textView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repo_description_textView"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             app:layout_constraintStart_toStartOf="@id/repo_ownerLogin_textView"
             app:layout_constraintTop_toBottomOf="@id/repo_name_textView" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/repo_star_imageView"
             android:layout_width="@dimen/size_18"
             android:layout_height="@dimen/size_18"
@@ -71,7 +71,7 @@
             app:layout_constraintStart_toStartOf="@id/repo_ownerLogin_textView"
             app:layout_constraintTop_toBottomOf="@id/repo_description_textView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repo_star_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
             app:layout_constraintStart_toEndOf="@id/repo_star_imageView"
             app:layout_constraintTop_toTopOf="@id/repo_star_imageView" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/repo_language_imageView"
             android:layout_width="@dimen/size_14"
             android:layout_height="@dimen/size_14"
@@ -93,7 +93,7 @@
             app:layout_constraintStart_toEndOf="@id/repo_star_textView"
             app:layout_constraintTop_toTopOf="@id/repo_star_imageView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repo_language_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <!--profile img, name, bio-->
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/profile_imageView"
                     android:layout_width="@dimen/size_80"
                     android:layout_height="@dimen/size_80"
@@ -52,7 +52,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_login_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                     app:layout_constraintStart_toEndOf="@id/profile_imageView"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_userName_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                     app:layout_constraintStart_toEndOf="@id/profile_imageView"
                     app:layout_constraintTop_toBottomOf="@id/profile_login_textView" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_16"
@@ -100,7 +100,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profile_imageView" />
                 <!--location, link, mail, followers, following-->
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_location_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/slice" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_link_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profile_location_textView" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_email_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                     app:layout_constraintTop_toBottomOf="@id/profile_link_textView" />
 
                 <!--repos, starred-->
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_follow_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -198,7 +198,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/profile_repository_imageButton" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/profile_repository_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/size_40"
@@ -210,7 +210,7 @@
                         app:layout_constraintStart_toEndOf="@id/profile_repository_imageButton"
                         app:layout_constraintTop_toTopOf="@id/profile_repository_imageButton" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/size_40"
                         android:layout_marginStart="@dimen/margin_16"
@@ -221,7 +221,7 @@
                         app:layout_constraintStart_toEndOf="@id/profile_starred_imageButton"
                         app:layout_constraintTop_toTopOf="@id/profile_starred_imageButton" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/size_40"
                         android:layout_marginStart="@dimen/margin_16"
@@ -232,7 +232,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/profile_repository_imageButton" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/size_40"
                         android:layout_marginStart="@dimen/margin_16"
