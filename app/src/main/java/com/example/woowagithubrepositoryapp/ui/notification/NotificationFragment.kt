@@ -16,7 +16,6 @@ import com.example.woowagithubrepositoryapp.databinding.FragmentNotificationBind
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
-import com.example.woowagithubrepositoryapp.utils.Constants
 import com.example.woowagithubrepositoryapp.utils.NotificationItemHelper
 import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 
@@ -31,7 +30,7 @@ class NotificationFragment : Fragment() {
 
     private val notificationAdapter = NotificationAdapter()
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         ItemTouchHelper(NotificationItemHelper(requireContext()) { notification ->
             markNotification(notification)
         }).attachToRecyclerView(binding?.notificationRecyclerView)
@@ -43,7 +42,7 @@ class NotificationFragment : Fragment() {
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount
                 if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    if(viewModel.isNotificationDataLoading == DataLoading.BEFORE) {
+                    if (viewModel.isNotificationDataLoading == DataLoading.BEFORE) {
                         viewModel.isNotificationDataLoading = DataLoading.NOW
                         viewModel.getNotifications()
                         Log.d("notificationPaging", "notificationPaging")
@@ -53,7 +52,7 @@ class NotificationFragment : Fragment() {
         })
     }
 
-    private fun markNotification(notification:Notification){
+    private fun markNotification(notification: Notification) {
         viewModel.markNotificationAsRead(notification = notification)
         Toast.makeText(
             context, "${notification.subject.title} 알림이 읽음 처리되었습니다", Toast.LENGTH_SHORT
@@ -66,9 +65,6 @@ class NotificationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentNotificationBinding.inflate(inflater, container, false)
-
-
-
         return binding?.root
     }
 
@@ -76,7 +72,7 @@ class NotificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.notificationRecyclerView?.adapter = notificationAdapter
 
-        viewModel.notifications.observe(viewLifecycleOwner){
+        viewModel.notifications.observe(viewLifecycleOwner) {
             notificationAdapter.submitList(it.toMutableList())
         }
 
