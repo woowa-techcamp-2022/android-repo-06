@@ -2,6 +2,8 @@ package com.example.woowagithubrepositoryapp.repository
 
 import com.example.woowagithubrepositoryapp.network.GithubClient
 import com.example.woowagithubrepositoryapp.network.TokenService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class TokenRepository {
 
@@ -9,15 +11,17 @@ class TokenRepository {
 
     suspend fun getAccessToken(
         code: String
-    ): Result<String> = try {
-        val response = service.getAccessToken(code = code)
-        val body = response.body()
-        if (response.isSuccessful && body != null)
-            Result.success(body.accessToken)
-        else
-            Result.failure(Exception("Get Access Token Error"))
-    } catch (e: Exception) {
-        Result.failure(e)
+    ): Result<String> = withContext(Dispatchers.IO) {
+        try {
+            val response = service.getAccessToken(code = code)
+            val body = response.body()
+            if (response.isSuccessful && body != null)
+                Result.success(body.accessToken)
+            else
+                Result.failure(Exception("Get Access Token Error"))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     companion object {
