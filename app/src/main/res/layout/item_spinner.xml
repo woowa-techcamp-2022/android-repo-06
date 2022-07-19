@@ -6,11 +6,12 @@
             name="option"
             type="com.example.woowagithubrepositoryapp.ui.adapter.SpinnerAdapter.IssueOption" />
     </data>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="@dimen/padding_16">
 
         <TextView
             android:id="@+id/text"
