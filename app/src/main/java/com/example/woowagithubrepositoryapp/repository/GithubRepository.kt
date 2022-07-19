@@ -23,7 +23,7 @@ class GithubRepository {
         Result.failure(e)
     }
 
-    suspend fun getNotifications(page: Int): MutableList<Notification> {
+    suspend fun getNotifications(page: Int): Result<MutableList<Notification>> {
         return try {
             val response = service.getNotifications(page = page)
             if (response.isSuccessful) {
@@ -33,23 +33,23 @@ class GithubRepository {
                     it.comments = info?.comments.toString()
                     it.issueNum = "#${info?.number.toString()}"
                 }
-                notifications
-            } else mutableListOf()
+                Result.success(notifications)
+            } else Result.failure(Exception("Get Notifications Error : response isn't successful"))
         } catch (e: Exception) {
             Log.d("getNotiError", e.cause.toString())
-            mutableListOf()
+            Result.failure(e)
         }
     }
 
     suspend fun patchNotificationThread(
         threadId: String
-    ): Boolean {
+    ): Result<Boolean> {
         return try {
             val response = service.patchNotificationThread(threadId)
-            response.isSuccessful
+            Result.success(response.isSuccessful)
         } catch (e: Exception) {
             Log.d("patchNotiThreadError", e.cause.toString())
-            false
+            Result.failure(e)
         }
     }
 

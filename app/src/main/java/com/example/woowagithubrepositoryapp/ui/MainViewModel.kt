@@ -74,19 +74,29 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     fun getNotifications() {
         viewModelScope.launch {
             isProgressOn.postValue(true)
-            val notifications = repository.getNotifications(notificationPage)
-            if (notifications.size != 0) {
-                if (notificationPage == 1) {
-                    _notifications.value?.clear()
+            val result = repository.getNotifications(notificationPage)
+            when {
+                result.isSuccess -> {
+                    val notificationList = result.getOrDefault(mutableListOf())
+                    if(notificationList.size != 0) {
+                        if (notificationPage == 1) {
+                            _notifications.value?.clear()
+                        }
+                        _notifications.value?.addAll(notificationList)
+                        _notifications.value = _notifications.value
+                        isNotificationDataLoading = Constants.DataLoading.BEFORE
+                        notificationPage++
+                    }
+                    else {
+                        isNotificationDataLoading = Constants.DataLoading.AFTER
+                    }
                 }
-                _notifications.value?.addAll(notifications)
-                _notifications.value = _notifications.value
-                isNotificationDataLoading = Constants.DataLoading.BEFORE
-                notificationPage++
-            } else {
-                isNotificationDataLoading = Constants.DataLoading.AFTER
-                //더 이상 받아올 알림이 없기 때문에 페이지를 증가시키지 않는다.
-                //무한 스크롤을 막는 코드가 필요
+                result.isFailure -> {
+                    isNotificationDataLoading = Constants.DataLoading.AFTER
+                    toastMsg("Notification 정보를 가져오지 못하였습니다.")
+                    //더 이상 받아올 알림이 없기 때문에 페이지를 증가시키지 않는다.
+                    //무한 스크롤을 막는 코드가 필요
+                }
             }
             isProgressOn.postValue(false)
         }
@@ -94,11 +104,14 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
 
     fun markNotificationAsRead(notification: Notification) {
         viewModelScope.launch {
-            val marked = repository.patchNotificationThread(notification.threadId)
-            if (marked) {
-                removeNotificationAtPosition(notification)
-            } else {
-                //서버에서 읽음 처리가 되지 않은 경우 어떻게 처리할 것인가?
+            val result = repository.patchNotificationThread(notification.threadId)
+            when {
+                result.isSuccess -> {
+                    removeNotificationAtPosition(notification)
+                }
+                result.isFailure -> {
+                    toastMsg("읽음 처리에 실패했습니다.")
+                }
             }
         }
     }
