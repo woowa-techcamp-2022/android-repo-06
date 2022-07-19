@@ -76,6 +76,7 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     fun getNotifications() {
         viewModelScope.launch(Dispatchers.IO){
             isProgressOn.postValue(true)
+            isNotificationDataLoading = Constants.DataLoading.NOW
             val result = repository.getNotifications(notificationPage)
             when {
                 result.isSuccess -> {
