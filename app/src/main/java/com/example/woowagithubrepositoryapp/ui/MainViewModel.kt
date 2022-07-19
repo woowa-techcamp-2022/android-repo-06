@@ -20,6 +20,8 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     val issueSelectState = MutableLiveData("open")
     val issueList = mutableListOf<Issue>()
 
+    val tabSelectState = MutableLiveData("Issue")
+
     private val _notifications = MutableLiveData<MutableList<Notification>>()
     val notifications: LiveData<MutableList<Notification>> = _notifications
     private var notificationPage = 1

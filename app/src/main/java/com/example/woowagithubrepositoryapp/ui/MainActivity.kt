@@ -47,8 +47,26 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
         initTabLayout(binding.tablayoutMain)
         initToolbar(binding.toolbarMain)
+        setStateObserve()
 
         viewModel.getUserData { invalidateOptionsMenu() }
+    }
+
+    private fun setStateObserve() {
+        viewModel.tabSelectState.observe(this) {
+            when (it) {
+                "Issue" -> {
+                    if (issueFragment == null)
+                        issueFragment = IssueFragment()
+                    changeFragmentToIssueFragment()
+                }
+                else -> {
+                    if (notificationFragment == null)
+                        notificationFragment = NotificationFragment()
+                    changeFragmentToNotificationFragment()
+                }
+            }
+        }
     }
 
     private fun initTabLayout(tabLayout: TabLayout) {
@@ -57,7 +75,11 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         }
 
         tabLayout.addOnTabSelectedListener(this)
-        tabLayout.selectTab(tabLayout.getTabAt(0))
+        when (viewModel.tabSelectState.value) {
+            "Issue" -> tabLayout.selectTab(tabLayout.getTabAt(0))
+            else -> tabLayout.selectTab(tabLayout.getTabAt(1))
+        }
+
     }
 
     private fun initToolbar(toolbar: MaterialToolbar) {
@@ -90,18 +112,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
         tab?.let {
-            when (it.text) {
-                "Issue" -> {
-                    if (issueFragment == null)
-                        issueFragment = IssueFragment()
-                    changeFragmentToIssueFragment()
-                }
-                else -> {
-                    if (notificationFragment == null)
-                        notificationFragment = NotificationFragment()
-                    changeFragmentToNotificationFragment()
-                }
-            }
+            viewModel.tabSelectState.value = it.text.toString()
         }
     }
 
