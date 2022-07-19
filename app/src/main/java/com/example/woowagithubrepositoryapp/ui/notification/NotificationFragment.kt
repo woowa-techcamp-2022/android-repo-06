@@ -43,7 +43,7 @@ class NotificationFragment : Fragment() {
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount
                 if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    if(viewModel.isNotificationDataLoading != DataLoading.NOW) {
+                    if(viewModel.isNotificationDataLoading == DataLoading.BEFORE) {
                         viewModel.isNotificationDataLoading = DataLoading.NOW
                         viewModel.getNotifications()
                         Log.d("notificationPaging", "notificationPaging")
