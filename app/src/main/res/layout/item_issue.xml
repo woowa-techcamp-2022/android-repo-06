@@ -36,7 +36,6 @@
             android:id="@+id/date_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1일 전"
             android:textColor="@color/gray"
             android:textSize="@dimen/text_size_14"
             app:layout_constraintEnd_toEndOf="parent"
