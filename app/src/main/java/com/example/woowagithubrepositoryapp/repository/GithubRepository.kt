@@ -4,7 +4,9 @@ import android.util.Log
 import com.example.woowagithubrepositoryapp.model.*
 import com.example.woowagithubrepositoryapp.network.GithubClient
 import com.example.woowagithubrepositoryapp.network.GithubService
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 class GithubRepository {
@@ -31,12 +33,28 @@ class GithubRepository {
             try {
                 val response = service.getNotifications(page = page)
                 if (response.isSuccessful) {
+                    Log.d("GetNotificationInfo","start")
                     val notifications = response.body()?.toMutableList() ?: mutableListOf()
+                    val notificationInfos = mutableListOf<Deferred<NotificationInfo?>>()
+                    val notificationMap = mutableMapOf<String,Pair<Int,Int>>()
                     notifications.forEach {
-                        val info = getNotificationInfo(it.subject.url)
-                        it.comments = info?.comments.toString()
-                        it.issueNum = "#${info?.number.toString()}"
+                        notificationInfos.add(async { getNotificationInfo(it.subject.url,it.id) })
+                        Log.d("GetNotificationInfo","async : ${it.id}")
+
                     }
+                    notificationInfos.forEach { data ->
+                        data.await()?.let {
+                            notificationMap.set(it.notificationId,Pair(it.comments,it.number))
+                            Log.d("GetNotificationInfo","await : ${it.notificationId}")
+                        }
+                    }
+                    notifications.forEach { notification ->
+                        notificationMap.get(notification.id).apply {
+                            notification.comments = this?.first.toString()
+                            notification.issueNum = "#${this?.second}"
+                        }
+                    }
+                    Log.d("GetNotificationInfo","end")
                     Result.success(notifications)
                 } else Result.failure(Exception("Get Notifications Error : response isn't successful"))
             } catch (e: Exception) {
@@ -57,9 +75,11 @@ class GithubRepository {
         }
     }
 
-    private suspend fun getNotificationInfo(fullUrl: String): NotificationInfo? {
+    private suspend fun getNotificationInfo(fullUrl: String,id : String): NotificationInfo? {
         return try {
-            service.getNotificationInfo(fullUrl).body()
+            service.getNotificationInfo(fullUrl).body().apply {
+                this?.notificationId = id
+            }
         } catch (e: Exception) {
             Log.d("getNotiInfoError", e.cause.toString())
             null
