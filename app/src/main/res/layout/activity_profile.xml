@@ -169,9 +169,9 @@
                     android:id="@+id/profile_repo_star_constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/size_128"
+                    android:layout_marginHorizontal="@dimen/margin_24"
                     android:layout_marginTop="@dimen/margin_24"
                     android:background="@drawable/color_chip_rectangle_20"
-                    android:layout_marginHorizontal="@dimen/margin_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profile_follow_textView">
@@ -224,7 +224,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/size_40"
-                        android:layout_marginStart="@dimen/margin_16"
+                        android:layout_marginEnd="@dimen/margin_16"
                         android:gravity="center_vertical"
                         android:text="@{String.valueOf(viewModel.userData.publicRepos)}"
                         android:textColor="@color/white"
@@ -235,7 +235,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/size_40"
-                        android:layout_marginStart="@dimen/margin_16"
+                        android:layout_marginEnd="@dimen/margin_16"
                         android:gravity="center_vertical"
                         android:text="@{String.valueOf(viewModel.userData.starredCnt)}"
                         android:textColor="@color/white"
