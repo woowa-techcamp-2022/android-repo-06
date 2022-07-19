@@ -71,10 +71,11 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     }
 
     private fun initTabLayout(tabLayout: TabLayout) {
-        tabLayout.addOnTabSelectedListener(this)
         resources.getStringArray(R.array.main_tab).forEach { tabName ->
             tabLayout.addTab(tabLayout.newTab().setText(tabName))
         }
+
+        tabLayout.addOnTabSelectedListener(this)
 
         when (viewModel.tabSelectState.value?.text) {
             "Issue" -> tabLayout.selectTab(tabLayout.getTabAt(0))
