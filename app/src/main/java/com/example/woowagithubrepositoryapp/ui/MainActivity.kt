@@ -54,28 +54,35 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     private fun setStateObserve() {
         viewModel.tabSelectState.observe(this) {
-            when (it) {
-                "Issue" -> {
-                    if (issueFragment == null)
-                        issueFragment = IssueFragment()
-                    changeFragmentToIssueFragment()
+            when (setOf(it.text,it.isReselected)) {
+                setOf("Notifications",true)  -> {
+                    viewModel.refreshNotifications()
                 }
-                else -> {
+                setOf("Notifications",false)  -> {
                     if (notificationFragment == null)
                         notificationFragment = NotificationFragment()
                     changeFragmentToNotificationFragment()
                 }
+                else -> {
+                    if (issueFragment == null)
+                        issueFragment = IssueFragment()
+                    if(it.isReselected){
+                        //TODO 필요하다면 viewModel.refreshIssue 구현
+                    }
+                    changeFragmentToIssueFragment()
+                }
+
             }
         }
     }
 
     private fun initTabLayout(tabLayout: TabLayout) {
+        tabLayout.addOnTabSelectedListener(this)
         resources.getStringArray(R.array.main_tab).forEach { tabName ->
             tabLayout.addTab(tabLayout.newTab().setText(tabName))
         }
 
-        tabLayout.addOnTabSelectedListener(this)
-        when (viewModel.tabSelectState.value) {
+        when (viewModel.tabSelectState.value?.text) {
             "Issue" -> tabLayout.selectTab(tabLayout.getTabAt(0))
             else -> tabLayout.selectTab(tabLayout.getTabAt(1))
         }
@@ -112,7 +119,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
         tab?.let {
-            viewModel.tabSelectState.value = it.text.toString()
+            viewModel.tabSelectState.value = TabSelectState(it.text.toString(),false)
         }
     }
 
@@ -122,16 +129,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
         tab?.let {
-            when (it.text) {
-                "Issue" -> {
-                    issueFragment = IssueFragment()
-                    changeFragmentToIssueFragment()
-                }
-                else -> {
-                    notificationFragment = NotificationFragment()
-                    changeFragmentToNotificationFragment()
-                }
-            }
+            viewModel.tabSelectState.value = TabSelectState(it.text.toString(),true)
         }
     }
 

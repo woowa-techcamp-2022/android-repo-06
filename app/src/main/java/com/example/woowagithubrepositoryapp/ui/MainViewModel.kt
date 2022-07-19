@@ -20,11 +20,11 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     val issueSelectState = MutableLiveData("open")
     val issueList = mutableListOf<Issue>()
 
-    val tabSelectState = MutableLiveData("Issue")
+    val tabSelectState = MutableLiveData(TabSelectState("Issue",false))
 
     private val _notifications = MutableLiveData<MutableList<Notification>>()
     val notifications: LiveData<MutableList<Notification>> = _notifications
-    private var notificationPage = 1
+    var notificationPage = 1
     var isNotificationDataLoading: Constants.DataLoading = Constants.DataLoading.BEFORE
 
     init {
@@ -120,9 +120,21 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
         }
     }
 
+    fun refreshNotifications(){
+        _notifications.postValue(mutableListOf())
+        notificationPage = 1
+        getNotifications()
+    }
+
+    fun refreshIssues(){
+        issueList.clear()
+        issuePage.postValue(1)
+        issueSelectState.postValue("open")
+    }
+
     private fun removeNotificationAtPosition(notification: Notification) {
         _notifications.value?.remove(notification)
         _notifications.value = _notifications.value
     }
 }
-
+class TabSelectState(val text: String,val isReselected : Boolean)
