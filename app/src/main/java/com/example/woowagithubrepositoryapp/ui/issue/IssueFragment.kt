@@ -52,8 +52,8 @@ class IssueFragment : Fragment() {
         val adapter = SpinnerAdapter(requireContext(), R.layout.item_spinner, list)
         binding.issueSpinner.adapter = adapter
         binding.issueSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                when (p2) {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                when (position) {
                     0 -> {
                         viewModel.issueSelectState.value = "open"
                     }
@@ -68,14 +68,20 @@ class IssueFragment : Fragment() {
                 viewModel.issueList.clear()
                 loadIssueData()
                 for (idx in list.indices) {
-                    list[idx].check = (idx == p2)
+                    list[idx].check = (idx == position)
                 }
                 adapter.notifyDataSetChanged()
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
 
             }
+        }
+
+        when(viewModel.issueSelectState.value){
+            "open" -> binding.issueSpinner.setSelection(0)
+            "closed" -> binding.issueSpinner.setSelection(1)
+            "all" -> binding.issueSpinner.setSelection(2)
         }
     }
 
