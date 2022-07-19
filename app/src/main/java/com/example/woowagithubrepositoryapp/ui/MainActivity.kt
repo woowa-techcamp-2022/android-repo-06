@@ -55,32 +55,33 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     private fun setStateObserve() {
         viewModel.tabSelectState.observe(this) {
             when (setOf(it.text,it.isReselected)) {
-                setOf("Issue",false) -> {
-                    if (issueFragment == null)
-                        issueFragment = IssueFragment()
-                    changeFragmentToIssueFragment()
+                setOf("Notifications",true)  -> {
+                    viewModel.refreshNotifications()
                 }
                 setOf("Notifications",false)  -> {
                     if (notificationFragment == null)
                         notificationFragment = NotificationFragment()
                     changeFragmentToNotificationFragment()
                 }
-                setOf("Issue",true) -> {
-                    viewModel.refreshIssues()
+                else -> {
+                    if (issueFragment == null)
+                        issueFragment = IssueFragment()
+                    if(it.isReselected){
+                        //TODO 필요하다면 viewModel.refreshIssue 구현
+                    }
+                    changeFragmentToIssueFragment()
                 }
-                setOf("Notifications",true)  -> {
-                    viewModel.refreshNotifications()
-                }
+
             }
         }
     }
 
     private fun initTabLayout(tabLayout: TabLayout) {
+        tabLayout.addOnTabSelectedListener(this)
         resources.getStringArray(R.array.main_tab).forEach { tabName ->
             tabLayout.addTab(tabLayout.newTab().setText(tabName))
         }
 
-        tabLayout.addOnTabSelectedListener(this)
         when (viewModel.tabSelectState.value?.text) {
             "Issue" -> tabLayout.selectTab(tabLayout.getTabAt(0))
             else -> tabLayout.selectTab(tabLayout.getTabAt(1))
