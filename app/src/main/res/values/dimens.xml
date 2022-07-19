@@ -42,4 +42,7 @@
     <dimen name="text_size_40">40sp</dimen>
 
     <dimen name="corner_radius_3">3dp</dimen>
+    <dimen name="corner_radius_10">10dp</dimen>
+    <dimen name="corner_radius_14">14dp</dimen>
+    <dimen name="corner_radius_255">255dp</dimen>
 </resources>
