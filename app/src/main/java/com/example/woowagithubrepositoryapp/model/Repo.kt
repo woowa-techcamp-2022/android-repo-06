@@ -1,7 +1,5 @@
 package com.example.woowagithubrepositoryapp.model
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import com.google.gson.annotations.SerializedName
 
 data class Repo(

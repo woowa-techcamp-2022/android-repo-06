@@ -4,9 +4,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -64,14 +62,10 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
                     changeFragmentToNotificationFragment()
                 }
                 else -> {
-                    if (issueFragment == null)
+                    if (issueFragment == null || it.isReselected)
                         issueFragment = IssueFragment()
-                    if(it.isReselected){
-                        //TODO 필요하다면 viewModel.refreshIssue 구현
-                    }
                     changeFragmentToIssueFragment()
                 }
-
             }
         }
     }
@@ -86,7 +80,6 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             "Issue" -> tabLayout.selectTab(tabLayout.getTabAt(0))
             else -> tabLayout.selectTab(tabLayout.getTabAt(1))
         }
-
     }
 
     private fun initToolbar(toolbar: MaterialToolbar) {
