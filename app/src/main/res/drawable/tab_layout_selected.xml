@@ -8,14 +8,14 @@
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:left="8dp"
-        android:right="8dp"
-        android:top="8dp"
-        android:bottom="8dp">
+        android:left="@dimen/margin_8"
+        android:right="@dimen/margin_8"
+        android:top="@dimen/margin_8"
+        android:bottom="@dimen/margin_8">
         <shape
             android:shape="rectangle">
             <corners
-                android:radius="10dp">
+                android:radius="@dimen/corner_radius_10">
             </corners>
             <solid
                 android:color="@color/primary"/>

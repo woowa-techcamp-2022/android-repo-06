@@ -35,7 +35,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/size_0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profile_appbar">
 
@@ -43,49 +43,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <!--profile img, name, bio-->
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/profile_imageView"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_width="@dimen/size_80"
+                    android:layout_height="@dimen/size_80"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginTop="@dimen/margin_24"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_login_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="26dp"
+                    android:layout_marginStart="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_26"
                     android:text="@{viewModel.userData.login}"
                     android:textColor="@color/white"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/text_size_18"
                     app:layout_constraintStart_toEndOf="@id/profile_imageView"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_userName_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/margin_16"
                     android:text="@{viewModel.userData.name}"
                     android:textColor="@color/gray"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/text_size_16"
                     app:layout_constraintStart_toEndOf="@id/profile_imageView"
                     app:layout_constraintTop_toBottomOf="@id/profile_login_textView" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_8"
                     android:background="@drawable/color_chip_rectangle_20"
                     android:gravity="center"
-                    android:paddingStart="8dp"
-                    android:paddingTop="4dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="4dp"
+                    android:paddingStart="@dimen/padding_8"
+                    android:paddingTop="@dimen/padding_4"
+                    android:paddingEnd="@dimen/padding_8"
+                    android:paddingBottom="@dimen/padding_4"
                     android:text="@{viewModel.userData.bio.toString()}"
                     android:textColor="@color/gray"
                     app:layout_constraintStart_toEndOf="@id/profile_imageView"
@@ -94,72 +94,72 @@
                 <View
                     android:id="@+id/slice"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_height="@dimen/size_1"
+                    android:layout_marginTop="@dimen/margin_16"
                     android:background="@color/navy"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profile_imageView" />
                 <!--location, link, mail, followers, following-->
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_location_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="16dp"
-                    android:drawablePadding="10dp"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:drawablePadding="@dimen/padding_10"
                     android:gravity="center_vertical"
                     android:text="@{viewModel.userData.location.toString()}"
                     android:textColor="@color/white"
-                    android:textSize="14dp"
+                    android:textSize="@dimen/text_size_14"
                     app:drawableStartCompat="@drawable/ic_location"
                     app:drawableTint="@color/gray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/slice" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_link_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="18dp"
-                    android:drawablePadding="10dp"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginTop="@dimen/margin_18"
+                    android:drawablePadding="@dimen/padding_10"
                     android:gravity="center_vertical"
                     android:text="@{viewModel.userData.blog.toString()}"
                     android:textColor="@color/white"
-                    android:textSize="14dp"
+                    android:textSize="@dimen/text_size_14"
                     app:drawableStartCompat="@drawable/ic_link"
                     app:drawableTint="@color/gray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profile_location_textView" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_email_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="18dp"
-                    android:drawablePadding="10dp"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginTop="@dimen/margin_18"
+                    android:drawablePadding="@dimen/padding_10"
                     android:gravity="center_vertical"
                     android:text="@{viewModel.userData.email.toString()}"
                     android:textColor="@color/white"
-                    android:textSize="14dp"
+                    android:textSize="@dimen/text_size_14"
                     app:drawableStartCompat="@drawable/ic_mail"
                     app:drawableTint="@color/gray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profile_link_textView" />
 
                 <!--repos, starred-->
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_follow_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
-                    android:drawablePadding="10dp"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:drawablePadding="@dimen/padding_10"
                     android:gravity="center_vertical"
                     android:text="@{@string/follow_text(String.valueOf(viewModel.userData.followers), String.valueOf(viewModel.userData.following))}"
                     android:textColor="@color/white"
-                    android:textSize="14dp"
+                    android:textSize="@dimen/text_size_14"
                     app:drawableStartCompat="@drawable/ic_user"
                     app:drawableTint="@color/gray"
                     app:layout_constraintStart_toStartOf="parent"
@@ -168,20 +168,20 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/profile_repo_star_constraintLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="128dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_height="@dimen/size_128"
+                    android:layout_marginTop="@dimen/margin_24"
                     android:background="@drawable/color_chip_rectangle_20"
-                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginHorizontal="@dimen/margin_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profile_follow_textView">
 
                     <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/profile_repository_imageButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40sp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_width="@dimen/size_40"
+                        android:layout_height="@dimen/size_40"
+                        android:layout_marginStart="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_16"
                         android:background="@drawable/color_chip_rectangle_22"
                         android:src="@drawable/ic_bookmark"
                         app:layout_constraintStart_toStartOf="parent"
@@ -189,57 +189,57 @@
 
                     <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/profile_starred_imageButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40sp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_width="@dimen/size_40"
+                        android:layout_height="@dimen/size_40"
+                        android:layout_marginStart="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_16"
                         android:background="@drawable/color_chip_rectangle_22"
                         android:src="@drawable/ic_star_outline"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/profile_repository_imageButton" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/profile_repository_textView"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_height="@dimen/size_40"
+                        android:layout_marginStart="@dimen/margin_16"
                         android:gravity="center_vertical"
-                        android:text="Repositories"
+                        android:text="@string/profile_repository"
                         android:textColor="@color/white"
-                        android:textSize="14dp"
+                        android:textSize="@dimen/text_size_14"
                         app:layout_constraintStart_toEndOf="@id/profile_repository_imageButton"
                         app:layout_constraintTop_toTopOf="@id/profile_repository_imageButton" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_height="@dimen/size_40"
+                        android:layout_marginStart="@dimen/margin_16"
                         android:gravity="center_vertical"
-                        android:text="Starred"
+                        android:text="@string/profile_starred"
                         android:textColor="@color/white"
-                        android:textSize="14dp"
+                        android:textSize="@dimen/text_size_14"
                         app:layout_constraintStart_toEndOf="@id/profile_starred_imageButton"
                         app:layout_constraintTop_toTopOf="@id/profile_starred_imageButton" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_height="@dimen/size_40"
+                        android:layout_marginStart="@dimen/margin_16"
                         android:gravity="center_vertical"
                         android:text="@{String.valueOf(viewModel.userData.publicRepos)}"
                         android:textColor="@color/white"
-                        android:textSize="14dp"
+                        android:textSize="@dimen/text_size_14"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/profile_repository_imageButton" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_height="@dimen/size_40"
+                        android:layout_marginStart="@dimen/margin_16"
                         android:gravity="center_vertical"
                         android:text="@{String.valueOf(viewModel.userData.starredCnt)}"
                         android:textColor="@color/white"
-                        android:textSize="14dp"
+                        android:textSize="@dimen/text_size_14"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/profile_starred_imageButton" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
