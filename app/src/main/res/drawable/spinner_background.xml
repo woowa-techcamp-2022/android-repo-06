@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/spinner_selected_background"
+        android:state_window_focused="false"/>
+    <item android:drawable="@drawable/color_chip_rectangle_20"
+        android:state_window_focused="true"/>
+</selector>
