@@ -74,20 +74,22 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     }
 
     fun getNotifications() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO){
             isProgressOn.postValue(true)
             val result = repository.getNotifications(notificationPage)
             when {
                 result.isSuccess -> {
                     val notificationList = result.getOrDefault(mutableListOf())
                     if(notificationList.size != 0) {
-                        if (notificationPage == 1) {
-                            _notifications.value?.clear()
+                        withContext(Dispatchers.Main){
+                            if (notificationPage == 1) {
+                                _notifications.value?.clear()
+                            }
+                            _notifications.value?.addAll(notificationList)
+                            _notifications.value = _notifications.value
+                            isNotificationDataLoading = Constants.DataLoading.BEFORE
+                            notificationPage++
                         }
-                        _notifications.value?.addAll(notificationList)
-                        _notifications.value = _notifications.value
-                        isNotificationDataLoading = Constants.DataLoading.BEFORE
-                        notificationPage++
                     }
                     else {
                         isNotificationDataLoading = Constants.DataLoading.AFTER
@@ -103,11 +105,13 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     }
 
     fun markNotificationAsRead(notification: Notification) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val result = repository.patchNotificationThread(notification.threadId)
             when {
                 result.isSuccess -> {
-                    removeNotificationAtPosition(notification)
+                    withContext(Dispatchers.Main) {
+                        removeNotificationAtPosition(notification)
+                    }
                 }
                 result.isFailure -> {
                     toastMsg("읽음 처리에 실패했습니다.")
