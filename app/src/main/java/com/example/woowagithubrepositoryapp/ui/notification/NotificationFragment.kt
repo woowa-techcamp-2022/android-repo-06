@@ -34,9 +34,9 @@ class NotificationFragment : Fragment() {
     private fun initRecyclerView(){
         ItemTouchHelper(NotificationItemHelper(requireContext()) { notification ->
             markNotification(notification)
-        }).attachToRecyclerView(binding?.recyclerviewNotification)
+        }).attachToRecyclerView(binding?.notificationRecyclerView)
 
-        binding?.recyclerviewNotification?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding?.notificationRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val lastVisibleItemPosition =
@@ -74,7 +74,7 @@ class NotificationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.recyclerviewNotification?.adapter = notificationAdapter
+        binding?.notificationRecyclerView?.adapter = notificationAdapter
 
         viewModel.notifications.observe(viewLifecycleOwner){
             notificationAdapter.submitList(it.toMutableList())
