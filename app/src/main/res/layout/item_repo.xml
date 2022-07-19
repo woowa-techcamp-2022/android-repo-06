@@ -17,6 +17,7 @@
             android:layout_width="@dimen/size_24"
             android:layout_height="@dimen/size_24"
             android:src="@drawable/ic_user"
+            app:iconImage="@{repo.owner.avatarUrl}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -89,6 +90,7 @@
             android:layout_height="@dimen/size_14"
             android:layout_marginStart="@dimen/margin_14"
             android:background="@drawable/shape_circle"
+            app:tintColor="@{repo.languageColor}"
             app:layout_constraintBottom_toBottomOf="@id/repo_star_imageView"
             app:layout_constraintStart_toEndOf="@id/repo_star_textView"
             app:layout_constraintTop_toTopOf="@id/repo_star_imageView" />

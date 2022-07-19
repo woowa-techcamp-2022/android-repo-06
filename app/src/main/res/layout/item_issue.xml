@@ -18,7 +18,7 @@
             android:layout_width="@dimen/size_18"
             android:layout_height="@dimen/size_18"
             android:layout_marginTop="@dimen/margin_16"
-            android:src="@drawable/ic_issue_open"
+            android:src="@{issue.isOpen? @drawable/ic_issue_open : @drawable/ic_issue_closed}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/gray"
             android:textSize="@dimen/text_size_14"
+            app:updatedText="@{issue.updatedAt}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/state_icon_imageView" />
 

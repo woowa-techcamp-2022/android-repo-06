@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ActivityLoginBinding
-import com.example.woowagithubrepositoryapp.repository.TokenRepository
 import com.example.woowagithubrepositoryapp.ui.MainActivity
 import com.example.woowagithubrepositoryapp.utils.Constants.GITHUB_CLIENT_ID
 import com.example.woowagithubrepositoryapp.utils.Prefs

@@ -6,7 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.woowagithubrepositoryapp.model.Repo
 import com.example.woowagithubrepositoryapp.repository.GithubRepository
 import com.example.woowagithubrepositoryapp.utils.toastMsg
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SearchViewModel(private val repository: GithubRepository) : ViewModel() {
 

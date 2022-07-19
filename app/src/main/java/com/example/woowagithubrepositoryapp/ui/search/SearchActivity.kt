@@ -1,9 +1,9 @@
 package com.example.woowagithubrepositoryapp.ui.search
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +27,7 @@ class SearchActivity : AppCompatActivity() {
         ViewModelProvider(this, ViewModelFactory())[SearchViewModel::class.java]
     }
 
-    private val repoAdapter = RepositoryAdapter(this)
+    private val repoAdapter = RepositoryAdapter()
 
     private var checkTextJob: Job? = null
 

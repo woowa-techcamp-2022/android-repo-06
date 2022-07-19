@@ -1,5 +1,6 @@
 package com.example.woowagithubrepositoryapp.utils
 
+import android.content.res.ColorStateList
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
@@ -29,4 +30,9 @@ fun AppCompatImageView.setIconImage(resource : String){
 @BindingAdapter("updatedText")
 fun AppCompatTextView.setUpdatedText(resource: String){
     text = TimeUtil.getTimeData(resource)
+}
+
+@BindingAdapter("tintColor")
+fun AppCompatImageView.setTintColor(color : Int){
+    backgroundTintList = ColorStateList.valueOf(color)
 }
