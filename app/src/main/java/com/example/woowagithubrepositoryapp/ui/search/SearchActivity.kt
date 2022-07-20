@@ -37,6 +37,8 @@ class SearchActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        viewModel.searchType = SearchType.CREATE
+
         initToolbar()
         initRecyclerView()
         initEditText()
@@ -60,13 +62,16 @@ class SearchActivity : AppCompatActivity() {
                 val lastVisibleItemPosition =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount
-                if (lastVisibleItemPosition + 1 == itemTotalCount) {
+                if (lastVisibleItemPosition + 1 == itemTotalCount && viewModel.isProgressOn.value == false) {
                     viewModel.pageNumber++
                     viewModel.searchRepos {
                         repoAdapter.submitList(it)
                         repoAdapter.notifyItemRangeChanged(itemTotalCount, it.size)
                     }
                 }
+                val firstVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                viewModel.scrollPosition = firstVisibleItemPosition
             }
         })
     }
@@ -82,12 +87,18 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchRepos() {
-        viewModel.repoList.clear()
-        viewModel.pageNumber = 1
-        viewModel.searchRepos {
-            repoAdapter.submitList(it)
-            repoAdapter.notifyDataSetChanged()
+        if (viewModel.searchType == SearchType.CREATE && viewModel.repoList.isNotEmpty()) {
+            repoAdapter.submitList(viewModel.repoList)
+            binding.searchRepoRecyclerView.scrollToPosition(viewModel.scrollPosition)
+        } else {
+            viewModel.repoList.clear()
+            viewModel.pageNumber = 1
+            viewModel.searchRepos {
+                repoAdapter.submitList(it)
+                repoAdapter.notifyDataSetChanged()
+            }
         }
+        viewModel.searchType = SearchType.SEARCH
     }
 
     private fun setObserver() {
