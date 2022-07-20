@@ -74,6 +74,12 @@ class SearchActivity : AppCompatActivity() {
                 viewModel.scrollPosition = firstVisibleItemPosition
             }
         })
+
+        binding.searchSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.pageNumber = 1
+            searchRepos()
+            binding.searchSwipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun initEditText() {
