@@ -30,6 +30,33 @@ class NotificationFragment : Fragment() {
 
     private val notificationAdapter = NotificationAdapter()
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentNotificationBinding.inflate(inflater, container, false)
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.notificationRecyclerView?.adapter = notificationAdapter
+
+        viewModel.notifications.observe(viewLifecycleOwner) {
+            notificationAdapter.submitList(it.toMutableList())
+        }
+
+        initRecyclerView()
+
+        getNotifications()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
     private fun initRecyclerView() {
         ItemTouchHelper(NotificationItemHelper(requireContext()) { notification ->
             markNotification(notification)
@@ -52,37 +79,15 @@ class NotificationFragment : Fragment() {
         })
     }
 
+    private fun getNotifications() {
+        if(viewModel.notifications.value?.size == 0)
+            viewModel.getNotifications()
+    }
+
     private fun markNotification(notification: Notification) {
         viewModel.markNotificationAsRead(notification = notification)
         Toast.makeText(
             context, "${notification.subject.title} 알림이 읽음 처리되었습니다", Toast.LENGTH_SHORT
         ).show()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentNotificationBinding.inflate(inflater, container, false)
-        return binding?.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding?.notificationRecyclerView?.adapter = notificationAdapter
-
-        viewModel.notifications.observe(viewLifecycleOwner) {
-            notificationAdapter.submitList(it.toMutableList())
-        }
-
-        initRecyclerView()
-
-        viewModel.getNotifications()
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
     }
 }
