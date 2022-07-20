@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{notification.repository.name}"
+                android:text="@{notification.repository.fullName}"
                 android:textColor="@color/gray"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toStartOf="@id/issue_textView"
