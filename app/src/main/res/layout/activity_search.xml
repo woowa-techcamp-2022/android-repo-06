@@ -47,12 +47,12 @@
             app:layout_constraintTop_toBottomOf="@id/search_appbar">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:visibility="@{viewModel.isSearchBarActive()? View.GONE : View.VISIBLE}"
                 android:id="@+id/search_icon_imageView"
                 android:layout_width="@dimen/size_24"
                 android:layout_height="@dimen/size_24"
                 android:layout_marginStart="@dimen/margin_10"
                 android:src="@drawable/ic_search"
+                android:visibility="@{viewModel.isSearchBarActive()? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -61,33 +61,33 @@
                 android:id="@+id/search_bar_editText"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
                 android:background="@drawable/color_chip_rectangle_20"
                 android:gravity="center_vertical"
                 android:hint="@string/search_hint"
-                android:text="@={viewModel.searchText}"
                 android:imeOptions="actionSearch"
                 android:padding="10dp"
                 android:singleLine="true"
+                android:text="@={viewModel.searchText}"
                 android:textColor="@color/white"
                 android:textColorHint="@color/gray"
                 android:textSize="@dimen/text_size_14"
-                android:layout_marginEnd="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/search_close_ImageView"
                 app:layout_constraintStart_toEndOf="@id/search_icon_imageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:visibility="@{viewModel.isSearchBarActive? View.VISIBLE : View.GONE}"
                 android:id="@+id/search_close_ImageView"
                 android:layout_width="@dimen/size_16"
                 android:layout_height="@dimen/size_16"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:background="@drawable/ic_variant10"
+                android:onClick="@{(v)-> viewModel.removeSearchText()}"
+                android:visibility="@{viewModel.isSearchBarActive? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:onClick="@{(v)-> viewModel.removeSearchText()}"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -122,23 +122,29 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_repo_recyclerView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/search_swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
             android:layout_margin="@dimen/margin_24"
-            android:visibility="@{viewModel.recyclerViewOn? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_bar_layout"
-            tools:listitem="@layout/item_repo" />
+            app:layout_constraintTop_toBottomOf="@id/search_bar_layout">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_repo_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{viewModel.recyclerViewOn? View.VISIBLE : View.GONE}"
+                tools:listitem="@layout/item_repo" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ProgressBar
-            android:visibility="@{viewModel.isProgressOn? View.VISIBLE : View.GONE}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/search_bar_layout"
+            android:visibility="@{viewModel.isProgressOn? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/search_bar_layout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
