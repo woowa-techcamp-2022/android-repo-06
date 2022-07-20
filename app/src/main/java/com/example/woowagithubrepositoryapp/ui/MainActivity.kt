@@ -3,12 +3,10 @@ package com.example.woowagithubrepositoryapp.ui
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -48,8 +46,9 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         initTabLayout(binding.mainTabLayout)
         initToolbar(binding.mainToolbar)
         setStateObserve()
-
-        viewModel.getUserData { invalidateOptionsMenu() }
+        if(App.user == null){
+            viewModel.getUserData { invalidateOptionsMenu() }
+        }
     }
 
     private fun setStateObserve() {
@@ -62,8 +61,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
                     changeFragmentByTag(it.text)
                 }
                 setOf(Constants.Tab.ISSUE.text,true)  -> {
-                    //viewModel.refreshIssues()
-                    changeFragmentByTag(it.text)
+                    viewModel.refreshIssues()
                 }
                 setOf(Constants.Tab.ISSUE.text,false)  -> {
                     changeFragmentByTag(it.text)

@@ -13,4 +13,8 @@ object Constants {
     enum class Tab(val text : String) {
         ISSUE("Issue"), NOTI("Notifications")
     }
+
+    enum class IssueLoadType{
+        CREATE, LOAD, PAGING
+    }
 }
