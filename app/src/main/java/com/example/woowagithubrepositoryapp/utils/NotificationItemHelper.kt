@@ -13,8 +13,8 @@ import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
 import kotlin.math.roundToInt
 
 class NotificationItemHelper(val context: Context,
-    val mark : (notification : Notification) -> Unit)
-        : ItemTouchHelper.Callback() {
+                             val mark : (notification : Notification,position : Int) -> Unit,
+) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -34,7 +34,7 @@ class NotificationItemHelper(val context: Context,
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val notificationViewHolder = viewHolder as NotificationAdapter.NotificationViewHolder
         notificationViewHolder.binding.notification?.let {
-            mark(it)
+            mark(it,notificationViewHolder.adapterPosition)
         }
     }
 
