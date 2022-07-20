@@ -4,10 +4,7 @@ import android.util.Log
 import com.example.woowagithubrepositoryapp.model.*
 import com.example.woowagithubrepositoryapp.network.GithubClient
 import com.example.woowagithubrepositoryapp.network.GithubService
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class GithubRepository {
     private val service = GithubClient().generate(GithubService::class.java)
@@ -33,29 +30,19 @@ class GithubRepository {
             try {
                 val response = service.getNotifications(page = page)
                 if (response.isSuccessful) {
-                    Log.d("GetNotificationInfo","start")
                     val notifications = response.body()?.toMutableList() ?: mutableListOf()
-                    val notificationInfos = mutableListOf<Deferred<NotificationInfo?>>()
-                    val notificationMap = mutableMapOf<String,Pair<Int,Int>>()
-                    notifications.forEach {
-                        notificationInfos.add(async { getNotificationInfo(it.subject.url,it.id) })
-                        Log.d("GetNotificationInfo","async : ${it.id}")
+                    val notificationInfos = notifications.map {
+                        async {
+                            getNotificationInfo(it.subject.url,it.id)
+                        }
+                    }.awaitAll()
 
-                    }
-                    notificationInfos.forEach { data ->
-                        data.await()?.let {
-                            notificationMap.set(it.notificationId,Pair(it.comments,it.number))
-                            Log.d("GetNotificationInfo","await : ${it.notificationId}")
+                    Result.success(notifications.zip(notificationInfos){ notification, notificationInfo ->
+                        notification.apply {
+                            this.comments = notificationInfo?.comments.toString()
+                            this.issueNum = "#${notificationInfo?.number}"
                         }
-                    }
-                    notifications.forEach { notification ->
-                        notificationMap.get(notification.id).apply {
-                            notification.comments = this?.first.toString()
-                            notification.issueNum = "#${this?.second}"
-                        }
-                    }
-                    Log.d("GetNotificationInfo","end")
-                    Result.success(notifications)
+                    }.toMutableList())
                 } else Result.failure(Exception("Get Notifications Error : response isn't successful"))
             } catch (e: Exception) {
                 Log.d("getNotiError", e.cause.toString())
