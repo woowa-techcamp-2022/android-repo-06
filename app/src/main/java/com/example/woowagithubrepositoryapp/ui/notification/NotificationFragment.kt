@@ -58,8 +58,8 @@ class NotificationFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        ItemTouchHelper(NotificationItemHelper(requireContext()) { notification ->
-            markNotification(notification)
+        ItemTouchHelper(NotificationItemHelper(requireContext()) { notification,position ->
+            markNotification(notification,position)
         }).attachToRecyclerView(binding?.notificationRecyclerView)
 
         binding?.notificationRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -79,15 +79,18 @@ class NotificationFragment : Fragment() {
         })
     }
 
+    private fun redrawNotificationAdapterItemAtPosition(position : Int){
+        notificationAdapter.notifyItemChanged(position)
+    }
+
     private fun getNotifications() {
         if(viewModel.notifications.value?.size == 0)
             viewModel.getNotifications()
     }
 
-    private fun markNotification(notification: Notification) {
-        viewModel.markNotificationAsRead(notification = notification)
-        Toast.makeText(
-            context, "${notification.subject.title} 알림이 읽음 처리되었습니다", Toast.LENGTH_SHORT
-        ).show()
+    private fun markNotification(notification: Notification,position: Int) {
+        viewModel.markNotificationAsRead(notification = notification) {
+            redrawNotificationAdapterItemAtPosition(position)
+        }
     }
 }

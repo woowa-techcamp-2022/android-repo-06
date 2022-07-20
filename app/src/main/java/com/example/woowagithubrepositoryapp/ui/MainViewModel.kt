@@ -99,19 +99,23 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
         }
     }
 
-    fun markNotificationAsRead(notification: Notification) {
+    fun markNotificationAsRead(notification: Notification, complete : () -> Unit) {
         viewModelScope.launch {
             val result = repository.patchNotificationThread(notification.threadId)
             when {
                 result.isSuccess -> {
                     removeNotificationAtPosition(notification)
+                    toastMsg("${notification.subject.title} 알림이 읽음 처리되었습니다")
                 }
                 result.isFailure -> {
+                    complete()
                     toastMsg("읽음 처리에 실패했습니다.")
                 }
             }
+
         }
     }
+
 
     fun refreshNotifications() {
         _notifications.value = mutableListOf()
