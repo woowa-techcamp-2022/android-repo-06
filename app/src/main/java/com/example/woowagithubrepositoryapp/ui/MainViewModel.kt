@@ -8,6 +8,7 @@ import com.example.woowagithubrepositoryapp.App
 import com.example.woowagithubrepositoryapp.model.Issue
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.repository.GithubRepository
+import com.example.woowagithubrepositoryapp.ui.common.TabSelectState
 import com.example.woowagithubrepositoryapp.utils.Constants
 import com.example.woowagithubrepositoryapp.utils.toastMsg
 import kotlinx.coroutines.launch
@@ -127,5 +128,3 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
         _notifications.value = _notifications.value
     }
 }
-
-data class TabSelectState(val text: String, val isReselected: Boolean)
