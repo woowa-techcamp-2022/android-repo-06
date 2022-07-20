@@ -15,6 +15,7 @@ import com.example.woowagithubrepositoryapp.databinding.FragmentIssueBinding
 import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.adapter.IssueAdapter
 import com.example.woowagithubrepositoryapp.ui.adapter.SpinnerAdapter
+import com.example.woowagithubrepositoryapp.utils.Constants
 import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 
 class IssueFragment : Fragment() {
@@ -39,8 +40,11 @@ class IssueFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
 
+        viewModel.issueLoadType = Constants.IssueLoadType.CREATE
+
         initSpinner()
         initRecyclerView()
+        setObserver()
     }
 
     private fun initSpinner() {
@@ -52,20 +56,23 @@ class IssueFragment : Fragment() {
         val adapter = SpinnerAdapter(requireContext(), R.layout.item_spinner, list)
         binding.issueSpinner.adapter = adapter
         binding.issueSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                when (position) {
-                    0 -> {
-                        viewModel.issueSelectState.value = "open"
-                    }
-                    1 -> {
-                        viewModel.issueSelectState.value = "closed"
-                    }
-                    2 -> {
-                        viewModel.issueSelectState.value = "all"
-                    }
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val newValue = when (position) {
+                    0 -> "open"
+                    1 -> "closed"
+                    else -> "all"
                 }
-                viewModel.issuePage.value = 1
-                viewModel.issueList.clear()
+                if (viewModel.issueSelectState.value != newValue) {
+                    viewModel.issuePage.value = 1
+                    viewModel.issueSelectState.value = newValue
+                    viewModel.issueList.clear()
+                    viewModel.issueLoadType = Constants.IssueLoadType.LOAD
+                }
                 loadIssueData()
                 for (idx in list.indices) {
                     list[idx].check = (idx == position)
@@ -78,7 +85,7 @@ class IssueFragment : Fragment() {
             }
         }
 
-        when(viewModel.issueSelectState.value){
+        when (viewModel.issueSelectState.value) {
             "open" -> binding.issueSpinner.setSelection(0)
             "closed" -> binding.issueSpinner.setSelection(1)
             "all" -> binding.issueSpinner.setSelection(2)
@@ -86,8 +93,12 @@ class IssueFragment : Fragment() {
     }
 
     private fun loadIssueData() {
-        viewModel.getIssues {
-            issueAdapter.submitList(it.toMutableList())
+        if (viewModel.issueLoadType == Constants.IssueLoadType.CREATE && viewModel.issueList.isNotEmpty()) {
+            issueAdapter.submitList(viewModel.issueList.toMutableList())
+        } else {
+            viewModel.getIssues {
+                issueAdapter.submitList(it.toMutableList())
+            }
         }
     }
 
@@ -95,8 +106,6 @@ class IssueFragment : Fragment() {
         binding.issueRecyclerView.adapter = issueAdapter
         binding.issueRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.issueRecyclerView.itemAnimator = null
-
-        loadIssueData()
 
         binding.issueRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -106,9 +115,16 @@ class IssueFragment : Fragment() {
                 val itemTotalCount = recyclerView.adapter?.itemCount
                 if (lastVisibleItemPosition + 1 == itemTotalCount) {
                     viewModel.issuePage.value = viewModel.issuePage.value!! + 1
+                    viewModel.issueLoadType = Constants.IssueLoadType.PAGING
                     loadIssueData()
                 }
             }
         })
+    }
+
+    private fun setObserver() {
+        viewModel.issueRefreshState.observe(viewLifecycleOwner) {
+            loadIssueData()
+        }
     }
 }
