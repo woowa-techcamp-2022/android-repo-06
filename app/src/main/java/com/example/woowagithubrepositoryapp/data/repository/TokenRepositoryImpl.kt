@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 
 class TokenRepositoryImpl : TokenRepository{
 
-    private val service = GithubClient().generateRefreshClient(TokenService::class.java)
+    private val service = GithubClient().generateTokenClient(TokenService::class.java)
 
     override suspend fun getAccessToken(
         code: String
