@@ -1,4 +1,4 @@
-package com.example.woowagithubrepositoryapp.network
+package com.example.woowagithubrepositoryapp.data.network
 
 import com.example.woowagithubrepositoryapp.ui.auth.LoginActivity
 import com.example.woowagithubrepositoryapp.utils.Prefs

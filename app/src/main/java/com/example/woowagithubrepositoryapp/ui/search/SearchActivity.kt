@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ActivitySearchBinding
 import com.example.woowagithubrepositoryapp.ui.adapter.RepositoryAdapter
-import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
+import com.example.woowagithubrepositoryapp.ui.common.SearchType
+import com.example.woowagithubrepositoryapp.ui.common.ViewModelFactory
 import kotlinx.coroutines.Job
 
 class SearchActivity : AppCompatActivity() {
