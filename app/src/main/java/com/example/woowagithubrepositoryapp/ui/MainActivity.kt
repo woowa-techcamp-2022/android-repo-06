@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     private fun initToolbar(toolbar: MaterialToolbar) {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbar.title = getString(R.string.appbar_title)
+        toolbar.title = getString(R.string.main_title)
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.nav_profile -> startProfileActivity()
