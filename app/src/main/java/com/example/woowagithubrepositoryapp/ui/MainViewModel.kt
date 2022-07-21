@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.woowagithubrepositoryapp.App
+import com.example.woowagithubrepositoryapp.data.repository.GithubRepository
 import com.example.woowagithubrepositoryapp.model.Issue
 import com.example.woowagithubrepositoryapp.model.Notification
-import com.example.woowagithubrepositoryapp.repository.GithubRepository
 import com.example.woowagithubrepositoryapp.ui.common.DataLoading
 import com.example.woowagithubrepositoryapp.ui.common.IssueLoadType
 import com.example.woowagithubrepositoryapp.ui.common.TabSelectState

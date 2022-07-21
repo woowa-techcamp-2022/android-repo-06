@@ -2,8 +2,8 @@ package com.example.woowagithubrepositoryapp.ui.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.woowagithubrepositoryapp.repository.GithubRepository
-import com.example.woowagithubrepositoryapp.repository.TokenRepository
+import com.example.woowagithubrepositoryapp.data.repository.GithubRepository
+import com.example.woowagithubrepositoryapp.data.repository.TokenRepository
 import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.auth.LoginViewModel
 import com.example.woowagithubrepositoryapp.ui.profile.ProfileViewModel

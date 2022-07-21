@@ -1,7 +1,7 @@
-package com.example.woowagithubrepositoryapp.repository
+package com.example.woowagithubrepositoryapp.data.repository
 
-import com.example.woowagithubrepositoryapp.network.GithubClient
-import com.example.woowagithubrepositoryapp.network.TokenService
+import com.example.woowagithubrepositoryapp.data.network.GithubClient
+import com.example.woowagithubrepositoryapp.data.network.TokenService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

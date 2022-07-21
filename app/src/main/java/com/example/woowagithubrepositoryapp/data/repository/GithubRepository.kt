@@ -1,10 +1,13 @@
-package com.example.woowagithubrepositoryapp.repository
+package com.example.woowagithubrepositoryapp.data.repository
 
 import android.util.Log
+import com.example.woowagithubrepositoryapp.data.network.GithubClient
+import com.example.woowagithubrepositoryapp.data.network.GithubService
 import com.example.woowagithubrepositoryapp.model.*
-import com.example.woowagithubrepositoryapp.network.GithubClient
-import com.example.woowagithubrepositoryapp.network.GithubService
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 
 class GithubRepository {
     private val service = GithubClient().generate(GithubService::class.java)

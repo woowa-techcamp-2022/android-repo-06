@@ -16,7 +16,6 @@ import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
 import com.example.woowagithubrepositoryapp.ui.common.DataLoading
 import com.example.woowagithubrepositoryapp.ui.common.ViewModelFactory
-import com.example.woowagithubrepositoryapp.utils.NotificationItemHelper
 
 class NotificationFragment : Fragment() {
 

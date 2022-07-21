@@ -3,8 +3,8 @@ package com.example.woowagithubrepositoryapp.ui.search
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.woowagithubrepositoryapp.data.repository.GithubRepository
 import com.example.woowagithubrepositoryapp.model.Repo
-import com.example.woowagithubrepositoryapp.repository.GithubRepository
 import com.example.woowagithubrepositoryapp.ui.common.SearchType
 import com.example.woowagithubrepositoryapp.utils.toastMsg
 import kotlinx.coroutines.delay
