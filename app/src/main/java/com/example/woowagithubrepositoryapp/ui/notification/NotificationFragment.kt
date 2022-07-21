@@ -75,6 +75,11 @@ class NotificationFragment : Fragment() {
                 }
             }
         })
+
+        binding?.notificationSwipeRefreshLayout?.setOnRefreshListener {
+            viewModel.refreshNotifications()
+            binding?.notificationSwipeRefreshLayout?.isRefreshing = false
+        }
     }
 
     private fun redrawNotificationAdapterItemAtPosition(position : Int){

@@ -5,6 +5,7 @@ import com.example.woowagithubrepositoryapp.data.network.GithubClient
 import com.example.woowagithubrepositoryapp.data.network.GithubService
 import com.example.woowagithubrepositoryapp.model.*
 import kotlinx.coroutines.*
+import java.io.IOException
 
 class GithubRepositoryImpl : GithubRepository {
     private val service = GithubClient().generate(GithubService::class.java)

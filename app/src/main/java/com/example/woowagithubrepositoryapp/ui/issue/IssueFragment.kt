@@ -122,6 +122,11 @@ class IssueFragment : Fragment() {
                     }
                 }
             })
+
+            it.issueSwipeRefreshLayout.setOnRefreshListener {
+                viewModel.refreshIssues()
+                it.issueSwipeRefreshLayout.isRefreshing = false
+            }
         }
     }
 
