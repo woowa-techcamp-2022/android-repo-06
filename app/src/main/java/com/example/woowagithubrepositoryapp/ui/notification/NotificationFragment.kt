@@ -41,13 +41,9 @@ class NotificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.notificationRecyclerView?.adapter = notificationAdapter
 
-        viewModel.notifications.observe(viewLifecycleOwner) {
-            notificationAdapter.submitList(it.toMutableList())
-        }
-
         initRecyclerView()
-
-        getNotifications()
+        initNotifications()
+        setObserver()
     }
 
     override fun onDestroyView() {
@@ -56,29 +52,33 @@ class NotificationFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        ItemTouchHelper(NotificationItemHelper(requireContext()) { notification,position ->
-            markNotification(notification,position)
-        }).attachToRecyclerView(binding?.notificationRecyclerView)
+        binding?.let {
+            it.notificationRecyclerView.apply {
+                ItemTouchHelper(NotificationItemHelper(requireContext()) { notification,position ->
+                    markNotification(notification,position)
+                }).attachToRecyclerView(this)
 
-        binding?.notificationRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val lastVisibleItemPosition =
-                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-                val itemTotalCount = recyclerView.adapter?.itemCount
-                if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    if (viewModel.isNotificationDataLoading == DataLoading.BEFORE) {
-                        viewModel.isNotificationDataLoading = DataLoading.NOW
-                        viewModel.getNotifications()
-                        Log.d("notificationPaging", "notificationPaging")
+                this.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        val lastVisibleItemPosition =
+                            (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                        val itemTotalCount = recyclerView.adapter?.itemCount
+                        if (lastVisibleItemPosition + 1 == itemTotalCount) {
+                            if (viewModel.isNotificationDataLoading == DataLoading.BEFORE) {
+                                viewModel.isNotificationDataLoading = DataLoading.NOW
+                                viewModel.getNotifications()
+                                Log.d("notificationPaging", "notificationPaging")
+                            }
+                        }
                     }
-                }
+                })
             }
-        })
 
-        binding?.notificationSwipeRefreshLayout?.setOnRefreshListener {
-            viewModel.refreshNotifications()
-            binding?.notificationSwipeRefreshLayout?.isRefreshing = false
+            it.notificationSwipeRefreshLayout.setOnRefreshListener {
+                viewModel.refreshNotifications()
+                it.notificationSwipeRefreshLayout.isRefreshing = false
+            }
         }
     }
 
@@ -86,7 +86,7 @@ class NotificationFragment : Fragment() {
         notificationAdapter.notifyItemChanged(position)
     }
 
-    private fun getNotifications() {
+    private fun initNotifications() {
         if(viewModel.notifications.value?.size == 0)
             viewModel.getNotifications()
     }
@@ -94,6 +94,12 @@ class NotificationFragment : Fragment() {
     private fun markNotification(notification: Notification,position: Int) {
         viewModel.markNotificationAsRead(notification = notification) {
             redrawNotificationAdapterItemAtPosition(position)
+        }
+    }
+
+    private fun setObserver(){
+        viewModel.notifications.observe(viewLifecycleOwner) {
+            notificationAdapter.submitList(it.toMutableList())
         }
     }
 }

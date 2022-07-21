@@ -76,9 +76,6 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
                 result.isSuccess -> {
                     val notificationList = result.getOrDefault(mutableListOf())
                     if (notificationList.size != 0) {
-                        if (notificationPage == 1) {
-                            _notifications.value?.clear()
-                        }
                         _notifications.value?.addAll(notificationList)
                         _notifications.value = _notifications.value
                         isNotificationDataLoading = DataLoading.BEFORE
