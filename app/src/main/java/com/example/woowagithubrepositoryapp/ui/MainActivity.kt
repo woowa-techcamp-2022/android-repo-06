@@ -15,13 +15,13 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.woowagithubrepositoryapp.App
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ActivityMainBinding
+import com.example.woowagithubrepositoryapp.ui.common.Tab
 import com.example.woowagithubrepositoryapp.ui.common.TabSelectState
+import com.example.woowagithubrepositoryapp.ui.common.ViewModelFactory
 import com.example.woowagithubrepositoryapp.ui.issue.IssueFragment
 import com.example.woowagithubrepositoryapp.ui.notification.NotificationFragment
 import com.example.woowagithubrepositoryapp.ui.profile.ProfileActivity
 import com.example.woowagithubrepositoryapp.ui.search.SearchActivity
-import com.example.woowagithubrepositoryapp.utils.Constants
-import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayout
 
@@ -54,16 +54,16 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     private fun setStateObserve() {
         viewModel.tabSelectState.observe(this) {
             when (setOf(it.text,it.isReselected)) {
-                setOf(Constants.Tab.NOTI.text,true)  -> {
+                setOf(Tab.NOTI.text,true)  -> {
                     viewModel.refreshNotifications()
                 }
-                setOf(Constants.Tab.NOTI.text,false)  -> {
+                setOf(Tab.NOTI.text,false)  -> {
                     changeFragmentByTag(it.text)
                 }
-                setOf(Constants.Tab.ISSUE.text,true)  -> {
+                setOf(Tab.ISSUE.text,true)  -> {
                     viewModel.refreshIssues()
                 }
-                setOf(Constants.Tab.ISSUE.text,false)  -> {
+                setOf(Tab.ISSUE.text,false)  -> {
                     changeFragmentByTag(it.text)
                 }
             }
@@ -79,8 +79,8 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         tabLayout.selectTab(tabLayout.getTabAt(-1))
 
         when (viewModel.tabSelectState.value?.text) {
-            Constants.Tab.ISSUE.text -> tabLayout.selectTab(tabLayout.getTabAt(0))
-            Constants.Tab.NOTI.text -> tabLayout.selectTab(tabLayout.getTabAt(1))
+            Tab.ISSUE.text -> tabLayout.selectTab(tabLayout.getTabAt(0))
+            Tab.NOTI.text -> tabLayout.selectTab(tabLayout.getTabAt(1))
         }
     }
 
@@ -132,8 +132,8 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         val transaction = supportFragmentManager.beginTransaction()
         val showFragment = supportFragmentManager.findFragmentByTag(tag)
         val hideFragment =
-            if(Constants.Tab.ISSUE.text == tag) supportFragmentManager.findFragmentByTag(Constants.Tab.NOTI.text)
-            else supportFragmentManager.findFragmentByTag(Constants.Tab.ISSUE.text)
+            if(Tab.ISSUE.text == tag) supportFragmentManager.findFragmentByTag(Tab.NOTI.text)
+            else supportFragmentManager.findFragmentByTag(Tab.ISSUE.text)
 
         if(showFragment == null){
             transaction.add(binding.mainFrameLayout.id,getShowFragment(tag),tag)
@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     }
 
     private fun getShowFragment(tag: String) : Fragment {
-        return if(tag == Constants.Tab.ISSUE.text) IssueFragment() else NotificationFragment()
+        return if(tag == Tab.ISSUE.text) IssueFragment() else NotificationFragment()
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {

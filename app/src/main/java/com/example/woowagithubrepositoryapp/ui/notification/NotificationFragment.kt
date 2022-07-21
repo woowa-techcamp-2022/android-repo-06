@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -15,9 +14,9 @@ import com.example.woowagithubrepositoryapp.databinding.FragmentNotificationBind
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
-import com.example.woowagithubrepositoryapp.utils.Constants.DataLoading
+import com.example.woowagithubrepositoryapp.ui.common.DataLoading
+import com.example.woowagithubrepositoryapp.ui.common.ViewModelFactory
 import com.example.woowagithubrepositoryapp.utils.NotificationItemHelper
-import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 
 class NotificationFragment : Fragment() {
 

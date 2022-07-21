@@ -1,4 +1,4 @@
-package com.example.woowagithubrepositoryapp.utils
+package com.example.woowagithubrepositoryapp.ui.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

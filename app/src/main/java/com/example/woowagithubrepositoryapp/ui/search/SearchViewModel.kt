@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.woowagithubrepositoryapp.model.Repo
 import com.example.woowagithubrepositoryapp.repository.GithubRepository
+import com.example.woowagithubrepositoryapp.ui.common.SearchType
 import com.example.woowagithubrepositoryapp.utils.toastMsg
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -60,8 +61,4 @@ class SearchViewModel(private val repository: GithubRepository) : ViewModel() {
     fun removeSearchText() {
         searchText.value = ""
     }
-}
-
-enum class SearchType {
-    CREATE, SEARCH
 }

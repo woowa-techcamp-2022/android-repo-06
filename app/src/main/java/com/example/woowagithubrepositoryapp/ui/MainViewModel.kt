@@ -8,8 +8,9 @@ import com.example.woowagithubrepositoryapp.App
 import com.example.woowagithubrepositoryapp.model.Issue
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.repository.GithubRepository
+import com.example.woowagithubrepositoryapp.ui.common.DataLoading
+import com.example.woowagithubrepositoryapp.ui.common.IssueLoadType
 import com.example.woowagithubrepositoryapp.ui.common.TabSelectState
-import com.example.woowagithubrepositoryapp.utils.Constants
 import com.example.woowagithubrepositoryapp.utils.toastMsg
 import kotlinx.coroutines.launch
 
@@ -19,18 +20,14 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     val issueSelectState = MutableLiveData("open")
     val issueList = mutableListOf<Issue>()
     val issueRefreshState = MutableLiveData(true)
-    var issueLoadType = Constants.IssueLoadType.CREATE
+    var issueLoadType = IssueLoadType.CREATE
 
     val tabSelectState = MutableLiveData(TabSelectState("Issue", false))
 
-    private val _notifications = MutableLiveData<MutableList<Notification>>()
+    private val _notifications = MutableLiveData<MutableList<Notification>>(mutableListOf())
     val notifications: LiveData<MutableList<Notification>> = _notifications
     var notificationPage = 1
-    var isNotificationDataLoading: Constants.DataLoading = Constants.DataLoading.BEFORE
-
-    init {
-        _notifications.value = mutableListOf()
-    }
+    var isNotificationDataLoading = DataLoading.BEFORE
 
     val isProgressOn = MutableLiveData(false)
 
@@ -73,7 +70,7 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     fun getNotifications() {
         viewModelScope.launch {
             isProgressOn.postValue(true)
-            isNotificationDataLoading = Constants.DataLoading.NOW
+            isNotificationDataLoading = DataLoading.NOW
             val result = repository.getNotifications(notificationPage)
             when {
                 result.isSuccess -> {
@@ -84,14 +81,14 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
                         }
                         _notifications.value?.addAll(notificationList)
                         _notifications.value = _notifications.value
-                        isNotificationDataLoading = Constants.DataLoading.BEFORE
+                        isNotificationDataLoading = DataLoading.BEFORE
                         notificationPage++
                     } else {
-                        isNotificationDataLoading = Constants.DataLoading.AFTER
+                        isNotificationDataLoading = DataLoading.AFTER
                     }
                 }
                 result.isFailure -> {
-                    isNotificationDataLoading = Constants.DataLoading.AFTER
+                    isNotificationDataLoading = DataLoading.AFTER
                     toastMsg("Notification 정보를 가져오지 못하였습니다.")
                 }
             }
@@ -126,7 +123,7 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     fun refreshIssues() {
         issueList.clear()
         issuePage = 1
-        issueLoadType = Constants.IssueLoadType.CREATE
+        issueLoadType = IssueLoadType.CREATE
         issueRefreshState.value = issueRefreshState.value == false
     }
 

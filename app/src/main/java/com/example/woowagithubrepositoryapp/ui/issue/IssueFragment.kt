@@ -14,8 +14,8 @@ import com.example.woowagithubrepositoryapp.databinding.FragmentIssueBinding
 import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.adapter.IssueAdapter
 import com.example.woowagithubrepositoryapp.ui.adapter.SpinnerAdapter
-import com.example.woowagithubrepositoryapp.utils.Constants
-import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
+import com.example.woowagithubrepositoryapp.ui.common.IssueLoadType
+import com.example.woowagithubrepositoryapp.ui.common.ViewModelFactory
 
 class IssueFragment : Fragment() {
 
@@ -39,7 +39,7 @@ class IssueFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.issueLoadType = Constants.IssueLoadType.CREATE
+        viewModel.issueLoadType = IssueLoadType.CREATE
 
         initSpinner()
         initRecyclerView()
@@ -71,7 +71,7 @@ class IssueFragment : Fragment() {
                         viewModel.issuePage = 1
                         viewModel.issueSelectState.value = newValue
                         viewModel.issueList.clear()
-                        viewModel.issueLoadType = Constants.IssueLoadType.LOAD
+                        viewModel.issueLoadType = IssueLoadType.LOAD
                     }
                     loadIssueData()
                     for (idx in list.indices) {
@@ -94,7 +94,7 @@ class IssueFragment : Fragment() {
     }
 
     private fun loadIssueData() {
-        if (viewModel.issueLoadType == Constants.IssueLoadType.CREATE && viewModel.issueList.isNotEmpty()) {
+        if (viewModel.issueLoadType == IssueLoadType.CREATE && viewModel.issueList.isNotEmpty()) {
             issueAdapter.submitList(viewModel.issueList.toMutableList())
         } else {
             viewModel.getIssues {
@@ -117,7 +117,7 @@ class IssueFragment : Fragment() {
                     val itemTotalCount = recyclerView.adapter?.itemCount
                     if (lastVisibleItemPosition + 1 == itemTotalCount) {
                         viewModel.issuePage++
-                        viewModel.issueLoadType = Constants.IssueLoadType.PAGING
+                        viewModel.issueLoadType = IssueLoadType.PAGING
                         loadIssueData()
                     }
                 }
