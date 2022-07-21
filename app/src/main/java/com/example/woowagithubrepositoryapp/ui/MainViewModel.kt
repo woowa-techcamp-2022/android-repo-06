@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: GithubRepository) : ViewModel() {
 
-    val issuePage = MutableLiveData(1)
+    var issuePage = 1
     val issueSelectState = MutableLiveData("open")
     val issueList = mutableListOf<Issue>()
     val issueRefreshState = MutableLiveData(true)
@@ -54,8 +54,8 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     fun getIssues(complete: (List<Issue>) -> Unit) {
         viewModelScope.launch {
             isProgressOn.postValue(true)
-            val result = repository.getUserIssues(issueSelectState.value!!, issuePage.value!!)
-            if (issuePage.value == 1)
+            val result = repository.getUserIssues(issueSelectState.value!!, issuePage)
+            if (issuePage == 1)
                 issueList.clear()
             when {
                 result.isSuccess -> {
@@ -125,7 +125,7 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
 
     fun refreshIssues() {
         issueList.clear()
-        issuePage.value = 1
+        issuePage = 1
         issueLoadType = Constants.IssueLoadType.CREATE
         issueRefreshState.value = issueRefreshState.value == false
     }
