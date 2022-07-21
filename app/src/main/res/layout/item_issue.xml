@@ -5,44 +5,45 @@
             name="issue"
             type="com.example.woowagithubrepositoryapp.model.Issue" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp">
+        android:layout_marginStart="@dimen/margin_24"
+        android:layout_marginEnd="@dimen/margin_24">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/state_icon_imageView"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_issue_open"
+            android:layout_width="@dimen/size_18"
+            android:layout_height="@dimen/size_18"
+            android:layout_marginTop="@dimen/margin_16"
+            android:src="@{issue.isOpen? @drawable/ic_issue_open : @drawable/ic_issue_closed}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/full_name_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/margin_10"
             android:text="@{issue.repo.fullName}"
             android:textColor="@color/gray"
-            android:textSize="14dp"
+            android:textSize="@dimen/text_size_14"
             app:layout_constraintStart_toEndOf="@id/state_icon_imageView"
             app:layout_constraintTop_toTopOf="@id/state_icon_imageView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/date_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1일 전"
             android:textColor="@color/gray"
-            android:textSize="14dp"
+            android:textSize="@dimen/text_size_14"
+            app:updatedText="@{issue.updatedAt}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/state_icon_imageView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title_textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -51,15 +52,15 @@
             android:singleLine="true"
             android:text="@{issue.title}"
             android:textColor="@color/white"
-            android:textSize="14dp"
+            android:textSize="@dimen/text_size_14"
             app:layout_constraintEnd_toEndOf="@id/date_textView"
             app:layout_constraintStart_toStartOf="@id/full_name_textView"
             app:layout_constraintTop_toBottomOf="@id/full_name_textView" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="@dimen/size_1"
+            android:layout_marginTop="@dimen/margin_16"
             android:background="@color/navy"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_textView" />

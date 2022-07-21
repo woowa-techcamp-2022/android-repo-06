@@ -5,109 +5,112 @@
             name="repo"
             type="com.example.woowagithubrepositoryapp.model.Repo" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/repo_ownerAvatar_imageView"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/size_24"
+            android:layout_height="@dimen/size_24"
             android:src="@drawable/ic_user"
+            app:iconImage="@{repo.owner.avatarUrl}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repo_ownerLogin_textView"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="@dimen/size_24"
+            android:layout_marginStart="@dimen/margin_8"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="@{repo.owner.login,default=JetBrains}"
             android:textColor="@color/gray"
-            android:textSize="14dp"
+            android:textSize="@dimen/text_size_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/repo_ownerAvatar_imageView"
             app:layout_constraintTop_toTopOf="@id/repo_ownerAvatar_imageView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repo_name_textView"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/margin_8"
             android:text="@{repo.name ,default=Kotlin}"
             android:textColor="@color/white"
-            android:textSize="14dp"
+            android:textSize="@dimen/text_size_14"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/repo_ownerLogin_textView"
             app:layout_constraintTop_toBottomOf="@id/repo_ownerLogin_textView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repo_description_textView"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="3"
             android:text="@{repo.description,default=TheKotlinProgrammingLanguage}"
             android:textColor="@color/white"
-            android:textSize="14dp"
+            android:textSize="@dimen/text_size_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/repo_ownerLogin_textView"
             app:layout_constraintTop_toBottomOf="@id/repo_name_textView" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/repo_star_imageView"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="@dimen/size_18"
+            android:layout_height="@dimen/size_18"
+            android:layout_marginTop="@dimen/margin_10"
             android:background="@drawable/ic_star"
             android:backgroundTint="@color/yellow"
             app:layout_constraintStart_toStartOf="@id/repo_ownerLogin_textView"
             app:layout_constraintTop_toBottomOf="@id/repo_description_textView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repo_star_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="@dimen/margin_4"
             android:gravity="center_vertical"
             android:text="@{repo.starCnt}"
             android:textColor="@color/gray"
-            android:textSize="14dp"
+            android:textSize="@dimen/text_size_14"
             app:layout_constraintStart_toEndOf="@id/repo_star_imageView"
             app:layout_constraintTop_toTopOf="@id/repo_star_imageView" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/repo_language_imageView"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_marginStart="13dp"
+            android:layout_width="@dimen/size_14"
+            android:layout_height="@dimen/size_14"
+            android:layout_marginStart="@dimen/margin_14"
             android:background="@drawable/shape_circle"
+            app:tintColor="@{repo.languageColor}"
             app:layout_constraintBottom_toBottomOf="@id/repo_star_imageView"
             app:layout_constraintStart_toEndOf="@id/repo_star_textView"
             app:layout_constraintTop_toTopOf="@id/repo_star_imageView" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/repo_language_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="@dimen/margin_4"
             android:gravity="center_vertical"
             android:text="@{repo.language,default=Kotlin}"
             android:textColor="@color/gray"
-            android:textSize="14dp"
+            android:textSize="@dimen/text_size_14"
             app:layout_constraintStart_toEndOf="@id/repo_language_imageView"
             app:layout_constraintTop_toTopOf="@id/repo_star_imageView" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="@dimen/size_1"
+            android:layout_marginTop="@dimen/margin_20"
             android:background="@color/navy"
             app:layout_constraintTop_toBottomOf="@id/repo_star_imageView" />
 

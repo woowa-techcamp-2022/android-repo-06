@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.woowagithubrepositoryapp.utils.Constants.DataLoading
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +15,7 @@ import com.example.woowagithubrepositoryapp.databinding.FragmentNotificationBind
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
-import com.example.woowagithubrepositoryapp.utils.Constants
+import com.example.woowagithubrepositoryapp.utils.Constants.DataLoading
 import com.example.woowagithubrepositoryapp.utils.NotificationItemHelper
 import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 
@@ -31,19 +30,46 @@ class NotificationFragment : Fragment() {
 
     private val notificationAdapter = NotificationAdapter()
 
-    private fun initRecyclerView(){
-        ItemTouchHelper(NotificationItemHelper(requireContext()) { notification ->
-            markNotification(notification)
-        }).attachToRecyclerView(binding?.recyclerviewNotification)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentNotificationBinding.inflate(inflater, container, false)
+        return binding?.root
+    }
 
-        binding?.recyclerviewNotification?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.notificationRecyclerView?.adapter = notificationAdapter
+
+        viewModel.notifications.observe(viewLifecycleOwner) {
+            notificationAdapter.submitList(it.toMutableList())
+        }
+
+        initRecyclerView()
+
+        getNotifications()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
+    private fun initRecyclerView() {
+        ItemTouchHelper(NotificationItemHelper(requireContext()) { notification,position ->
+            markNotification(notification,position)
+        }).attachToRecyclerView(binding?.notificationRecyclerView)
+
+        binding?.notificationRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val lastVisibleItemPosition =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount
                 if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    if(viewModel.isNotificationDataLoading == DataLoading.BEFORE) {
+                    if (viewModel.isNotificationDataLoading == DataLoading.BEFORE) {
                         viewModel.isNotificationDataLoading = DataLoading.NOW
                         viewModel.getNotifications()
                         Log.d("notificationPaging", "notificationPaging")
@@ -53,40 +79,18 @@ class NotificationFragment : Fragment() {
         })
     }
 
-    private fun markNotification(notification:Notification){
-        viewModel.markNotificationAsRead(notification = notification)
-        Toast.makeText(
-            context, "${notification.subject.title} 알림이 읽음 처리되었습니다", Toast.LENGTH_SHORT
-        ).show()
+    private fun redrawNotificationAdapterItemAtPosition(position : Int){
+        notificationAdapter.notifyItemChanged(position)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentNotificationBinding.inflate(inflater, container, false)
-
-
-
-        return binding?.root
+    private fun getNotifications() {
+        if(viewModel.notifications.value?.size == 0)
+            viewModel.getNotifications()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding?.recyclerviewNotification?.adapter = notificationAdapter
-
-        viewModel.notifications.observe(viewLifecycleOwner){
-            notificationAdapter.submitList(it.toMutableList())
+    private fun markNotification(notification: Notification,position: Int) {
+        viewModel.markNotificationAsRead(notification = notification) {
+            redrawNotificationAdapterItemAtPosition(position)
         }
-
-        initRecyclerView()
-
-        viewModel.getNotifications()
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
     }
 }

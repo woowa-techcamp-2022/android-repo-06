@@ -8,27 +8,23 @@ import com.example.woowagithubrepositoryapp.ui.MainActivity
 import com.example.woowagithubrepositoryapp.utils.Prefs
 import com.example.woowagithubrepositoryapp.utils.clearTasksAndStartActivity
 import com.example.woowagithubrepositoryapp.utils.toastMsg
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class LoginViewModel(private val repository: TokenRepository) : ViewModel() {
 
     val code = MutableLiveData("")
     var login: () -> Unit = { }
 
-    fun getToken() = viewModelScope.launch(Dispatchers.IO) {
+    fun getToken() = viewModelScope.launch {
         val result = repository.getAccessToken(code.value.toString())
-        withContext(Dispatchers.Main) {
-            when {
-                result.isSuccess -> {
-                    Prefs.accessToken = result.getOrThrow()
-                    clearTasksAndStartActivity<MainActivity>()
-                }
-                result.isFailure -> {
-                    toastMsg("로그인 실패")
-                    clearTasksAndStartActivity<LoginActivity>()
-                }
+        when {
+            result.isSuccess -> {
+                Prefs.accessToken = result.getOrThrow()
+                clearTasksAndStartActivity<MainActivity>()
+            }
+            result.isFailure -> {
+                toastMsg("로그인 실패")
+                clearTasksAndStartActivity<LoginActivity>()
             }
         }
     }

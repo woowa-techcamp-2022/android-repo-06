@@ -1,11 +1,22 @@
 <resources>
     <string name="app_name">repo-app</string>
 
+    <string name="search">Search</string>
+    <string name="search_hint">Search GitHub</string>
+    <string name="search_content">Find Your Stuff</string>
+    <string name="search_content_detail">Search all of GitHub for People, \nRepositories, Organizations, Issues,
+\nand Pull Requests.</string>
+
+    <string name="profile">Profile</string>
+    <string name="profile_repository">Repositories</string>
+    <string name="profile_starred">Starred</string>
+
     <string name="issue">Issue</string>
+    <string name="issue_filter">Filter</string>
+
+
     <string name="notifications">Notifications</string>
 
-    <string name="search">Search</string>
-    <string name="profile">Profile</string>
 
     <string-array name="main_tab">
         <item>Issue</item>
@@ -17,5 +28,7 @@
 
     <string name="follow_text">%1$s Followers • %2$s Following</string>
     <string name="appbar_title">What\'s In My GitHub</string>
+
+
 
 </resources>

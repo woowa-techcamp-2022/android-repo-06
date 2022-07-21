@@ -8,23 +8,24 @@ import com.example.woowagithubrepositoryapp.App
 import com.example.woowagithubrepositoryapp.model.Issue
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.repository.GithubRepository
+import com.example.woowagithubrepositoryapp.ui.common.TabSelectState
 import com.example.woowagithubrepositoryapp.utils.Constants
 import com.example.woowagithubrepositoryapp.utils.toastMsg
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainViewModel(private val repository: GithubRepository) : ViewModel() {
 
-    val issuePage = MutableLiveData(1)
+    var issuePage = 1
     val issueSelectState = MutableLiveData("open")
     val issueList = mutableListOf<Issue>()
+    val issueRefreshState = MutableLiveData(true)
+    var issueLoadType = Constants.IssueLoadType.CREATE
 
-    val tabSelectState = MutableLiveData("Issue")
+    val tabSelectState = MutableLiveData(TabSelectState("Issue", false))
 
     private val _notifications = MutableLiveData<MutableList<Notification>>()
     val notifications: LiveData<MutableList<Notification>> = _notifications
-    private var notificationPage = 1
+    var notificationPage = 1
     var isNotificationDataLoading: Constants.DataLoading = Constants.DataLoading.BEFORE
 
     init {
@@ -34,18 +35,16 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     val isProgressOn = MutableLiveData(false)
 
     fun getUserData(complete: () -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             isProgressOn.postValue(true)
             val result = repository.getUserData()
-            withContext(Dispatchers.Main) {
-                when {
-                    result.isSuccess -> {
-                        App.user = result.getOrNull()
-                        complete()
-                    }
-                    result.isFailure -> {
-                        toastMsg("사용자의 정보를 불러오지 못하였습니다.")
-                    }
+            when {
+                result.isSuccess -> {
+                    App.user = result.getOrNull()
+                    complete()
+                }
+                result.isFailure -> {
+                    toastMsg("사용자의 정보를 불러오지 못하였습니다.")
                 }
             }
             isProgressOn.postValue(false)
@@ -53,20 +52,18 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     }
 
     fun getIssues(complete: (List<Issue>) -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             isProgressOn.postValue(true)
-            val result = repository.getUserIssues(issueSelectState.value!!, issuePage.value!!)
-            withContext(Dispatchers.Main) {
-                if (issuePage.value == 1)
-                    issueList.clear()
-                when {
-                    result.isSuccess -> {
-                        issueList.addAll(result.getOrDefault(listOf()))
-                        complete(issueList)
-                    }
-                    result.isFailure -> {
-                        toastMsg("Issue 정보를 가져오지 못하였습니다.")
-                    }
+            val result = repository.getUserIssues(issueSelectState.value!!, issuePage)
+            if (issuePage == 1)
+                issueList.clear()
+            when {
+                result.isSuccess -> {
+                    issueList.addAll(result.getOrDefault(listOf()))
+                    complete(issueList)
+                }
+                result.isFailure -> {
+                    toastMsg("Issue 정보를 가져오지 못하였습니다.")
                 }
             }
             isProgressOn.postValue(false)
@@ -76,11 +73,12 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
     fun getNotifications() {
         viewModelScope.launch {
             isProgressOn.postValue(true)
+            isNotificationDataLoading = Constants.DataLoading.NOW
             val result = repository.getNotifications(notificationPage)
             when {
                 result.isSuccess -> {
                     val notificationList = result.getOrDefault(mutableListOf())
-                    if(notificationList.size != 0) {
+                    if (notificationList.size != 0) {
                         if (notificationPage == 1) {
                             _notifications.value?.clear()
                         }
@@ -88,8 +86,7 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
                         _notifications.value = _notifications.value
                         isNotificationDataLoading = Constants.DataLoading.BEFORE
                         notificationPage++
-                    }
-                    else {
+                    } else {
                         isNotificationDataLoading = Constants.DataLoading.AFTER
                     }
                 }
@@ -102,18 +99,35 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
         }
     }
 
-    fun markNotificationAsRead(notification: Notification) {
+    fun markNotificationAsRead(notification: Notification, complete : () -> Unit) {
         viewModelScope.launch {
             val result = repository.patchNotificationThread(notification.threadId)
             when {
                 result.isSuccess -> {
                     removeNotificationAtPosition(notification)
+                    toastMsg("${notification.subject.title} 알림이 읽음 처리되었습니다")
                 }
                 result.isFailure -> {
+                    complete()
                     toastMsg("읽음 처리에 실패했습니다.")
                 }
             }
+
         }
+    }
+
+
+    fun refreshNotifications() {
+        _notifications.value = mutableListOf()
+        notificationPage = 1
+        getNotifications()
+    }
+
+    fun refreshIssues() {
+        issueList.clear()
+        issuePage = 1
+        issueLoadType = Constants.IssueLoadType.CREATE
+        issueRefreshState.value = issueRefreshState.value == false
     }
 
     private fun removeNotificationAtPosition(notification: Notification) {
@@ -121,4 +135,3 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
         _notifications.value = _notifications.value
     }
 }
-

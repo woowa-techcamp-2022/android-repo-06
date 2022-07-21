@@ -18,7 +18,7 @@ class TokenInterceptor : Interceptor {
         val response = chain.proceed(request)
 
         if (response.code == 401) {
-            Prefs.accessToken = ""
+            Prefs.accessToken = null
             clearTasksAndStartActivity<LoginActivity>()
         }
 

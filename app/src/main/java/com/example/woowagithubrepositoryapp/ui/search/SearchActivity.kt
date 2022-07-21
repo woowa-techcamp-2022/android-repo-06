@@ -1,9 +1,9 @@
 package com.example.woowagithubrepositoryapp.ui.search
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +27,7 @@ class SearchActivity : AppCompatActivity() {
         ViewModelProvider(this, ViewModelFactory())[SearchViewModel::class.java]
     }
 
-    private val repoAdapter = RepositoryAdapter(this)
+    private val repoAdapter = RepositoryAdapter()
 
     private var checkTextJob: Job? = null
 
@@ -36,6 +36,8 @@ class SearchActivity : AppCompatActivity() {
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        viewModel.searchType = SearchType.CREATE
 
         initToolbar()
         initRecyclerView()
@@ -60,15 +62,24 @@ class SearchActivity : AppCompatActivity() {
                 val lastVisibleItemPosition =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount
-                if (lastVisibleItemPosition + 1 == itemTotalCount) {
+                if (lastVisibleItemPosition + 1 == itemTotalCount && viewModel.isProgressOn.value == false) {
                     viewModel.pageNumber++
                     viewModel.searchRepos {
                         repoAdapter.submitList(it)
                         repoAdapter.notifyItemRangeChanged(itemTotalCount, it.size)
                     }
                 }
+                val firstVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                viewModel.scrollPosition = firstVisibleItemPosition
             }
         })
+
+        binding.searchSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.pageNumber = 1
+            searchRepos()
+            binding.searchSwipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun initEditText() {
@@ -82,22 +93,27 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchRepos() {
-        viewModel.repoList.clear()
-        viewModel.pageNumber = 1
-        viewModel.searchRepos {
-            repoAdapter.submitList(it)
-            repoAdapter.notifyDataSetChanged()
+        if (viewModel.searchType == SearchType.CREATE && viewModel.repoList.isNotEmpty()) {
+            repoAdapter.submitList(viewModel.repoList)
+            binding.searchRepoRecyclerView.scrollToPosition(viewModel.scrollPosition)
+        } else {
+            viewModel.repoList.clear()
+            viewModel.pageNumber = 1
+            viewModel.searchRepos {
+                repoAdapter.submitList(it)
+                repoAdapter.notifyDataSetChanged()
+            }
         }
+        viewModel.searchType = SearchType.SEARCH
     }
 
     private fun setObserver() {
         viewModel.searchText.observe(this) {
-            if (it.length == 1) {
-                setSearchBarActive()
-            }
             if (it.isEmpty()) {
                 setSearchBarInactive()
             } else {
+                if (viewModel.isSearchBarActive.value == false)
+                    setSearchBarActive()
                 checkTextJob?.cancel()
                 checkTextJob = viewModel.checkText(it) { searchRepos() }
             }
@@ -106,11 +122,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setSearchBarActive() {
         viewModel.isSearchBarActive.value = true
-        binding.searchBarLayout.setBackgroundResource(R.drawable.spinner_background)
     }
 
     private fun setSearchBarInactive() {
-        binding.searchBarLayout.setBackgroundResource(R.drawable.color_chip_rectangle_20)
         viewModel.isSearchBarActive.value = false
         viewModel.isRecyclerViewOn.value = false
         viewModel.repoList.clear()

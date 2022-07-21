@@ -6,13 +6,14 @@
             name="option"
             type="com.example.woowagithubrepositoryapp.ui.adapter.SpinnerAdapter.IssueOption" />
     </data>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="@dimen/padding_16">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -21,12 +22,12 @@
             android:text="@{option.text}"
             android:textColor="@color/white" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:visibility="@{option.check? View.VISIBLE : View.GONE}"
             android:id="@+id/check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_check" />
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

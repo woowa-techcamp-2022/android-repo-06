@@ -8,4 +8,7 @@ data class Issue(
     @SerializedName("state") val state : String,
     @SerializedName("title") val title : String,
     @SerializedName("updated_at") val updatedAt : String
-)
+){
+    val isOpen : Boolean
+    get() = (state == "open")
+}

@@ -2,13 +2,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="14dp"/>
+            <corners android:radius="@dimen/corner_radius_14"/>
             <solid android:color="@color/background"/>
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="14dp"/>
+            <corners android:radius="@dimen/corner_radius_14"/>
             <gradient
                 android:type="linear"
                 android:angle="90"

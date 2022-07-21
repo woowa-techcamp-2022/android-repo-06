@@ -1,12 +1,11 @@
 package com.example.woowagithubrepositoryapp.ui.issue
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,11 +14,13 @@ import com.example.woowagithubrepositoryapp.databinding.FragmentIssueBinding
 import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.adapter.IssueAdapter
 import com.example.woowagithubrepositoryapp.ui.adapter.SpinnerAdapter
+import com.example.woowagithubrepositoryapp.utils.Constants
 import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 
 class IssueFragment : Fragment() {
 
-    private lateinit var binding: FragmentIssueBinding
+    private var _binding: FragmentIssueBinding? = null
+    private val binding get() = _binding
 
     private val viewModel by lazy {
         ViewModelProvider(requireActivity(), ViewModelFactory())[MainViewModel::class.java]
@@ -30,17 +31,19 @@ class IssueFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_issue, container, false)
-        return binding.root
+    ): View? {
+        _binding = FragmentIssueBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = viewLifecycleOwner
+
+        viewModel.issueLoadType = Constants.IssueLoadType.CREATE
 
         initSpinner()
         initRecyclerView()
+        setObserver()
     }
 
     private fun initSpinner() {
@@ -50,65 +53,86 @@ class IssueFragment : Fragment() {
             SpinnerAdapter.IssueOption("All", false),
         )
         val adapter = SpinnerAdapter(requireContext(), R.layout.item_spinner, list)
-        binding.issueSpinner.adapter = adapter
-        binding.issueSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                when (position) {
-                    0 -> {
-                        viewModel.issueSelectState.value = "open"
+        binding?.let {
+            it.issueSpinner.adapter = adapter
+            it.issueSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val newValue = when (position) {
+                        0 -> "open"
+                        1 -> "closed"
+                        else -> "all"
                     }
-                    1 -> {
-                        viewModel.issueSelectState.value = "closed"
+                    if (viewModel.issueSelectState.value != newValue) {
+                        viewModel.issuePage = 1
+                        viewModel.issueSelectState.value = newValue
+                        viewModel.issueList.clear()
+                        viewModel.issueLoadType = Constants.IssueLoadType.LOAD
                     }
-                    2 -> {
-                        viewModel.issueSelectState.value = "all"
+                    loadIssueData()
+                    for (idx in list.indices) {
+                        list[idx].check = (idx == position)
                     }
+                    adapter.notifyDataSetChanged()
                 }
-                viewModel.issuePage.value = 1
-                viewModel.issueList.clear()
-                loadIssueData()
-                for (idx in list.indices) {
-                    list[idx].check = (idx == position)
+
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
                 }
-                adapter.notifyDataSetChanged()
             }
 
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {
-
+            when (viewModel.issueSelectState.value) {
+                "open" -> it.issueSpinner.setSelection(0)
+                "closed" -> it.issueSpinner.setSelection(1)
+                "all" -> it.issueSpinner.setSelection(2)
             }
-        }
-
-        when(viewModel.issueSelectState.value){
-            "open" -> binding.issueSpinner.setSelection(0)
-            "closed" -> binding.issueSpinner.setSelection(1)
-            "all" -> binding.issueSpinner.setSelection(2)
         }
     }
 
     private fun loadIssueData() {
-        viewModel.getIssues {
-            issueAdapter.submitList(it.toMutableList())
+        if (viewModel.issueLoadType == Constants.IssueLoadType.CREATE && viewModel.issueList.isNotEmpty()) {
+            issueAdapter.submitList(viewModel.issueList.toMutableList())
+        } else {
+            viewModel.getIssues {
+                issueAdapter.submitList(it.toMutableList())
+            }
         }
     }
 
     private fun initRecyclerView() {
-        binding.issueRecyclerView.adapter = issueAdapter
-        binding.issueRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.issueRecyclerView.itemAnimator = null
+        binding?.let {
+            it.issueRecyclerView.adapter = issueAdapter
+            it.issueRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            it.issueRecyclerView.itemAnimator = null
 
-        loadIssueData()
-
-        binding.issueRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val lastVisibleItemPosition =
-                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-                val itemTotalCount = recyclerView.adapter?.itemCount
-                if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    viewModel.issuePage.value = viewModel.issuePage.value!! + 1
-                    loadIssueData()
+            it.issueRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val lastVisibleItemPosition =
+                        (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                    val itemTotalCount = recyclerView.adapter?.itemCount
+                    if (lastVisibleItemPosition + 1 == itemTotalCount) {
+                        viewModel.issuePage++
+                        viewModel.issueLoadType = Constants.IssueLoadType.PAGING
+                        loadIssueData()
+                    }
                 }
-            }
-        })
+            })
+        }
+    }
+
+    private fun setObserver() {
+        viewModel.issueRefreshState.observe(viewLifecycleOwner) {
+            loadIssueData()
+        }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

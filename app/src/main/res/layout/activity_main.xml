@@ -19,7 +19,7 @@
         tools:context=".ui.MainActivity">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_main"
+            android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="?attr/actionBarSize"
@@ -28,27 +28,27 @@
             app:titleTextColor="@color/white" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tablayout_main"
+            android:id="@+id/main_tabLayout"
             style="@style/RoundedTabLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="@dimen/margin_16"
             android:background="@color/background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_main"
+            app:layout_constraintTop_toBottomOf="@id/main_toolbar"
             app:tabGravity="fill"
-            app:tabMaxWidth="0dp"
+            app:tabMaxWidth="@dimen/size_0"
             app:tabMode="fixed"
             app:tabTextAppearance="@style/CustomTextAppearance" />
 
         <FrameLayout
-            android:id="@+id/container_main"
+            android:id="@+id/main_frameLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/size_0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tablayout_main" />
+            app:layout_constraintTop_toBottomOf="@id/main_tabLayout" />
 
         <ProgressBar
             android:layout_width="wrap_content"
