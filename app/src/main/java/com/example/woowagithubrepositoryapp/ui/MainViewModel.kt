@@ -115,9 +115,11 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
 
 
     fun refreshNotifications() {
-        _notifications.value = mutableListOf()
-        notificationPage = 1
-        getNotifications()
+        if(isNotificationDataLoading != DataLoading.NOW) {
+            _notifications.value = mutableListOf()
+            notificationPage = 1
+            getNotifications()
+        }
     }
 
     fun refreshIssues() {
