@@ -1,5 +1,6 @@
 package com.example.woowagithubrepositoryapp.ui.auth
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,11 +13,15 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(private val repository: TokenRepository) : ViewModel() {
 
-    val code = MutableLiveData("")
+    var code : String? = null
+
+    private val _isLoginBtnVisible = MutableLiveData(true)
+    val isLoginBtnVisible : LiveData<Boolean> get() = _isLoginBtnVisible
+
     var login: () -> Unit = { }
 
     fun getToken() = viewModelScope.launch {
-        val result = repository.getAccessToken(code.value.toString())
+        val result = repository.getAccessToken(code.toString())
         when {
             result.isSuccess -> {
                 Prefs.accessToken = result.getOrThrow()
@@ -27,6 +32,10 @@ class LoginViewModel(private val repository: TokenRepository) : ViewModel() {
                 clearTasksAndStartActivity<LoginActivity>()
             }
         }
+    }
+
+    fun setLoginBtnVisibility(isVisible : Boolean){
+        _isLoginBtnVisible.value = isVisible
     }
 
     fun startLogin() {

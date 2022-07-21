@@ -2,7 +2,6 @@ package com.example.woowagithubrepositoryapp.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
@@ -51,9 +50,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkIntent() {
         intent?.data?.getQueryParameter("code")?.let {
-            binding.loginLoginButton.visibility = View.GONE
-            binding.loginLoadingProgressBar.visibility = View.VISIBLE
-            viewModel.code.value = it
+            viewModel.setLoginBtnVisibility(false)
+            viewModel.code = it
             viewModel.getToken()
         }
     }
