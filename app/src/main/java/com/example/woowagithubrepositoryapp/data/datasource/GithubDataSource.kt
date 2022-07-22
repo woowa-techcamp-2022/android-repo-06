@@ -22,9 +22,8 @@ interface GithubDataSource {
     ): Result<RepoResponse>
 
     suspend fun getNotificationInfo(
-        fullUrl: String,
-        id: String)
-    : Result<NotificationInfo?>
+        fullUrl: String
+    ) : Result<NotificationInfo?>
 
 
 }
