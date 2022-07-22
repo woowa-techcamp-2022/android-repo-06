@@ -24,6 +24,7 @@ class SearchViewModel(private val repository: GithubRepository) : ViewModel() {
     var scrollPosition = 0
 
     fun searchRepos(complete: (List<Repo>) -> Unit) {
+        if (searchText.value == "") return
         viewModelScope.launch {
             isProgressOn.postValue(true)
             val q = searchText.value.toString()

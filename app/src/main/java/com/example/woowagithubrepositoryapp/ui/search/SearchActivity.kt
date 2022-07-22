@@ -66,8 +66,8 @@ class SearchActivity : AppCompatActivity() {
                 if (lastVisibleItemPosition + 1 == itemTotalCount && viewModel.isProgressOn.value == false) {
                     viewModel.pageNumber++
                     viewModel.searchRepos {
-                        repoAdapter.submitList(it)
-                        repoAdapter.notifyItemRangeChanged(itemTotalCount, it.size)
+                        repoAdapter.submitList(it.toMutableList())
+                        repoAdapter.notifyItemRangeChanged(itemTotalCount,it.size)
                     }
                 }
                 val firstVisibleItemPosition =
@@ -101,8 +101,7 @@ class SearchActivity : AppCompatActivity() {
             viewModel.repoList.clear()
             viewModel.pageNumber = 1
             viewModel.searchRepos {
-                repoAdapter.submitList(it)
-                repoAdapter.notifyDataSetChanged()
+                repoAdapter.submitList(it.toMutableList())
             }
         }
         viewModel.searchType = SearchType.SEARCH
