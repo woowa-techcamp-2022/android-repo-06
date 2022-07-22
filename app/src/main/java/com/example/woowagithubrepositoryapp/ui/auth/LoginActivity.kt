@@ -1,18 +1,17 @@
 package com.example.woowagithubrepositoryapp.ui.auth
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ActivityLoginBinding
 import com.example.woowagithubrepositoryapp.ui.MainActivity
+import com.example.woowagithubrepositoryapp.ui.common.ViewModelFactory
 import com.example.woowagithubrepositoryapp.utils.Constants.GITHUB_CLIENT_ID
 import com.example.woowagithubrepositoryapp.utils.Prefs
-import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
 import com.example.woowagithubrepositoryapp.utils.clearTasksAndStartActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -51,9 +50,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkIntent() {
         intent?.data?.getQueryParameter("code")?.let {
-            binding.loginLoginButton.visibility = View.GONE
-            binding.loginLoadingProgressBar.visibility = View.VISIBLE
-            viewModel.code.value = it
+            viewModel.setLoginBtnVisibility(false)
+            viewModel.code = it
             viewModel.getToken()
         }
     }

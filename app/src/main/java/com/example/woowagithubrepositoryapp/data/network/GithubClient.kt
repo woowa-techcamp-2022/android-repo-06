@@ -1,4 +1,4 @@
-package com.example.woowagithubrepositoryapp.network
+package com.example.woowagithubrepositoryapp.data.network
 
 import com.example.woowagithubrepositoryapp.App
 import okhttp3.OkHttpClient
@@ -14,10 +14,10 @@ class GithubClient {
         .build()
         .create(api)
 
-    fun <T> generateRefreshClient(api: Class<T>): T = Retrofit.Builder()
+    fun <T> generateTokenClient(api: Class<T>): T = Retrofit.Builder()
         .baseUrl(App.AUTH_HOST)
         .addConverterFactory(GsonConverterFactory.create())
-        .client(refreshClient())
+        .client(tokenClient())
         .build()
         .create(api)
 
@@ -27,7 +27,7 @@ class GithubClient {
             addInterceptor(TokenInterceptor())
         }.build()
 
-    private fun refreshClient() =
+    private fun tokenClient() =
         OkHttpClient.Builder().apply {
             addInterceptor(httpLoggingInterceptor())
         }.build()

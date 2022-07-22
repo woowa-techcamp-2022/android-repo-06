@@ -1,15 +1,15 @@
-package com.example.woowagithubrepositoryapp.repository
+package com.example.woowagithubrepositoryapp.data.repository
 
-import com.example.woowagithubrepositoryapp.network.GithubClient
-import com.example.woowagithubrepositoryapp.network.TokenService
+import com.example.woowagithubrepositoryapp.data.network.GithubClient
+import com.example.woowagithubrepositoryapp.data.network.TokenService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class TokenRepository {
+class TokenRepositoryImpl : TokenRepository{
 
-    private val service = GithubClient().generateRefreshClient(TokenService::class.java)
+    private val service = GithubClient().generateTokenClient(TokenService::class.java)
 
-    suspend fun getAccessToken(
+    override suspend fun getAccessToken(
         code: String
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
@@ -25,10 +25,10 @@ class TokenRepository {
     }
 
     companion object {
-        private var instance: TokenRepository? = null
-        fun getInstance(): TokenRepository {
+        private var instance: TokenRepositoryImpl? = null
+        fun getInstance(): TokenRepositoryImpl {
             if (instance == null) {
-                instance = TokenRepository()
+                instance = TokenRepositoryImpl()
             }
             return instance!!
         }

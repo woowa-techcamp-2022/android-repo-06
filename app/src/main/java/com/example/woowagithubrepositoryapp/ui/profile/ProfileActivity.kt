@@ -10,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.woowagithubrepositoryapp.App
 import com.example.woowagithubrepositoryapp.R
 import com.example.woowagithubrepositoryapp.databinding.ActivityProfileBinding
-import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
+import com.example.woowagithubrepositoryapp.ui.common.ViewModelFactory
 
 class ProfileActivity : AppCompatActivity() {
 

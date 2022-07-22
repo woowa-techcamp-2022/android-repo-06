@@ -1,7 +1,7 @@
-package com.example.woowagithubrepositoryapp.network
+package com.example.woowagithubrepositoryapp.data.network
 
-import com.example.woowagithubrepositoryapp.utils.Constants
 import com.example.woowagithubrepositoryapp.model.AccessTokenResponse
+import com.example.woowagithubrepositoryapp.utils.Constants
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

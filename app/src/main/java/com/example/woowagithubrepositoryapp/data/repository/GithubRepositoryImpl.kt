@@ -1,15 +1,16 @@
-package com.example.woowagithubrepositoryapp.repository
+package com.example.woowagithubrepositoryapp.data.repository
 
 import android.util.Log
+import com.example.woowagithubrepositoryapp.data.network.GithubClient
+import com.example.woowagithubrepositoryapp.data.network.GithubService
 import com.example.woowagithubrepositoryapp.model.*
-import com.example.woowagithubrepositoryapp.network.GithubClient
-import com.example.woowagithubrepositoryapp.network.GithubService
 import kotlinx.coroutines.*
+import java.io.IOException
 
-class GithubRepository {
+class GithubRepositoryImpl : GithubRepository {
     private val service = GithubClient().generate(GithubService::class.java)
 
-    suspend fun getUserData(): Result<User> = withContext(Dispatchers.IO) {
+    override suspend fun getUserData(): Result<User> = withContext(Dispatchers.IO) {
         try {
             val response = service.getUserData()
             val body = response.body()
@@ -25,32 +26,34 @@ class GithubRepository {
         }
     }
 
-    suspend fun getNotifications(page: Int): Result<MutableList<Notification>> =
+    override suspend fun getNotifications(page: Int): Result<MutableList<Notification>> =
         withContext(Dispatchers.IO) {
-            try {
-                val response = service.getNotifications(page = page)
-                if (response.isSuccessful) {
-                    val notifications = response.body()?.toMutableList() ?: mutableListOf()
-                    val notificationInfos = notifications.map {
-                        async {
-                            getNotificationInfo(it.subject.url,it.id)
-                        }
-                    }.awaitAll()
+            supervisorScope {
+                try {
+                    val response = service.getNotifications(page = page)
+                    if (response.isSuccessful) {
+                        val notifications = response.body()?.toMutableList() ?: mutableListOf()
+                        val notificationInfos = notifications.map {
+                            async {
+                                getNotificationInfo(it.subject.url, it.id)
+                            }
+                        }.awaitAll()
 
-                    Result.success(notifications.zip(notificationInfos){ notification, notificationInfo ->
-                        notification.apply {
-                            this.comments = notificationInfo?.comments.toString()
-                            this.issueNum = "#${notificationInfo?.number}"
-                        }
-                    }.toMutableList())
-                } else Result.failure(Exception("Get Notifications Error : response isn't successful"))
-            } catch (e: Exception) {
-                Log.d("getNotiError", e.cause.toString())
-                Result.failure(e)
+                        Result.success(notifications.zip(notificationInfos) { notification, notificationInfo ->
+                            notification.apply {
+                                this.comments = notificationInfo?.comments.toString()
+                                this.issueNum = "#${notificationInfo?.number}"
+                            }
+                        }.toMutableList())
+                    } else Result.failure(Exception("Get Notifications Error : response isn't successful"))
+                } catch (e: Exception) {
+                    Log.d("getNotiError", e.cause.toString())
+                    Result.failure(e)
+                }
             }
         }
 
-    suspend fun patchNotificationThread(
+    override suspend fun patchNotificationThread(
         threadId: String
     ): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
@@ -62,18 +65,7 @@ class GithubRepository {
         }
     }
 
-    private suspend fun getNotificationInfo(fullUrl: String,id : String): NotificationInfo? {
-        return try {
-            service.getNotificationInfo(fullUrl).body().apply {
-                this?.notificationId = id
-            }
-        } catch (e: Exception) {
-            Log.d("getNotiInfoError", e.cause.toString())
-            null
-        }
-    }
-
-    suspend fun getUserIssues(
+    override suspend fun getUserIssues(
         state: String,
         page: Int
     ): Result<List<Issue>> = withContext(Dispatchers.IO) {
@@ -92,7 +84,7 @@ class GithubRepository {
         }
     }
 
-    suspend fun searchRepos(
+    override suspend fun searchRepos(
         searchText: String,
         page: Int
     ): Result<RepoResponse> = withContext(Dispatchers.IO) {
@@ -110,6 +102,17 @@ class GithubRepository {
         }
     }
 
+    private suspend fun getNotificationInfo(fullUrl: String, id: String): NotificationInfo? {
+        return try {
+            service.getNotificationInfo(fullUrl).body().apply {
+                this?.notificationId = id
+            }
+        } catch (e: Exception) {
+            Log.d("getNotiInfoError", e.cause.toString())
+            null
+        }
+    }
+
     private suspend fun getStarredRepos(): Int {
         val response = service.getStarredRepos()
         val body = response.body()
@@ -119,10 +122,10 @@ class GithubRepository {
     }
 
     companion object {
-        private var instance: GithubRepository? = null
-        fun getInstance(): GithubRepository {
+        private var instance: GithubRepositoryImpl? = null
+        fun getInstance(): GithubRepositoryImpl {
             if (instance == null) {
-                instance = GithubRepository()
+                instance = GithubRepositoryImpl()
             }
             return instance!!
         }

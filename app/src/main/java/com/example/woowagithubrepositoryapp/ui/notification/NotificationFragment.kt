@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -15,9 +14,8 @@ import com.example.woowagithubrepositoryapp.databinding.FragmentNotificationBind
 import com.example.woowagithubrepositoryapp.model.Notification
 import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
-import com.example.woowagithubrepositoryapp.utils.Constants.DataLoading
-import com.example.woowagithubrepositoryapp.utils.NotificationItemHelper
-import com.example.woowagithubrepositoryapp.utils.ViewModelFactory
+import com.example.woowagithubrepositoryapp.ui.common.DataLoading
+import com.example.woowagithubrepositoryapp.ui.common.ViewModelFactory
 
 class NotificationFragment : Fragment() {
 
@@ -43,13 +41,9 @@ class NotificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.notificationRecyclerView?.adapter = notificationAdapter
 
-        viewModel.notifications.observe(viewLifecycleOwner) {
-            notificationAdapter.submitList(it.toMutableList())
-        }
-
         initRecyclerView()
-
-        getNotifications()
+        initNotifications()
+        setObserver()
     }
 
     override fun onDestroyView() {
@@ -58,32 +52,41 @@ class NotificationFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        ItemTouchHelper(NotificationItemHelper(requireContext()) { notification,position ->
-            markNotification(notification,position)
-        }).attachToRecyclerView(binding?.notificationRecyclerView)
+        binding?.let {
+            it.notificationRecyclerView.apply {
+                ItemTouchHelper(NotificationItemHelper(requireContext()) { notification,position ->
+                    markNotification(notification,position)
+                }).attachToRecyclerView(this)
 
-        binding?.notificationRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val lastVisibleItemPosition =
-                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-                val itemTotalCount = recyclerView.adapter?.itemCount
-                if (lastVisibleItemPosition + 1 == itemTotalCount) {
-                    if (viewModel.isNotificationDataLoading == DataLoading.BEFORE) {
-                        viewModel.isNotificationDataLoading = DataLoading.NOW
-                        viewModel.getNotifications()
-                        Log.d("notificationPaging", "notificationPaging")
+                this.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        val lastVisibleItemPosition =
+                            (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                        val itemTotalCount = recyclerView.adapter?.itemCount
+                        if (lastVisibleItemPosition + 1 == itemTotalCount) {
+                            if (viewModel.isNotificationDataLoading == DataLoading.BEFORE) {
+                                viewModel.isNotificationDataLoading = DataLoading.NOW
+                                viewModel.getNotifications()
+                                Log.d("notificationPaging", "notificationPaging")
+                            }
+                        }
                     }
-                }
+                })
             }
-        })
+
+            it.notificationSwipeRefreshLayout.setOnRefreshListener {
+                viewModel.refreshNotifications()
+                it.notificationSwipeRefreshLayout.isRefreshing = false
+            }
+        }
     }
 
     private fun redrawNotificationAdapterItemAtPosition(position : Int){
         notificationAdapter.notifyItemChanged(position)
     }
 
-    private fun getNotifications() {
+    private fun initNotifications() {
         if(viewModel.notifications.value?.size == 0)
             viewModel.getNotifications()
     }
@@ -91,6 +94,12 @@ class NotificationFragment : Fragment() {
     private fun markNotification(notification: Notification,position: Int) {
         viewModel.markNotificationAsRead(notification = notification) {
             redrawNotificationAdapterItemAtPosition(position)
+        }
+    }
+
+    private fun setObserver(){
+        viewModel.notifications.observe(viewLifecycleOwner) {
+            notificationAdapter.submitList(it.toMutableList())
         }
     }
 }

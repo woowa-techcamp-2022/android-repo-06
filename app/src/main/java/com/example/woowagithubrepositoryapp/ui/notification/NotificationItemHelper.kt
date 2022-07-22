@@ -1,4 +1,4 @@
-package com.example.woowagithubrepositoryapp.utils
+package com.example.woowagithubrepositoryapp.ui.notification
 
 import android.content.Context
 import android.graphics.Canvas
