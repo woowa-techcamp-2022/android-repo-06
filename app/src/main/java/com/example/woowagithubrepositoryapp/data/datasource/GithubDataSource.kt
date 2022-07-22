@@ -1,26 +1,30 @@
 package com.example.woowagithubrepositoryapp.data.datasource
 
-import com.example.woowagithubrepositoryapp.model.Issue
-import com.example.woowagithubrepositoryapp.model.Notification
-import com.example.woowagithubrepositoryapp.model.RepoResponse
-import com.example.woowagithubrepositoryapp.model.User
+import com.example.woowagithubrepositoryapp.model.*
 
 interface GithubDataSource {
     suspend fun getUserData(): Result<User>
 
     suspend fun getNotifications(page: Int): Result<MutableList<Notification>>
 
-    suspend fun patchNotificationThread(
-        threadId: String
-    ): Result<Boolean>
+    suspend fun patchNotificationThread(threadId: String): Result<Boolean>
+
+    suspend fun getStarredRepos(): Result<Int>
 
     suspend fun getUserIssues(
         state: String,
         page: Int
     ): Result<List<Issue>>
 
-    suspend fun searchRepos(
+    suspend fun getRepos(
         searchText: String,
         page: Int
     ): Result<RepoResponse>
+
+    suspend fun getNotificationInfo(
+        fullUrl: String,
+        id: String)
+    : Result<NotificationInfo?>
+
+
 }
