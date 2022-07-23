@@ -26,6 +26,7 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
 
     private val _notifications = MutableLiveData<MutableList<Notification>>(mutableListOf())
     val notifications: LiveData<MutableList<Notification>> = _notifications
+    val markingNotificationThreadIds = mutableListOf<String>()
     var notificationPage = 1
     var isNotificationDataLoading = DataLoading.BEFORE
 
@@ -96,29 +97,31 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
         }
     }
 
-    fun markNotificationAsRead(notification: Notification, complete : () -> Unit) {
+    fun markNotification(){
         viewModelScope.launch {
-            val result = repository.patchNotificationThread(notification.threadId)
-            when {
-                result.isSuccess -> {
-                    removeNotificationAtPosition(notification)
-                    toastMsg("${notification.subject.title} 알림이 읽음 처리되었습니다")
-                }
-                result.isFailure -> {
-                    complete()
-                    toastMsg("읽음 처리에 실패했습니다.")
-                }
-            }
-
+            repository.patchNotificationThread(markingNotificationThreadIds)
+            markingNotificationThreadIds.clear()
         }
+    }
+
+    fun removeNotification(notification: Notification) {
+        markingNotificationThreadIds.add(notification.threadId)
+        _notifications.value?.remove(notification)
+        _notifications.value = _notifications.value
     }
 
 
     fun refreshNotifications() {
-        if(isNotificationDataLoading != DataLoading.NOW) {
-            _notifications.value = mutableListOf()
-            notificationPage = 1
-            getNotifications()
+        viewModelScope.launch {
+            if (isNotificationDataLoading != DataLoading.NOW) {
+                if (markingNotificationThreadIds.isNotEmpty()) {
+                    repository.patchNotificationThread(markingNotificationThreadIds)
+                    markingNotificationThreadIds.clear()
+                }
+                _notifications.value = mutableListOf()
+                notificationPage = 1
+                getNotifications()
+            }
         }
     }
 
@@ -127,10 +130,5 @@ class MainViewModel(private val repository: GithubRepository) : ViewModel() {
         issuePage = 1
         issueLoadType = IssueLoadType.CREATE
         issueRefreshState.value = issueRefreshState.value == false
-    }
-
-    private fun removeNotificationAtPosition(notification: Notification) {
-        _notifications.value?.remove(notification)
-        _notifications.value = _notifications.value
     }
 }

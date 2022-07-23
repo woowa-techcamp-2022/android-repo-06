@@ -16,6 +16,7 @@ import com.example.woowagithubrepositoryapp.ui.MainViewModel
 import com.example.woowagithubrepositoryapp.ui.adapter.NotificationAdapter
 import com.example.woowagithubrepositoryapp.ui.common.DataLoading
 import com.example.woowagithubrepositoryapp.ui.common.ViewModelFactory
+import kotlinx.coroutines.*
 
 class NotificationFragment : Fragment() {
 
@@ -46,6 +47,11 @@ class NotificationFragment : Fragment() {
         setObserver()
     }
 
+    override fun onStop() {
+        viewModel.refreshNotifications()
+        super.onStop()
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
@@ -54,8 +60,8 @@ class NotificationFragment : Fragment() {
     private fun initRecyclerView() {
         binding?.let {
             it.notificationRecyclerView.apply {
-                ItemTouchHelper(NotificationItemHelper(requireContext()) { notification,position ->
-                    markNotification(notification,position)
+                ItemTouchHelper(NotificationItemHelper(requireContext()) { notification ->
+                    markNotification(notification)
                 }).attachToRecyclerView(this)
 
                 this.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -82,19 +88,13 @@ class NotificationFragment : Fragment() {
         }
     }
 
-    private fun redrawNotificationAdapterItemAtPosition(position : Int){
-        notificationAdapter.notifyItemChanged(position)
-    }
-
     private fun initNotifications() {
         if(viewModel.notifications.value?.size == 0)
             viewModel.getNotifications()
     }
 
-    private fun markNotification(notification: Notification,position: Int) {
-        viewModel.markNotificationAsRead(notification = notification) {
-            redrawNotificationAdapterItemAtPosition(position)
-        }
+    private fun markNotification(notification: Notification) {
+        viewModel.removeNotification(notification = notification)
     }
 
     private fun setObserver(){
