@@ -7,7 +7,7 @@ interface GithubDataSource {
 
     suspend fun getNotifications(page: Int): Result<MutableList<Notification>>
 
-    suspend fun patchNotificationThread(threadId: String): Result<Boolean>
+    suspend fun patchNotificationThread(threadIds: MutableList<String>): Result<Boolean>
 
     suspend fun getStarredRepos(): Result<Int>
 

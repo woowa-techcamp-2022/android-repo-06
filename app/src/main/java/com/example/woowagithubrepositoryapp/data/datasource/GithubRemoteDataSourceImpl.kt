@@ -37,13 +37,17 @@ class GithubRemoteDataSourceImpl : GithubDataSource {
     }
 
 
-    override suspend fun patchNotificationThread(threadId: String)
+    override suspend fun patchNotificationThread(threadIds: MutableList<String>)
     : Result<Boolean> = withContext(Dispatchers.IO) {
         try {
-            val response = service.patchNotificationThread(threadId)
-            return@withContext if(response.isSuccessful) {
-                Result.success(true)
-            } else Result.failure(Exception("patchNotiThreadError"))
+            val result = threadIds.map {
+                async { service.patchNotificationThread(it) }
+            }.awaitAll()
+            result.forEach {
+                if(!it.isSuccessful)
+                    return@withContext Result.failure(Exception("patchNotiThreadError"))
+            }
+            return@withContext Result.success(true)
         }
         catch (e: IOException) {
             Log.d("patchNotiThreadError", e.cause.toString())
