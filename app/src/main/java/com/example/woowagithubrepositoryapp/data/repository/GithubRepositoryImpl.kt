@@ -58,9 +58,9 @@ class GithubRepositoryImpl : GithubRepository {
     }
 
     override suspend fun patchNotificationThread(
-        threadId: String
+        threadIds: MutableList<String>
     ): Result<Boolean> {
-        return dataSource.patchNotificationThread(threadId)
+        return dataSource.patchNotificationThread(threadIds)
     }
 
     override suspend fun getUserIssues(
