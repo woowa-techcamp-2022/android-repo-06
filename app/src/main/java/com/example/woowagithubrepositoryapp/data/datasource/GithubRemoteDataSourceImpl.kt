@@ -114,4 +114,14 @@ class GithubRemoteDataSourceImpl : GithubDataSource {
             Result.failure(e)
         }
     }
+
+    companion object {
+        private var instance: GithubRemoteDataSourceImpl? = null
+        fun getInstance(): GithubRemoteDataSourceImpl {
+            if (instance == null) {
+                instance = GithubRemoteDataSourceImpl()
+            }
+            return instance!!
+        }
+    }
 }

@@ -1,17 +1,11 @@
 package com.example.woowagithubrepositoryapp.data.repository
 
-import android.util.Log
 import com.example.woowagithubrepositoryapp.data.datasource.GithubDataSource
 import com.example.woowagithubrepositoryapp.data.datasource.GithubRemoteDataSourceImpl
-import com.example.woowagithubrepositoryapp.data.network.GithubClient
-import com.example.woowagithubrepositoryapp.data.network.GithubService
 import com.example.woowagithubrepositoryapp.model.*
 import kotlinx.coroutines.*
-import java.io.IOException
 
-class GithubRepositoryImpl : GithubRepository {
-    private val service = GithubClient().generate(GithubService::class.java)
-    private val dataSource = GithubRemoteDataSourceImpl()
+class GithubRepositoryImpl(private val dataSource : GithubDataSource) : GithubRepository {
 
     override suspend fun getUserData(): Result<User> {
         return try {
@@ -81,7 +75,7 @@ class GithubRepositoryImpl : GithubRepository {
         private var instance: GithubRepositoryImpl? = null
         fun getInstance(): GithubRepositoryImpl {
             if (instance == null) {
-                instance = GithubRepositoryImpl()
+                instance = GithubRepositoryImpl(GithubRemoteDataSourceImpl.getInstance())
             }
             return instance!!
         }
