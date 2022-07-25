@@ -11,7 +11,7 @@ interface GithubRepository {
     suspend fun getNotifications(page: Int): Result<MutableList<Notification>>
 
     suspend fun patchNotificationThread(
-        threadId: String
+        threadIds: MutableList<String>
     ): Result<Boolean>
 
     suspend fun getUserIssues(
